@@ -5,9 +5,20 @@ This project is a part of Capstone project in Automation Engineering. That has a
 
 ## Backend using Python
 
-## Frontend using Javascript
+## Frontend using Javascript React + Vite
 
 ## Setup Project
+### Download Project
+1. Install git bash [Click me](https://git-scm.com/downloads)
+2. Git clone repository
+```
+git clone https://github.com/santapong/CapStone-Project.git
+```
+
+### Download Python
+1. Install Python [Click me](https://www.python.org/downloads/)
+2. Add Python.exe to Environment path. (only Windows) 
+
 ### uv Installing
 
 1. Installing uv
