@@ -219,18 +219,6 @@ wheels = [
 ]
 
 [[package]]
-name = "beautifulsoup4"
-version = "4.12.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "soupsieve" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/ca/824b1195773ce6166d388573fc106ce56d4a805bd7427b624e063596ec58/beautifulsoup4-4.12.3.tar.gz", hash = "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051", size = 581181 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b1/fe/e8c672695b37eecc5cbf43e1d0638d88d66ba3a44c4d321c796f4e59167f/beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed", size = 147925 },
-]
-
-[[package]]
 name = "build"
 version = "1.2.2.post1"
 source = { registry = "https://pypi.org/simple" }
@@ -270,7 +258,7 @@ dependencies = [
     { name = "langchain-huggingface" },
     { name = "langchain-ollama" },
     { name = "langchain-openai" },
-    { name = "python-fasthtml" },
+    { name = "pypdf" },
     { name = "sqlalchemy" },
 ]
 
@@ -286,7 +274,7 @@ requires-dist = [
     { name = "langchain-huggingface", specifier = ">=0.1.2" },
     { name = "langchain-ollama", specifier = ">=0.2.2" },
     { name = "langchain-openai", specifier = ">=0.2.14" },
-    { name = "python-fasthtml", specifier = ">=0.10.1" },
+    { name = "pypdf", specifier = ">=5.1.0" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
 ]
 
@@ -641,31 +629,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/93/72/d83b98cd106541e8f5e5bfab8ef2974ab45a62e8a6c5b5e6940f26d2ed4b/fastapi-0.115.6.tar.gz", hash = "sha256:9ec46f7addc14ea472958a96aae5b5de65f39721a46aaf5705c480d9a8b76654", size = 301336 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/52/b3/7e4df40e585df024fac2f80d1a2d579c854ac37109675db2b0cc22c0bb9e/fastapi-0.115.6-py3-none-any.whl", hash = "sha256:e9240b29e36fa8f4bb7290316988e90c381e5092e0cbe84e7818cc3713bcf305", size = 94843 },
-]
-
-[[package]]
-name = "fastcore"
-version = "1.7.27"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/af/72/304f055b104c6a9948b3e62bd1908121e5540105293972d441b54b20e3f2/fastcore-1.7.27.tar.gz", hash = "sha256:531c1df430094667d385cbb5ec985b5db289647f6a004ff50134bb87b67d169e", size = 80305 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c4/32/9bfc9ec3478471340b82d1bf06992a8a16bbb3bfcf62217842d638948f98/fastcore-1.7.27-py3-none-any.whl", hash = "sha256:ac62143e1fd40fd501a6740b99ccdcfef58dd467d2cd33dca681dc4f500b1e63", size = 83969 },
-]
-
-[[package]]
-name = "fastlite"
-version = "0.0.13"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "fastcore" },
-    { name = "sqlite-minutils" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/92/86/c6392b7d6fbfa3f5eb22054645ec7be550a21bfb00ce9586ba2bc18e12d2/fastlite-0.0.13.tar.gz", hash = "sha256:e3039dd3ef144953691ea93ed902e46885a7d904feae92a11c835196693ad370", size = 20596 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6c/b4/0d9e28d1de34378033ce6305f531c2e9dd4adc00915d57f83d1acfa805d7/fastlite-0.0.13-py3-none-any.whl", hash = "sha256:8a8fac42ff71cdebd03272a8a2d8564c266dda1510b8d3e2dfaeae8a69c3e834", size = 16464 },
 ]
 
 [[package]]
@@ -1088,15 +1051,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c7/4c/dab2a281b07596a5fc220d49827fe6c794c66f1493d7a74f1df0640f2cc5/ipywidgets-8.1.5.tar.gz", hash = "sha256:870e43b1a35656a80c18c9503bbf2d16802db1cb487eec6fab27d683381dde17", size = 116723 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/22/2d/9c0b76f2f9cc0ebede1b9371b6f317243028ed60b90705863d493bae622e/ipywidgets-8.1.5-py3-none-any.whl", hash = "sha256:3290f526f87ae6e77655555baba4f36681c555b8bdbbff430b70e52c34c86245", size = 139767 },
-]
-
-[[package]]
-name = "itsdangerous"
-version = "2.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9c/cb/8ac0172223afbccb63986cc25049b154ecfb5e85932587206f42317be31d/itsdangerous-2.2.0.tar.gz", hash = "sha256:e0050c0b7da1eea53ffaf149c0cfbb5c6e2e2b69c4bef22c81fa6eb73e5f6173", size = 54410 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/04/96/92447566d16df59b2a776c0fb82dbc4d9e07cd95062562af01e408583fc4/itsdangerous-2.2.0-py3-none-any.whl", hash = "sha256:c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef", size = 16234 },
 ]
 
 [[package]]
@@ -2531,6 +2485,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pypdf"
+version = "5.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6b/9a/72d74f05f64895ebf1c7f6646cf7fe6dd124398c5c49240093f92d6f0fdd/pypdf-5.1.0.tar.gz", hash = "sha256:425a129abb1614183fd1aca6982f650b47f8026867c0ce7c4b9f281c443d2740", size = 5011381 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/fc/6f52588ac1cb4400a7804ef88d0d4e00cfe57a7ac6793ec3b00de5a8758b/pypdf-5.1.0-py3-none-any.whl", hash = "sha256:3bd4f503f4ebc58bae40d81e81a9176c400cbbac2ba2d877367595fb524dfdfc", size = 297976 },
+]
+
+[[package]]
 name = "pypika"
 version = "0.48.9"
 source = { registry = "https://pypi.org/simple" }
@@ -2573,36 +2539,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/bc/57/e84d88dfe0aec03b7a2d4327012c1627ab5f03652216c63d49846d7a6c58/python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca", size = 39115 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/3e/b68c118422ec867fa7ab88444e1274aa40681c606d59ac27de5a5588f082/python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a", size = 19863 },
-]
-
-[[package]]
-name = "python-fasthtml"
-version = "0.10.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "beautifulsoup4" },
-    { name = "fastcore" },
-    { name = "fastlite" },
-    { name = "httpx" },
-    { name = "itsdangerous" },
-    { name = "oauthlib" },
-    { name = "python-dateutil" },
-    { name = "python-multipart" },
-    { name = "starlette" },
-    { name = "uvicorn", extra = ["standard"] },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/3c/04/01b730f51d657cfc0ed252e4378b1fda3762662a5cabc1fdb392d2c134a6/python-fasthtml-0.10.1.tar.gz", hash = "sha256:1e635394f93a192d7c1d360cb24ce815f5d10b93a3567ebc8c4076bed21a162d", size = 55508 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/8d/d4/c416632e7189b85a2cb0a81a845c8de1c4178bc64151a0d7c78698167229/python_fasthtml-0.10.1-py3-none-any.whl", hash = "sha256:93e75bc540c226ffec559ba69c92fb78b6d62ee45842787fdb71e455c4d88c3f", size = 58846 },
-]
-
-[[package]]
-name = "python-multipart"
-version = "0.0.20"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f3/87/f44d7c9f274c7ee665a29b885ec97089ec5dc034c7f3fafa03da9e39a09e/python_multipart-0.0.20.tar.gz", hash = "sha256:8dd0cab45b8e23064ae09147625994d090fa46f5b0d1e13af944c331a7fa9d13", size = 37158 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/58/38b5afbc1a800eeea951b9285d3912613f2603bdf897a4ab0f4bd7f405fc/python_multipart-0.0.20-py3-none-any.whl", hash = "sha256:8a62d3a8335e06589fe01f2a3e178cdcc632f3fbe0d492ad9ee0ec35aab1f104", size = 24546 },
 ]
 
 [[package]]
@@ -3064,15 +3000,6 @@ wheels = [
 ]
 
 [[package]]
-name = "soupsieve"
-version = "2.6"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d7/ce/fbaeed4f9fb8b2daa961f90591662df6a86c1abf25c548329a86920aedfb/soupsieve-2.6.tar.gz", hash = "sha256:e2e68417777af359ec65daac1057404a3c8a5455bb8abc36f1a9866ab1a51abb", size = 101569 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d1/c2/fe97d779f3ef3b15f05c94a2f1e3d21732574ed441687474db9d342a7315/soupsieve-2.6-py3-none-any.whl", hash = "sha256:e72c4ff06e4fb6e4b5a9f0f55fe6e81514581fca1515028625d0f299c602ccc9", size = 36186 },
-]
-
-[[package]]
 name = "sqlalchemy"
 version = "2.0.36"
 source = { registry = "https://pypi.org/simple" }
@@ -3115,18 +3042,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a1/95/81babb6089938680dfe2cd3f88cd3fd39cccd1543b7cb603b21ad881bff1/SQLAlchemy-2.0.36-cp313-cp313-win32.whl", hash = "sha256:0572f4bd6f94752167adfd7c1bed84f4b240ee6203a95e05d1e208d488d0d436", size = 2060439 },
     { url = "https://files.pythonhosted.org/packages/c1/ce/5f7428df55660d6879d0522adc73a3364970b5ef33ec17fa125c5dbcac1d/SQLAlchemy-2.0.36-cp313-cp313-win_amd64.whl", hash = "sha256:8c78ac40bde930c60e0f78b3cd184c580f89456dd87fc08f9e3ee3ce8765ce88", size = 2084574 },
     { url = "https://files.pythonhosted.org/packages/b8/49/21633706dd6feb14cd3f7935fc00b60870ea057686035e1a99ae6d9d9d53/SQLAlchemy-2.0.36-py3-none-any.whl", hash = "sha256:fddbe92b4760c6f5d48162aef14824add991aeda8ddadb3c31d56eb15ca69f8e", size = 1883787 },
-]
-
-[[package]]
-name = "sqlite-minutils"
-version = "4.0.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "fastcore" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/39/de/25926f1caafee46ee4a7f617ab624652e6c44ba8b2351399c626b10553d4/sqlite-minutils-4.0.3.tar.gz", hash = "sha256:c3fc6d20f86b2cd0071eaa9e356024ef83aba3ce9d9606e50c4ab255c3279a71", size = 73036 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/12/78e39e4734bb8770955a6ec7f5dc1a918d56c8f94a1eaa2c7fb91f2fec2a/sqlite_minutils-4.0.3-py3-none-any.whl", hash = "sha256:33254c37d88b8dfd6218ba0d7c4d64232a2bf234e15b841459c5676dea2b2db0", size = 79288 },
 ]
 
 [[package]]
