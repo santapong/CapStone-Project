@@ -1,4 +1,7 @@
 # CapStone-Project
+## Abstract
+This project is a part of Capstone project in Automation Engineering. That has a Goal that to create Automation Gen AI for answer question about subject and knowledge of Automation in KMITL.
+## Diagram
 
 ## Backend using Python
 
@@ -41,3 +44,16 @@ PS. uv's document [Click me](https://docs.astral.sh/uv/getting-started/installat
 1. Download and install ollama Click [Here](https://ollama.com/download/windows) !!
 
 2. Open Terminal or Command Prompt and Type ``` ollama run llama3.2 ``` ( We use llama3.2 in this Project )
+
+## Oauth2-proxy setup ( Docker )
+Document [Read more !!](https://oauth2-proxy.github.io/oauth2-proxy/)
+
+## Datasets
+Coming Soon
+
+## Docker
+
+## Kubernetes
+
+## Other
+
