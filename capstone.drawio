@@ -1,23 +1,23 @@
 <mxfile host="65bd71144e">
     <diagram id="UWU9yrfVLj3En8_xCBOz" name="Overall">
-        <mxGraphModel dx="1699" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1916" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="3" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="120" y="200" width="340" height="270" as="geometry"/>
+                    <mxGeometry x="120" y="200" width="340" height="250" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-80" y="270" width="160" height="100" as="geometry"/>
+                    <mxGeometry x="-100" y="270" width="160" height="100" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;endArrow=classic;endFill=1;" parent="1" source="2" target="11" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="2" value="Oauth2 Proxy" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-60" y="290" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="-80" y="290" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="4" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="540" y="200" width="340" height="270" as="geometry"/>
+                    <mxGeometry x="540" y="200" width="340" height="250" as="geometry"/>
                 </mxCell>
                 <mxCell id="5" value="Frontend" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="250" y="170" width="60" height="30" as="geometry"/>
@@ -59,7 +59,7 @@
                     <mxGeometry x="557.5" y="250" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" value="Internal Database" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="557.5" y="380" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="557.5" y="360" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=classic;startFill=1;endArrow=classic;endFill=1;" parent="1" source="24" target="26" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -68,10 +68,10 @@
                     <mxGeometry x="750" y="250" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="26" value="Vector DB" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="750" y="380" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="750" y="360" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="30" value="Login Page" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="-90" y="240" width="90" height="30" as="geometry"/>
+                    <mxGeometry x="-110" y="240" width="90" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="p1TXQrBb3vgy2d-HC9ok-32" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" parent="1" source="p1TXQrBb3vgy2d-HC9ok-30" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -83,7 +83,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="uhJoJgP5bdGmIqc_Bq1v" name="User Journey">
-        <mxGraphModel dx="849" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="888" dy="518" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -91,7 +91,7 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="hA45c0c0DXqP8DS8I18_-1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
-                    <mxGeometry x="35" y="170" width="30" height="60" as="geometry"/>
+                    <mxGeometry x="60" y="170" width="30" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="PY_5V-qxE0xhI6i5ee8Q-4" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=none;startFill=0;endArrow=classic;endFill=1;" parent="1" source="PY_5V-qxE0xhI6i5ee8Q-1" edge="1">
                     <mxGeometry relative="1" as="geometry">
@@ -186,7 +186,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="uUxM_Npg-BbKzg_WnnOg" name="Login Architecture">
-        <mxGraphModel dx="849" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -194,7 +194,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="aIUs13HwPhJ97i6IKoqL" name="Frontend">
-        <mxGraphModel dx="849" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -210,7 +210,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="XrW4m-w4PanP_BGBwHqZ" name="API Router">
-        <mxGraphModel dx="849" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -236,7 +236,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="97zRUgveVWg1ezdDAZ6k" name="RAG system">
-        <mxGraphModel dx="849" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
