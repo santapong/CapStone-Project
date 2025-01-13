@@ -13,7 +13,7 @@ class LoadTextManager:
     def __init__(self, file_path: str=None) -> None:
         print(f"Loading.. {file_path}")
         self.loader = TextLoader(file_path=file_path)
-
+# TODO: See Lazy_load
     def get_Text(self):
         return self.loader.load()
         
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     
     file_path = os.getenv('TEXTLOADER')
-    test = LoadText(file_path=file_path)
+    test = LoadTextManager(file_path=file_path)
 
     test.get_Text()
     """result 
