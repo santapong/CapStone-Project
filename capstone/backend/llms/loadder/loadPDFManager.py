@@ -7,8 +7,6 @@ from dataclasses import dataclass
 from typing import Optional, List
 
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_chroma import Chroma
-from langchain_ollama import OllamaEmbeddings
 
 # Can it use with Text Spliter
 # TODO: Implement to use with dataclass
@@ -20,7 +18,7 @@ class LoadPDFManager:
 
     def get_PDF(self):
 
-        # Split to Page to Page
+        # Split to File to to Page
         pages = []
         for page in self.loader.lazy_load():
             pages.append(page)
