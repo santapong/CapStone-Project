@@ -16,6 +16,9 @@ class LoadPDFManager:
         print(f"Loading.. {file_path}")
         self.loader = PyPDFLoader(file_path=file_path)
 
+    def __splitter(self):
+        pass
+
     def get_PDF(self):
 
         # Split to File to to Page
@@ -23,6 +26,8 @@ class LoadPDFManager:
         for page in self.loader.lazy_load():
             pages.append(page)
         return pages
+
+
 
 if __name__ == '__main__':
 

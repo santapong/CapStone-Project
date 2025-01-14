@@ -13,6 +13,10 @@ class LoadTextManager:
     def __init__(self, file_path: str=None) -> None:
         print(f"Loading.. {file_path}")
         self.loader = TextLoader(file_path=file_path)
+
+    def __splitter(self):
+        pass
+
 # TODO: See Lazy_load
     def get_Text(self):
         return self.loader.load()
