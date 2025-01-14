@@ -18,4 +18,6 @@ dependencies = [
     "langchain-ollama>=0.2.2",
     "pypdf>=5.1.0",
     "langgraph>=0.2.61",
+    "unsloth>=2025.1.5",
+    "beautifulsoup4>=4.12.3",
 ]

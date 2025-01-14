@@ -1,1 +1,26 @@
-PYTHONPATH='/path/to/project'
+PYTHONPATH='/path/of/project'
+
+
+# ENV for Loader ( Using for test )
+TEXTLOADER='./document/test.txt'
+PDFLOADER='./document/Train.pdf'
+
+# User Agent for Webbase. ( Using for Webbaseloadder )
+USER_AGENT='myagent'
+
+
+# Logging config
+LOG_PATH='/path/to/logs/file.log'
+LOG_NAME=''
+LOG_FORMAT=''
+LOG_LEVEL=''
+
+# Database login
+# DATABASE_USERNAME=
+# DATABASE_PASSWORD=
+# DATABASE_PORT=
+# DATABASE_NAME=
+# DATABASE_URL=
+
+# Database adjustment
+DATABASE_CREATE=True
