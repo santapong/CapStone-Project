@@ -16,7 +16,7 @@ from capstone.backend.llms.utils.prompt_template import *
 # Load config from .env file
 load_dotenv()
 
-# TODO: Thing more about it
+# TODO: Make more function.
 @dataclass
 class ChatModel:
 
@@ -34,6 +34,7 @@ class ChatModel:
     prompt_template : Optional[str] = None
     
     def __post_init__(self) -> None:
+        print(f"Loading.. {self.model}")
         self.llm = OllamaLLM(model=self.model)
         print(f"Using {self.model} now.")
     

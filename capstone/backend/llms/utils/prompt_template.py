@@ -3,6 +3,7 @@ from langchain_core.prompts import (PromptTemplate,
                                     HumanMessagePromptTemplate)
 from langchain_ollama import OllamaLLM
 
+# Few show prompt template to make model can learn.
 few_shot_input_variable = ["name"]
 few_shot_prompt_template = """
 
@@ -10,7 +11,8 @@ Your name is {name}.
 
 """
 
-
+# Test prompt for evaluation of model.
+test_prompt_input_variable = []
 test_prompt_template = """
 
 """
