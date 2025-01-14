@@ -64,14 +64,3 @@ class ChatModel:
         """
         chain = prompt_template | self.llm
         return chain.invoke("Hello")
-
-if __name__ == '__main__':
-
-    prompt_template = "Tell me a {adjective} joke"
-    prompt = PromptTemplate(
-        input_variables=["adjective"], template=prompt_template
-    )
-
-    test = ChatModel(model='llama3.2')
-    print(test.query("Can you sending me some mr beast channel"))
-    print(test.query_with_template(prompt))

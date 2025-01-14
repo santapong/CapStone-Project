@@ -11,7 +11,3 @@ from capstone.backend.llms.utils.prompt_template import (few_shot_prompt_templat
 
 from capstone.backend.llms.utils.splitter import SplitterManager
 
-model = ChatModel()
-print(model.query("Hello can you introduce your self."))
-
-
