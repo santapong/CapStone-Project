@@ -10,4 +10,3 @@ from capstone.backend.llms.utils.prompt_template import (few_shot_prompt_templat
                                                          test_prompt_input_variable)
 
 from capstone.backend.llms.utils.splitter import SplitterManager
-

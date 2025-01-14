@@ -12,5 +12,4 @@ app.include_router(router_document)
 
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', reload=True)
-
+    uvicorn.run('app:app', reload=True)

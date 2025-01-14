@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from capstone.backend.llms.core.main import ChatModel
+from capstone.backend.llms.main import ChatModel
 
 tags = ["Chatbot"]
 router_chatbot = APIRouter(prefix='/chatbot')

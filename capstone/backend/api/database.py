@@ -9,6 +9,7 @@ load_dotenv()
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import create_engine
 
+from capstone.backend.api.schema.model_database import DATABASE_MODEL
 
 """
 ################### Take Note ####################
@@ -29,7 +30,7 @@ logging.getLogger(__name__)
 logging.Formatter()
 
 # Default Database
-SQLLITE_URL = 'sqlite:///sqlalchemy_example.db'
+SQLLITE_URL = 'sqlite:///capstone/backend/database/history_database/sqlalchemy_example.db'
 
 # Database login info
 DATABASE_USERNAME = os.getenv('DATABASE_USERNAME' ,default = None)
@@ -38,20 +39,9 @@ DATABASE_PORT = os.getenv('DATABASE_PORT' ,default=None)
 DATABASE_DB = os.getenv('DATABASE_DB', default= None)
 DATABASE_URL = os.getenv('DATABASE_URL' ,default = SQLLITE_URL)
 
-# Database Definition Langueges ( DDL )
-Base = declarative_base()
-
-# TODO: Design Database Model 
-
-
-# Table in dataase.
-class History(Base):
-    pass
-
-
 
 # TODO: Make CRUD for this History database.
-class HistoryDBConnection:
+class DBConnection:
 
     # Initial connect to database.
     def __init__(
@@ -66,7 +56,7 @@ class HistoryDBConnection:
         if create_database:
             self.__create_database()
 
-    
+    # TODO: If database exist not create it.
     def __create_database(self, 
                         ) -> None :
         self.base_model.metadata.create_all(bind = self.engine)
@@ -80,13 +70,13 @@ class HistoryDBConnection:
     def get_table(self):
         pass
 
-    # Get database inside specific Table of this database.
+    # Get data Table of this database.
     def query(self,
             Table
         ) -> List:
         return self.session.query(Table).all()
     
-    # Get database inside Table of this database by condition.
+    # Get data of Table of this database by condition.
     def query_condition(self,
                         Table,
                         **kwargs
@@ -98,6 +88,5 @@ class HistoryDBConnection:
         pass
 
 
-    
-    
-    
+if __name__ == '__main__':
+    test = DBConnection(create_database=True, base_model=DATABASE_MODEL)
