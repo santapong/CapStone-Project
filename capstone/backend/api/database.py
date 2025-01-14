@@ -39,6 +39,8 @@ DATABASE_PORT = os.getenv('DATABASE_PORT' ,default=None)
 DATABASE_DB = os.getenv('DATABASE_DB', default= None)
 DATABASE_URL = os.getenv('DATABASE_URL' ,default = SQLLITE_URL)
 
+# Database config
+DATABASE_CREATE = os.getenv('DATABASE_CREATE', default=False)
 
 # TODO: Make CRUD for this History database.
 class DBConnection:
@@ -87,6 +89,9 @@ class DBConnection:
     def update(self):
         pass
 
+DBConnect = DBConnection(
+        create_database=DATABASE_CREATE,
+        base_model=DATABASE_MODEL)
 
 if __name__ == '__main__':
     test = DBConnection(create_database=True, base_model=DATABASE_MODEL)

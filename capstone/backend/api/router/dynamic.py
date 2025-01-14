@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 logging.getLogger(__name__)
 
-router_dynamic = APIRouter('/dynamic')
+router_dynamic = APIRouter(prefix='/dynamic')
 
 # Create API on the fly.
 @router_dynamic.put('/')

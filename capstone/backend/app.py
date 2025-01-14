@@ -5,12 +5,14 @@ import logging
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
-from capstone.backend.logs.logging_config import setup_logging
+from capstone.backend.api.database import DBConnect
 
 from capstone.backend.api.router.dynamic import router_dynamic
 from capstone.backend.api.router.chatbot import router_chatbot
 from capstone.backend.api.router.document import router_document
 from capstone.backend.api.router.dashboard import router_dashboard
+
+from capstone.backend.logs.logging_config import setup_logging
 
 load_dotenv()
 

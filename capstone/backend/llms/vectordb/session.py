@@ -44,6 +44,6 @@ if __name__ == "__main__":
     documents = [_ for _ in WebbaseLoadManager.get_URL()]
     print(documents)
 
-    EmbeddingManagers = EmbeddingManager()
+    EmbeddingManagers = VectorDBConnect()
 
     EmbeddingManagers.add_document(documents)

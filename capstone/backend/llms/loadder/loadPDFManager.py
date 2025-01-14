@@ -10,7 +10,7 @@ from langchain_community.document_loaders import PyPDFLoader
 
 # Can it use with Text Spliter
 # TODO: Implement to use with dataclass
-class LoadPDFManager:
+class PDFLoaderManager:
 
     def __init__(self, file_path: str) -> None:
         print(f"Loading.. {file_path}")
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     # Get PDF file path from .env
     file_path = os.getenv("PDFLOADER")
-    test = LoadPDFManager(file_path=file_path)
+    test = PDFLoaderManager(file_path=file_path)
     
     # print(test.get_PDF()[0].metadata)
     """ result
