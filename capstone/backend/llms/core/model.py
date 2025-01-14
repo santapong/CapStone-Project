@@ -69,5 +69,5 @@ if __name__ == '__main__':
     )
 
     test = ChatModel(model='llama3.2')
-    print(test.query("Hello"))
+    print(test.query("Can you sending me some mr beast channel"))
     print(test.query_with_template(prompt))
