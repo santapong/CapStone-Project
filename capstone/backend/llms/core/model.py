@@ -21,8 +21,11 @@ load_dotenv()
 class ChatModel:
 
      # TODO: add more parameter
-    model: str
-    """ Declare model """
+    model: str = 'llama3.2'
+    """ Declare model 
+    Default: llama3.2
+    
+    """
 
     top_k: Optional[int] = None
     """ top_k parameter """
@@ -40,23 +43,23 @@ class ChatModel:
         """ Normal chat with AI
 
         Args:
-            question (str): _description_
+            question (str): Prompt for chat
 
         Returns:
-            str: _description_
+            str: Answer from LLM model.
         """
         return self.llm.invoke(question)
     
 
     # TODO: Make more reriable
-    def query_with_template(self, prompt_template: str):
+    def query_with_template(self, prompt_template: str) -> str:
         """ Query with prompttemplate
 
         Args:
-            prompt_template (str): _description_
+            prompt_template (str): Prompt template that you need to use.
 
         Returns:
-            _type_: _description_
+            str: Answer from LLM model. 
         """
         chain = prompt_template | self.llm
         return chain.invoke("Hello")
