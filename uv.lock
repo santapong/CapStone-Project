@@ -307,6 +307,10 @@ dependencies = [
     { name = "langgraph" },
     { name = "pypdf" },
     { name = "sqlalchemy" },
+]
+
+[package.dev-dependencies]
+dev = [
     { name = "unsloth" },
 ]
 
@@ -326,8 +330,10 @@ requires-dist = [
     { name = "langgraph", specifier = ">=0.2.61" },
     { name = "pypdf", specifier = ">=5.1.0" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
-    { name = "unsloth", specifier = ">=2025.1.5" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "unsloth", specifier = ">=2025.1.5" }]
 
 [[package]]
 name = "certifi"
