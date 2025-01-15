@@ -7,8 +7,6 @@ load_dotenv()
 from typing import Optional, List, Union
 from dataclasses import dataclass
 
-
-
 from langchain.text_splitter import (CharacterTextSplitter,
                                      RecursiveCharacterTextSplitter)
 
@@ -49,9 +47,13 @@ class LoaderManager:
     # Load Content of website.
     def load_website(self):
         pass
+
+    # Load content from API.
+    def load_file(self):
+        pass
     
     # Display all of document content.
-    def get_docs(self) -> Union[]:
+    def get_docs(self):
         return self.docs
     
     # This is will run inside of this Class not need to use it.
