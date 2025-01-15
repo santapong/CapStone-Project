@@ -30,7 +30,8 @@ logging.getLogger(__name__)
 logging.Formatter()
 
 # Default Database
-SQLLITE_URL = 'sqlite:///capstone/backend/database/history_database/sqlalchemy_example.db'
+SQLLITE_PATH = os.getenv("PYTHONPATH")
+SQLLITE_URL = f'sqlite:///{SQLLITE_PATH}/capstone/backend/database/history_database/sqlalchemy_example.db'
 
 # Database login info
 DATABASE_USERNAME = os.getenv('DATABASE_USERNAME' ,default = None)
