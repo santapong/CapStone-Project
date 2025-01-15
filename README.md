@@ -59,7 +59,7 @@ uv --version
 
 ```
 cd path/to/this/project
-uv sync
+uv sync --no-group dev
 ```
 PS. uv's document [Click me](https://docs.astral.sh/uv/getting-started/installation/)
 

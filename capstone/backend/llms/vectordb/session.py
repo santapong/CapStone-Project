@@ -1,16 +1,15 @@
 import os 
-
 from dataclasses import dataclass
 from dotenv import load_dotenv
-
-from capstone.backend.llms.loadder import WebLoaderManager
 
 load_dotenv()
 
 from typing import Optional, Union
 
-from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings
+
+from capstone.backend.llms.loadder import WebLoaderManager
 
 # TODO: Implement to use with dataclass.
 class VectorDBConnect:
@@ -33,6 +32,9 @@ class VectorDBConnect:
     def add_document(self, docs: Union[list, str]):
         print("start add documents")
         self.vector_store.add_documents(docs)
+
+    def search(self):
+        pass
 
     
 if __name__ == "__main__":
