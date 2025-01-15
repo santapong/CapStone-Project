@@ -9,8 +9,6 @@ from typing import Optional, Union
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 
-from capstone.backend.llms.loadder import WebLoaderManager
-
 # TODO: Implement to use with dataclass.
 class VectorDBConnect:
 
