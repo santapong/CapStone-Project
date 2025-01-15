@@ -15,7 +15,7 @@ from capstone.backend.api.router.dashboard import router_dashboard
 from capstone.backend.logs.logging_config import setup_logging
 
 load_dotenv()
-
+print("Hello")
 # Setup logging for more security.
 setup_logging()
 logging.getLogger(__name__)
