@@ -4,6 +4,8 @@ import logging
 from dotenv import load_dotenv
 from abc import abstractmethod, ABC
 
+from langchain_ollama import OllamaEmbeddings
+
 from capstone.backend.llms.core.models import ChatModel
 from capstone.backend.llms.vectordb.session import VectorDBConnect
 
@@ -29,24 +31,38 @@ load_dotenv()
 # Design RAG system before do this one.
 
 ## Define Class for Retrieval-Augmented Generation ( RAG. )
-class baseRAG(ABC):
-    pass
+class BaseRAG(ABC):
 
-## Load Document
+    def __init__(self):
+        super().__init__()
+
+    ## LLMs
+    def setModel(self, model):
+        pass
+## Load Document & Split_text
 # Using LoaderManger to Handle PDF, Website, Text, API Upload.
     def load(self):
-        pass
-        
-## Split text
+        # Loading PDF
 
+        # Loading Content of Website
+
+        # Loading Text
+
+        # Loading from API Upload
+        pass
 
 ## Embedding
-
+    def __embeddings(self, 
+                     model: str = None):
+        self._embeddings = OllamaEmbeddings(model=model)
+        
 
 ## Stored VectorDB & Retreieval
+    def __vectordb_process(self):
+        pass
 
 
-## LLMs
+    
 
 
 ## Generation
