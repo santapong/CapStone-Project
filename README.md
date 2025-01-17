@@ -81,4 +81,6 @@ Coming Soon
 ## Other
 
 ## Reference
-[Promtp Engineer Guide](https://www.promptingguide.ai/introduction/settings)
+[Prompt Engineer Guide](https://www.promptingguide.ai/introduction/settings)
+
+Merge Commit
