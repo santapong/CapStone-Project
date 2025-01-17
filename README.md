@@ -59,7 +59,7 @@ uv --version
 
 ```
 cd path/to/this/project
-uv sync
+uv sync --no-group dev
 ```
 PS. uv's document [Click me](https://docs.astral.sh/uv/getting-started/installation/)
 
@@ -80,3 +80,7 @@ Coming Soon
 
 ## Other
 
+## Reference
+[Prompt Engineer Guide](https://www.promptingguide.ai/introduction/settings)
+
+Merge Commit
