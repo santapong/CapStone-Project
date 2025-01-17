@@ -80,3 +80,5 @@ Coming Soon
 
 ## Other
 
+## Reference
+[Promtp Engineer Guide](https://www.promptingguide.ai/introduction/settings)
