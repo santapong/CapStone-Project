@@ -80,3 +80,7 @@ Coming Soon
 
 ## Other
 
+## Reference
+[Prompt Engineer Guide](https://www.promptingguide.ai/introduction/settings)
+
+Merge Commit
