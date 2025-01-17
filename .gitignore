@@ -2,6 +2,11 @@
 /database
 #/learning
 
+# Javascript
+node_modules/
+
+# Python
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
