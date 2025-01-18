@@ -314,6 +314,9 @@ dependencies = [
 dev = [
     { name = "unsloth" },
 ]
+diagram = [
+    { name = "diagrams" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -336,6 +339,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [{ name = "unsloth", specifier = ">=2025.1.5" }]
+diagram = [{ name = "diagrams", specifier = ">=0.24.1" }]
 
 [[package]]
 name = "certifi"
@@ -671,6 +675,19 @@ wheels = [
 ]
 
 [[package]]
+name = "diagrams"
+version = "0.24.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "graphviz" },
+    { name = "jinja2" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/05/1f/a72c52faf3d96a22289b887f6373f3feac07e7df0b6871962f7216dd6704/diagrams-0.24.1.tar.gz", hash = "sha256:47b77a0e4dac926a095ff2ae4dd4ec1a192be781799befc660a8f5ce6ea1052f", size = 24362844 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1b/15/7e7f886b49701156f6686d38881413b64b01d1ee9bde72faf71fdc84c113/diagrams-0.24.1-py3-none-any.whl", hash = "sha256:c1e3267b018bdb66886a09214c7a7884796a0c28456f8aefdf38916a232c2362", size = 25090168 },
+]
+
+[[package]]
 name = "dill"
 version = "0.3.8"
 source = { registry = "https://pypi.org/simple" }
@@ -863,6 +880,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ff/a7/8e9cccdb1c49870de6faea2a2764fa23f627dd290633103540209f03524c/googleapis_common_protos-1.66.0.tar.gz", hash = "sha256:c3e7b33d15fdca5374cc0a7346dd92ffa847425cc4ea941d970f13680052ec8c", size = 114376 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/0f/c0713fb2b3d28af4b2fded3291df1c4d4f79a00d15c2374a9e010870016c/googleapis_common_protos-1.66.0-py2.py3-none-any.whl", hash = "sha256:d7abcd75fabb2e0ec9f74466401f6c119a0b498e27370e9be4c94cb7e382b8ed", size = 221682 },
+]
+
+[[package]]
+name = "graphviz"
+version = "0.20.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/83/5a40d19b8347f017e417710907f824915fba411a9befd092e52746b63e9f/graphviz-0.20.3.zip", hash = "sha256:09d6bc81e6a9fa392e7ba52135a9d49f1ed62526f96499325930e87ca1b5925d", size = 256455 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/00/be/d59db2d1d52697c6adc9eacaf50e8965b6345cc143f671e1ed068818d5cf/graphviz-0.20.3-py3-none-any.whl", hash = "sha256:81f848f2904515d8cd359cc611faba817598d2feaac4027b266aa3eda7b3dde5", size = 47126 },
 ]
 
 [[package]]
