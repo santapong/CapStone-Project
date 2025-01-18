@@ -26,3 +26,9 @@ dependencies = [
 dev = [
     "unsloth>=2025.1.5",
 ]
+diagram = [
+    "diagrams>=0.24.1",
+]
+
+[tool.uv]
+default-groups = []
