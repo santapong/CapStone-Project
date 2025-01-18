@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 logging.getLogger(__name__)
 
-class CustomErrorHandler(Exception):
+class CustomErrorHandler(ABC, Exception):
     def __init__(self, 
                  message: str, 
                  code = None, 
@@ -19,8 +19,17 @@ class CustomErrorHandler(Exception):
     def __str__(self, message):
         pass
 
+    @abstractmethod
+    def asknowledge():
+        pass
+
 class LoaderHandle(CustomErrorHandler):
+
     def __init__(self, message, code=None, details = None):
-        
-        
-        super().__init__(message, code, details)()
+        super().__init__(message, code, details)
+
+
+class RAGHandle(CustomErrorHandler):
+
+    def __init__(self, message, code=None, details = None):
+        super().__init__(message, code, details)

@@ -1,9 +1,14 @@
 from langchain_core.prompts import (PromptTemplate, 
                                     SystemMessagePromptTemplate, 
                                     HumanMessagePromptTemplate)
-from langchain_ollama import OllamaLLM
 
-# Few show prompt template to make model can learn.
+# Zero shot prompt template.
+zero_shot_input_variable = []
+zero_shot_prompt_template ="""
+
+"""
+
+# Few show prompt template.
 few_shot_input_variable = ["name"]
 few_shot_prompt_template = """
 
@@ -22,8 +27,3 @@ if __name__ == '__main__':
         input_variables=few_shot_input_variable,
         template=few_shot_prompt_template
     )
-
-    llms = OllamaLLM(model='llama3.2')
-    chains = prompt_template | llms
-
-    print(chains.invoke("Hello"))    
