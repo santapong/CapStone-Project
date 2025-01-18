@@ -7,14 +7,18 @@ load_dotenv()
 from typing import Optional, List, Union
 from dataclasses import dataclass
 
-from langchain.text_splitter import (CharacterTextSplitter,
-                                     RecursiveCharacterTextSplitter)
+from langchain.text_splitter import (
+    CharacterTextSplitter,
+    RecursiveCharacterTextSplitter
+    )
 
 from langchain_core.documents import Document
 from langchain_community.document_loaders.base import BaseLoader
-from langchain_community.document_loaders import (PyPDFLoader,
-                                                  TextLoader,
-                                                  WebBaseLoader)
+from langchain_community.document_loaders import (
+    PyPDFLoader,
+    TextLoader,
+    WebBaseLoader
+    )
 
 from capstone.backend.llms.utils.exception import ErrorHandler
 
@@ -29,7 +33,7 @@ class LoaderManager:
     # Not use
     def __init__(self):
         pass
-
+    # FIXME: Need to fix Loader pdf. and need to test.
     # Load PDF from file_path.
     def load_pdf(self,
                  file_path: str = None,
@@ -38,8 +42,20 @@ class LoaderManager:
         ) -> Union[List[Document],Document]:
         if file_path:
             raise FileNotFoundError(f"Need file_path to run")
-        self.loader = PyPDFLoader(file_path=file_path)
         
+        # Read PDF page.
+        pages = []
+        self.loader = PyPDFLoader(file_path=file_path)
+        for page in self.load_file.lazy_load():
+            pages.append(page)
+
+        # Split text to chunk
+        self.__split_text(loader=self.loader,
+                          docs=pages,
+                          chunk=chunk,
+                          chunk_overlap=chunk_overlap)
+        
+
     # Load Text from file_path.
     def load_text(self):
         pass
@@ -53,18 +69,26 @@ class LoaderManager:
         pass
     
     # Display all of document content.
-    def get_docs(self):
+    def get_docs(self) -> str:
         return self.docs
     
     # This is will run inside of this Class not need to use it.
     # Split text to Chunk.
     def __split_text(self,
                      loader: BaseLoader,         
-                     docs: Document = None,
+                     docs: List[Document] = None,
                      chunk: int = None,
                      chunk_overlap: int = None
                      ) -> List[Document]:
-        pass
+        
+        # Text splitter from Loader.
+        text_splitter = CharacterTextSplitter(
+            chunk=chunk,
+            chunk_overlap=chunk_overlap,
+            separator="/n"
+        )
+        
+        return text_splitter.split_documents(documents=docs)
 
 
 
