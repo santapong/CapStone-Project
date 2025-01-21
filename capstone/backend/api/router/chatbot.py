@@ -4,9 +4,17 @@ from fastapi import APIRouter
 
 from capstone.backend.llms.main import ChatModel
 
-from capstone.backend.api.database import DBConnect
+from capstone.backend.api.database import (
+    DBConnection,
+    DATABASE_CREATE,
+    DATABASE_MODEL
+    )
 
 logging.getLogger(__name__)
+
+DBConnect = DBConnection(
+        create_database=DATABASE_CREATE,
+        base_model=DATABASE_MODEL)
 
 tags = ["Chatbot"]
 router_chatbot = APIRouter(prefix='/chatbot')
