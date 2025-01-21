@@ -41,20 +41,20 @@ load_dotenv()
 
 # TODO: Make more function.
 
-# Define Class for Retrieval-Augmented Generation ( RAG. )
+# Define Class for Retrieval-Augmented Generation (RAG.)
 ## Using Inheritance of LoadManger, ChatModel
 class RAGmodel(ABC, LoaderManager):
 
     ## Set LLM model.
     def setModel(self, 
-                 model:str='llama3.2',
-                 temparature: int=None,
-                 top_p: int=None,
-                 top_k: int=None,
-                 cache: str=None,
-                 output_type: str=None,
-                 **kwargs
-                 ) -> BaseLLM:
+        model:str='llama3.2',
+        temparature: int=None,
+        top_p: int=None,
+        top_k: int=None,
+        cache: str=None,
+        output_type: str=None,
+        **kwargs
+        ) -> BaseLLM:
         """
         To set llm model to use in RAG
 
@@ -79,11 +79,12 @@ class RAGmodel(ABC, LoaderManager):
         return self._llm
 
     # Set embedding model.
-    def setEmbedding(self,
-                     model:str='bge-m3',
-                     base_url:str='',
-                     **client_kwarg
-                     ) -> Embeddings:
+    def setEmbedding(
+            self,
+            model:str = 'bge-m3',
+            base_url:str ='',
+            **client_kwarg
+            ) -> Embeddings:
         """
 
         Args:

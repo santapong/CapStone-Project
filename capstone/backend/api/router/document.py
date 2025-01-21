@@ -3,12 +3,16 @@ import io
 from typing import Annotated
 from pypdf import PdfReader
 
-from fastapi import APIRouter, UploadFile, File
+from fastapi import (
+    APIRouter, 
+    UploadFile, 
+    File
+    )
 
 tags = ["Document"]
 router_document = APIRouter(prefix='/document')
 
-
+# Uploadfile PDF from API.
 @router_document.post("/uploadfile", tags=tags)
 async def uploadFile(file: UploadFile = File(...)):
 
