@@ -27,7 +27,6 @@ This is for Frontend Dashboard to monitor how much user asking.
  """
 
 logging.getLogger(__name__)
-logging.Formatter()
 
 # Default Database
 SQLLITE_PATH = os.getenv("PYTHONPATH")
@@ -90,9 +89,6 @@ class DBConnection:
     def update(self):
         pass
 
-DBConnect = DBConnection(
-        create_database=DATABASE_CREATE,
-        base_model=DATABASE_MODEL)
 
 if __name__ == '__main__':
     test = DBConnection(create_database=True, base_model=DATABASE_MODEL)
