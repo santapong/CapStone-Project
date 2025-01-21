@@ -33,6 +33,25 @@ class LoaderManager:
     # Not use
     def __init__(self):
         pass
+
+    # This is will run inside of this Class not need to use it.
+    # Split text to Chunk.
+    def __split_text(self,
+                     loader: BaseLoader,         
+                     docs: List[Document] = None,
+                     chunk: int = None,
+                     chunk_overlap: int = None
+                     ) -> List[Document]:
+        
+        # Text splitter from Loader.
+        text_splitter = CharacterTextSplitter(
+            chunk=chunk,
+            chunk_overlap=chunk_overlap,
+            separator="/n"
+        )
+        
+        return text_splitter.split_documents(documents=docs)
+    
     # FIXME: Need to fix Loader pdf. and need to test.
     # Load PDF from file_path.
     def load_pdf(self,
@@ -72,23 +91,7 @@ class LoaderManager:
     def get_docs(self) -> str:
         return self.docs
     
-    # This is will run inside of this Class not need to use it.
-    # Split text to Chunk.
-    def __split_text(self,
-                     loader: BaseLoader,         
-                     docs: List[Document] = None,
-                     chunk: int = None,
-                     chunk_overlap: int = None
-                     ) -> List[Document]:
-        
-        # Text splitter from Loader.
-        text_splitter = CharacterTextSplitter(
-            chunk=chunk,
-            chunk_overlap=chunk_overlap,
-            separator="/n"
-        )
-        
-        return text_splitter.split_documents(documents=docs)
+
 
 
 

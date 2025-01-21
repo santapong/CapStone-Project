@@ -45,7 +45,6 @@ load_dotenv()
 ## Using Inheritance of LoadManger, ChatModel
 class RAGmodel(ABC, LoaderManager):
 
-
     ## Set LLM model.
     def setModel(self, 
                  model:str='llama3.2',

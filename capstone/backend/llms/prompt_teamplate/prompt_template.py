@@ -1,6 +1,8 @@
-from langchain_core.prompts import (PromptTemplate, 
-                                    SystemMessagePromptTemplate, 
-                                    HumanMessagePromptTemplate)
+from langchain_core.prompts import (
+    PromptTemplate,
+    SystemMessagePromptTemplate, 
+    HumanMessagePromptTemplate
+    )
 
 # Zero shot prompt template.
 zero_shot_input_variable = []
