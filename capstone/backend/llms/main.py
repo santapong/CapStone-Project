@@ -1,17 +1,31 @@
-import os 
 import logging
 
+from abc import ABC
+from pypdf import PdfReader
 from dotenv import load_dotenv
-from abc import abstractmethod, ABC
+from typing import (
+    List, 
+    Dict,
+    Union
+    )
+
 
 from langchain_core.documents import Document
-from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseLLM
 
+from langchain_chroma.vectorstores import Chroma
 from langchain_ollama import OllamaEmbeddings, OllamaLLM
 
-# Maybe not use
-from capstone.backend.llms.core.models import ChatModel
+from langchain.prompts import PromptTemplate
+from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
+from langchain.chains.retrieval import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+
+from langchain_community.document_loaders import (
+    PyPDFLoader,
+    TextLoader,
+    WebBaseLoader
+    )
 
 from capstone.backend.llms.vectordb.session import VectorDBConnect
 from capstone.backend.llms.prompt_teamplate.prompt_template import (
@@ -22,10 +36,11 @@ from capstone.backend.llms.prompt_teamplate.prompt_template import (
     zero_shot_input_variable,
     zero_shot_prompt_template)
 
-from capstone.backend.llms.loadder.LoaderManager import LoaderManager
 from capstone.backend.llms.utils.exception import RAGHandle
+# from capstone.backend.llms.loadder.LoaderManager import LoaderManager
 
 load_dotenv()
+logging.getLogger(__name__)
 
 """
 ################ TAKE NOTE #################
@@ -41,103 +56,44 @@ load_dotenv()
 
 # TODO: Make more function.
 
-# Define Class for Retrieval-Augmented Generation (RAG.)
+# Define Class for Retrieval-Augmented Generation (RAG)
 ## Using Inheritance of LoadManger, ChatModel
-class RAGmodel(ABC, LoaderManager):
+class RAGmodel(ABC):
 
-    ## Set LLM model.
-    def setModel(self, 
-        model:str='llama3.2',
-        temparature: int=None,
-        top_p: int=None,
-        top_k: int=None,
-        cache: str=None,
-        output_type: str=None,
-        **kwargs
-        ) -> BaseLLM:
-        """
-        To set llm model to use in RAG
-
-
-        Args:
-            model (str, optional): LLM model that you need to use. Defaults to 'llama3.2'.
-            temparature (int, optional): temperature for model. Defaults to None.
-            top_p (int, optional): top_p parameter. Defaults to None.
-            top_k (int, optional): top_k parameter. Defaults to None.
-            cache (str, optional): cache for model. Defaults to None.
-            output_type (str, optional): format output such as json, normal text. Defaults to None.
-
-        Returns:
-            BaseLLM: LLM model
-        """
-        self._llm = OllamaLLM(model=model,
-                              temperature=temparature,
-                              top_k=top_k,
-                              top_p=top_p,
-                              cache=cache,
-                              format=output_type)
-        return self._llm
-
-    # Set embedding model.
-    def setEmbedding(
-            self,
-            model:str = 'bge-m3',
-            base_url:str ='',
-            **client_kwarg
-            ) -> Embeddings:
-        """
-
-        Args:
-            model (str, optional): embedding model. Defaults to ''.
-            base_url (str, optional): base url of embedding model like Ollama. Defaults to ''.
-
-        Returns:
-            Embeddings: Embedding model.
-        """
-        self._embeddings = OllamaEmbeddings(model=model,
-                                            base_url=base_url,
-                                            client_kwargs=client_kwarg)
-        return self.__embeddings
-
-# Load Document & Split_text
-## Using LoaderManger to Handle PDF, Website, Text, API Upload.
-    def load(self,
-             type:str=None,
-             file_path:str = None,
-             )-> Document:
-        """
-
-        Args:
-            type (str, optional): Using for API. Defaults to None.
-            file_path (str, optional): Using for local machine. Defaults to None.
-
-        Returns:
-            Document: Document class.
-        """
-        
-        # Loading PDF
-        pdf_file = self.load_pdf(file_path=file_path)
-        # Loading Content of Website
-
-        # Loading Text
-
-        # Loading from API Upload
-
-        return self.load_pdf
-
-    # Return Document.
-    def display_document(self):
-        return self.get_docs()
-
-## Embedding
-    def __embeddings_document(self):
-        self._embeddings
-        
-
-
-## Stored VectorDB & Retreieval
-    def __vectordb_process(self):
+    def __init__(self):
         pass
+
+
+## Load PDF File 
+    def load_PDF(self,
+                 file_path:str = None,
+                 metadata:Dict = None
+                 ) -> Union[List[Document], Document]:
+            
+        # Extract PDF file.
+        pages = []
+        loader = PyPDFLoader(file_path=file_path)
+        for page in loader.lazy_load():
+            page.metadata.update(metadata)
+            pages.append(page)
+        
+        return pages
+    
+
+## Stored VectorDB & Retrieval.
+    def retreieval(self,
+                   documents:Union[List[Document], Document] = None,
+                   collection_name:str = None,
+                   collection_metadata:Dict =None,
+                   persist_directory:str =None):
+        logging.info(f"Retreie {documents}")
+
+        # Insert Document to VectorDatabase
+        self.vector_store = Chroma.from_documents(documents=documents,
+                                         persist_directory=persist_directory,
+                                         collection_name=collection_name,
+                                         collection_metadata=collection_metadata,
+                                         embedding=self.__embeddings)
 
 ## Post Retreieval
     def __post_retreieval(self):
@@ -147,10 +103,93 @@ class RAGmodel(ABC, LoaderManager):
     def __rerank(self):
         pass
 
-## Generation
+## Set LLM model.
+    def setModel(self, 
+        model:str='llama3.2',
+        temparature: float=0.8,
+        top_p: float=0.8,
+        top_k: float=None,
+        cache: str=None,
+        output_type: str='',
+        **kwargs
+        ) -> BaseLLM:
 
+        self._llm = OllamaLLM(model=model,
+                              temperature=temparature,
+                              top_k=top_k,
+                              top_p=top_p,
+                              cache=cache,
+                              format=output_type)
+    
+
+## Setting Vector Database
+    def setEmbeddings(self, 
+                    embeddings_model:str = 'bge-m3',
+                    ):
+        
+        # Setting Embedding model
+        logging.info(f"Using {embeddings_model} as embedding model.")
+        self.__embeddings = OllamaEmbeddings(model=embeddings_model)
+        
+## Document Splitter
+    def split_document(self,
+                       documents: Union[List[Document], Document] = None,
+                       chunk:int = 400,
+                       chunk_overlap = 10,
+                       seperator:str ='/n'
+                       ) -> List[Document]:
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk, chunk_overlap=chunk_overlap)
+        docs = text_splitter.split_documents(documents=documents)
+
+        return docs
+
+## Generation
+    def invoke(self, 
+               question: str =None):
+        
+        prompt_template = """Use the following pieces of context to answer the question at the end. 
+        If you do not know the answer, please think rationally and answer from your own knowledge base. 
+
+        {context}
+
+        Question: {question}
+        """
+        PROMPT = PromptTemplate(
+            template=prompt_template, input_variables=["context", "question"]
+        )
+        chain_type_kwargs = {"prompt": PROMPT}
+
+
+        # Create Retriever from ChromaDB
+        retriever = self.vector_store.as_retriever() 
+        chains = create_retrieval_chain(retriever=retriever,
+                                        combine_docs_chain=self._llm)
+
+        return chains.invoke(input=question)
 
 ## Performance Zone
 
 
 ## Evaluation
+
+if __name__ == '__main__':
+    import os
+
+    query = "Can you tell me about few shot"
+
+    file_path = os.getenv("PDFLOADER")
+
+    PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
+
+    test = RAGmodel()
+    test.setEmbeddings()
+
+    docs = test.load_PDF(file_path=file_path,
+                         metadata={"test":"test"})
+
+    test.retreieval(documents=docs,
+                    collection_name="test",
+                    collection_metadata={"test":"test"},
+                    persist_directory=PERSIST_DIRECTORY)
+
+    print(test.split_document(documents=docs))

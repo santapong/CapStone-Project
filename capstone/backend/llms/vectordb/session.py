@@ -43,11 +43,6 @@ class VectorDBConnect:
     def similar_with_score(self):
         pass
 
-    def from_document(self):
-        pass
-
-    def retreiver(self):
-        pass
     
 if __name__ == "__main__":
     session = VectorDBConnect()

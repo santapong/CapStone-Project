@@ -59,13 +59,13 @@ class LoaderManager:
                  chunk: int = 100,
                  chunk_overlap: int = 0
         ) -> Union[List[Document],Document]:
-        if file_path:
+        if not file_path:
             raise FileNotFoundError(f"Need file_path to run")
         
         # Read PDF page.
         pages = []
         self.loader = PyPDFLoader(file_path=file_path)
-        for page in self.load_file.lazy_load():
+        for page in self.loader.lazy_load():
             pages.append(page)
 
         # Split text to chunk
