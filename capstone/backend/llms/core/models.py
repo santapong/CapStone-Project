@@ -11,8 +11,6 @@ from langchain_ollama import OllamaLLM
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-from capstone.backend.llms.prompt_teamplate.prompt_template import *
-
 logging.getLogger(__name__)
 
 logging.warning(f"This {__name__} file will be change in future.")

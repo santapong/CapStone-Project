@@ -16,26 +16,17 @@ from langchain_core.language_models import BaseLLM
 from langchain_chroma.vectorstores import Chroma
 from langchain_ollama import OllamaEmbeddings, OllamaLLM
 
-from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
-from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-
+from langchain.chains.retrieval import create_retrieval_chain
 from langchain_community.document_loaders import (
     PyPDFLoader,
     TextLoader,
     WebBaseLoader
     )
 
+from capstone.backend.llms.prompt_template import prompt
 from capstone.backend.llms.vectordb.session import VectorDBConnect
-from capstone.backend.llms.prompt_teamplate.prompt_template import (
-    few_shot_prompt_template,
-    few_shot_input_variable,
-    test_prompt_template,
-    test_prompt_input_variable,
-    zero_shot_input_variable,
-    zero_shot_prompt_template)
-
 from capstone.backend.llms.utils.exception import RAGHandle
 # from capstone.backend.llms.loadder.LoaderManager import LoaderManager
 
@@ -58,12 +49,8 @@ logging.getLogger(__name__)
 
 # Define Class for Retrieval-Augmented Generation (RAG)
 ## Using Inheritance of LoadManger, ChatModel
-class RAGmodel(ABC):
-
-    def __init__(self):
-        pass
-
-
+class RAGmodel:
+ 
 ## Load PDF File 
     def load_PDF(self,
                  file_path:str = None,
@@ -112,14 +99,16 @@ class RAGmodel(ABC):
         cache: str=None,
         output_type: str='',
         **kwargs
-        ) -> BaseLLM:
+        ):
 
         self._llm = OllamaLLM(model=model,
-                              temperature=temparature,
-                              top_k=top_k,
-                              top_p=top_p,
-                              cache=cache,
-                              format=output_type)
+                            #   temperature=temparature,
+                            #   top_k=top_k,
+                            #   top_p=top_p,
+                            #   cache=cache,
+                            #   format=output_type
+                            )
+        return self
     
 
 ## Setting Vector Database
@@ -130,6 +119,7 @@ class RAGmodel(ABC):
         # Setting Embedding model
         logging.info(f"Using {embeddings_model} as embedding model.")
         self.__embeddings = OllamaEmbeddings(model=embeddings_model)
+        return self
         
 ## Document Splitter
     def split_document(self,
@@ -145,27 +135,20 @@ class RAGmodel(ABC):
 
 ## Generation
     def invoke(self, 
-               question: str =None):
-        
-        prompt_template = """Use the following pieces of context to answer the question at the end. 
-        If you do not know the answer, please think rationally and answer from your own knowledge base. 
-
-        {context}
-
-        Question: {question}
-        """
-        PROMPT = PromptTemplate(
-            template=prompt_template, input_variables=["context", "question"]
-        )
-        chain_type_kwargs = {"prompt": PROMPT}
-
-
+               question: str = None):
+               
         # Create Retriever from ChromaDB
         retriever = self.vector_store.as_retriever() 
-        chains = create_retrieval_chain(retriever=retriever,
-                                        combine_docs_chain=self._llm)
 
-        return chains.invoke(input=question)
+        combine_docs_chain = create_stuff_documents_chain(
+            llm=self._llm,
+            prompt=prompt
+        )
+
+        chains = create_retrieval_chain(retriever=retriever,
+                                        combine_docs_chain=combine_docs_chain)
+
+        return chains.invoke({"input":question})
 
 ## Performance Zone
 
@@ -182,6 +165,7 @@ if __name__ == '__main__':
     PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
 
     test = RAGmodel()
+    test.setModel()
     test.setEmbeddings()
 
     docs = test.load_PDF(file_path=file_path,
@@ -192,4 +176,7 @@ if __name__ == '__main__':
                     collection_metadata={"test":"test"},
                     persist_directory=PERSIST_DIRECTORY)
 
-    print(test.split_document(documents=docs))
+    anwser = test.invoke(question="show me your knowledge")['answer']
+
+    with open("anwser.txt", "a") as f:
+        f.write(anwser)
