@@ -1,23 +1,25 @@
+import io
 import logging
 
 from abc import ABC
 from pypdf import PdfReader
 from dotenv import load_dotenv
+from typing_extensions import Self
 from typing import (
     List, 
     Dict,
     Union,
+    Optional,
     )
-from typing_extensions import Self
 
 
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseLLM
 
 from langchain_chroma.vectorstores import Chroma
-from langchain_ollama import OllamaEmbeddings, OllamaLLM
 
 from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
+from langchain_ollama import OllamaEmbeddings, OllamaLLM
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_community.document_loaders import (
@@ -27,8 +29,8 @@ from langchain_community.document_loaders import (
     )
 
 from capstone.backend.llms.prompt_template import prompt
-from capstone.backend.llms.vectordb.session import VectorDBConnect
 from capstone.backend.llms.utils.exception import RAGHandle
+from capstone.backend.llms.vectordb.session import VectorDBConnect
 # from capstone.backend.llms.loadder.LoaderManager import LoaderManager
 
 load_dotenv()
@@ -50,12 +52,16 @@ logging.getLogger(__name__)
 ## Using Inheritance of LoadManger, ChatModel
 class RAGmodel:
 
+    """
+    RAG Class for LLM.
+
+    """
     def __init__(self):
         self.__llm = None
         self.__embeddings = None
+        self.__vector_store = None
 
- 
-## Load PDF File 
+## Load PDF file.
 ### TODO: Make it will save in vector database.
     def load_PDF(self,
                  file_path:str = None,
@@ -69,7 +75,31 @@ class RAGmodel:
             page.metadata.update(metadata)
             pages.append(page)
         
-        return pages
+        documents = self.__split_document(documents=pages)
+
+        return documents
+
+# TODO: Make it use Retrieval.
+## Load Text file.
+    def load_TEXT(self,
+                  file_path:Optional[str]
+                  )-> List[Document]:
+        
+        
+        # Load & Split file content from .txt
+        loader = TextLoader(file_path=file_path)
+        document = loader.lazy_load()
+        documents = self.__split_document(documents=document)
+        return documents
+    
+## Load Website content.
+## NOTE Beware the law.
+    def load_Webbase(self):
+
+        documents = WebBaseLoader()
+
+        return documents
+        
     
 # TODO: Make it is internal method
 ## Stored VectorDB & Retrieval.
@@ -167,11 +197,13 @@ if __name__ == '__main__':
 
     query = "Can you tell me about few shot"
 
-    file_path = os.getenv("PDFLOADER")
+    file_path = os.getenv("TEXTLOADER")
 
     PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
 
     test = RAGmodel().setEmbeddings().setModel()
+
+    print(test.load_TEXT(file_path=file_path))
 
     # docs = test.load_PDF(file_path=file_path,
     #                      metadata={"test":"test"})
