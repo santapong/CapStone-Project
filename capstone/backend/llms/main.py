@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 from typing import (
     List, 
     Dict,
-    Union
+    Union,
     )
+from typing_extensions import Self
 
 
 from langchain_core.documents import Document
@@ -45,13 +46,17 @@ logging.getLogger(__name__)
 
 # Design RAG system before do this one.
 
-# TODO: Make more function.
-
 # Define Class for Retrieval-Augmented Generation (RAG)
 ## Using Inheritance of LoadManger, ChatModel
 class RAGmodel:
+
+    def __init__(self):
+        self.__llm = None
+        self.__embeddings = None
+
  
 ## Load PDF File 
+### TODO: Make it will save in vector database.
     def load_PDF(self,
                  file_path:str = None,
                  metadata:Dict = None
@@ -66,9 +71,9 @@ class RAGmodel:
         
         return pages
     
-
+# TODO: Make it is internal method
 ## Stored VectorDB & Retrieval.
-    def retreieval(self,
+    def __retreieval(self,
                    documents:Union[List[Document], Document] = None,
                    collection_name:str = None,
                    collection_metadata:Dict =None,
@@ -99,7 +104,7 @@ class RAGmodel:
         cache: str=None,
         output_type: str='',
         **kwargs
-        ):
+        ) -> Self :
 
         self._llm = OllamaLLM(model=model,
                             #   temperature=temparature,
@@ -114,15 +119,17 @@ class RAGmodel:
 ## Setting Vector Database
     def setEmbeddings(self, 
                     embeddings_model:str = 'bge-m3',
-                    ):
-        
+                    ) -> Self:
+        print("Test embedding")
+
         # Setting Embedding model
         logging.info(f"Using {embeddings_model} as embedding model.")
         self.__embeddings = OllamaEmbeddings(model=embeddings_model)
         return self
-        
+
+#TODO: Make it as a Internal Method
 ## Document Splitter
-    def split_document(self,
+    def __split_document(self,
                        documents: Union[List[Document], Document] = None,
                        chunk:int = 400,
                        chunk_overlap = 10,
@@ -164,19 +171,19 @@ if __name__ == '__main__':
 
     PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
 
-    test = RAGmodel()
-    test.setModel()
-    test.setEmbeddings()
+    test = RAGmodel().setEmbeddings().setModel()
 
-    docs = test.load_PDF(file_path=file_path,
-                         metadata={"test":"test"})
+    # docs = test.load_PDF(file_path=file_path,
+    #                      metadata={"test":"test"})
+    
+    
 
-    test.retreieval(documents=docs,
-                    collection_name="test",
-                    collection_metadata={"test":"test"},
-                    persist_directory=PERSIST_DIRECTORY)
+    # test.retreieval(documents=docs,
+    #                 collection_name="test",
+    #                 collection_metadata={"test":"test"},
+    #                 persist_directory=PERSIST_DIRECTORY)
 
-    anwser = test.invoke(question="show me your knowledge")['answer']
+    # anwser = test.invoke(question="show me your knowledge")['answer']
 
-    with open("anwser.txt", "a") as f:
-        f.write(anwser)
+    # with open("anwser.txt", "a") as f:
+    #     f.write(anwser)
