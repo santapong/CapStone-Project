@@ -1,4 +1,5 @@
 import io
+import time
 import logging
 
 from abc import ABC
@@ -77,7 +78,7 @@ class RAGmodel:
         
         documents = self.__split_document(documents=pages)
 
-        return documents
+        return pages
 
 # TODO: Make it use Retrieval.
 ## Load Text file.
@@ -103,7 +104,7 @@ class RAGmodel:
     
 # TODO: Make it is internal method
 ## Stored VectorDB & Retrieval.
-    def __retreieval(self,
+    def retreieval(self,
                    documents:Union[List[Document], Document] = None,
                    collection_name:str = None,
                    collection_metadata:Dict =None,
@@ -150,7 +151,6 @@ class RAGmodel:
     def setEmbeddings(self, 
                     embeddings_model:str = 'bge-m3',
                     ) -> Self:
-        print("Test embedding")
 
         # Setting Embedding model
         logging.info(f"Using {embeddings_model} as embedding model.")
@@ -197,25 +197,25 @@ if __name__ == '__main__':
 
     query = "Can you tell me about few shot"
 
-    file_path = os.getenv("TEXTLOADER")
+    file_path = os.getenv("PDFLOADER")
 
     PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
 
     test = RAGmodel().setEmbeddings().setModel()
 
-    print(test.load_TEXT(file_path=file_path))
-
-    # docs = test.load_PDF(file_path=file_path,
-    #                      metadata={"test":"test"})
+    docs = test.load_PDF(file_path=file_path,
+                         metadata={"test":"test"})
     
     
 
-    # test.retreieval(documents=docs,
-    #                 collection_name="test",
-    #                 collection_metadata={"test":"test"},
-    #                 persist_directory=PERSIST_DIRECTORY)
+    test.retreieval(documents=docs,
+                    collection_name="test",
+                    collection_metadata={"test":"test"},
+                    persist_directory=PERSIST_DIRECTORY)
+    
+    start_time = time.time()
+    answer = test.invoke(question="")
+    time_usage = time.time() - start_time
 
-    # anwser = test.invoke(question="show me your knowledge")['answer']
-
-    # with open("anwser.txt", "a") as f:
-    #     f.write(anwser)
+    with open("answer.txt", "a") as f: 
+        f.write(answer['answer'])
