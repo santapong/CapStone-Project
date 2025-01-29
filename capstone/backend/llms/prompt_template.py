@@ -13,8 +13,6 @@ RAG_prompt_template = """
                 retrieved context to answer the question. If you don't know the answer, just say 
                 that you don't know. Use three sentences maximum and keep the answer concise.
 
-
-                
                 Context: {context} 
                 Answer:
                 """

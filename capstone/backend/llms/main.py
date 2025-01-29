@@ -93,6 +93,20 @@ class RAGmodel:
         documents = self.__split_document(documents=document)
         return documents
     
+# Load PDF From APi
+    def api_load_PDF(self,
+                     contents: str = None
+                     )->List:
+    
+        # Reader from io.bytes
+        reader = PdfReader(contents)
+        text = ""
+        
+        for page in reader.page:
+            text += page.extract_text()
+
+        pass
+
 ## Load Website content.
 ## NOTE Beware the law.
     def load_Webbase(self):
@@ -120,10 +134,6 @@ class RAGmodel:
 
 ## Post Retreieval
     def __post_retreieval(self):
-        pass
-
-## Re-rank Process
-    def __rerank(self):
         pass
 
 ## Set LLM model.
@@ -205,8 +215,7 @@ if __name__ == '__main__':
 
     docs = test.load_PDF(file_path=file_path,
                          metadata={"test":"test"})
-    
-    
+
 
     test.retreieval(documents=docs,
                     collection_name="test",
