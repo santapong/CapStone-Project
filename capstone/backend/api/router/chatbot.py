@@ -2,7 +2,7 @@ import time
 import logging
 from fastapi import APIRouter
 
-from capstone.backend.llms.main import ChatModel
+# from capstone.backend.llms.main import ChatModel
 
 from capstone.backend.api.database import (
     DBConnection,
