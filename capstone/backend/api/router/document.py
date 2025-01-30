@@ -34,7 +34,7 @@ async def uploadFile(file: UploadFile = File(...)):
     for page in reader.pages:
         text += page.extract_text()
 
-    return {"filename": file.filename, "content": text}
+    return JSONResponse(content={"filename": file.filename, "content": text})
 
 
 # TODO: Make Can upload multiple document beware error.
