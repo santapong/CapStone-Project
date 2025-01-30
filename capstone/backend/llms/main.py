@@ -13,7 +13,6 @@ from typing import (
     Optional,
     )
 
-
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseLLM
 
@@ -57,6 +56,9 @@ class RAGmodel:
     RAG Class for LLM.
 
     """
+    
+    # Set Default value in ENV
+    # TODO: Make read default value from ENV
     def __init__(self):
         self.__llm = None
         self.__embeddings = None
@@ -82,31 +84,19 @@ class RAGmodel:
 
 # TODO: Make it use Retrieval.
 ## Load Text file.
-    def load_TEXT(self,
-                  file_path:Optional[str]
+    def load_from_API(self,
+                  contents:Union[Dict[str,str],str]
                   )-> List[Document]:
         
+        # Split API contents.
+        splitter = CharacterTextSplitter(chunk_size = 400,
+                                         chunk_overlap = 125
+                                         )
+        texts =  splitter.split_text(contents)
+        documents = splitter.create_documents(texts)
         
-        # Load & Split file content from .txt
-        loader = TextLoader(file_path=file_path)
-        document = loader.lazy_load()
-        documents = self.__split_document(documents=document)
         return documents
     
-# Load PDF From APi
-    def api_load_PDF(self,
-                     contents: str = None
-                     )->List:
-    
-        # Reader from io.bytes
-        reader = PdfReader(contents)
-        text = ""
-        
-        for page in reader.page:
-            text += page.extract_text()
-
-        pass
-
 ## Load Website content.
 ## NOTE Beware the law.
     def load_Webbase(self):
