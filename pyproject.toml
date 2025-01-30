@@ -32,6 +32,11 @@ dev = [
 diagram = [
     "diagrams>=0.24.1",
 ]
+text-analysis = [
+    "langdetect>=1.0.9",
+    "pythainlp>=5.0.5",
+    "scikit-learn>=1.6.1",
+]
 
 [tool.uv]
 default-groups = []
