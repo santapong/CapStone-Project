@@ -49,7 +49,8 @@ wget -qO- https://astral.sh/uv/install.sh | sh
 pip install uv 
 ```
 
-2. debug uv
+2. debug uv asdf
+
 ```
 uv --version
 # uv x.x.x >> example [ uv 5.3.0 ]
