@@ -1,8 +1,8 @@
 import time
 import logging
-from fastapi import APIRouter
 
-# from capstone.backend.llms.main import ChatModel
+from fastapi import APIRouter
+from capstone.backend.llms.main import RAGmodel
 
 from capstone.backend.api.database import (
     DBConnection,
@@ -16,6 +16,8 @@ DBConnect = DBConnection(
         create_database=DATABASE_CREATE,
         base_model=DATABASE_MODEL)
 
+RAG = RAGmodel().setModel().setEmbeddings().setVectorDB()
+
 tags = ["Chatbot"]
 router_chatbot = APIRouter(prefix='/chatbot')
 
@@ -24,8 +26,7 @@ router_chatbot = APIRouter(prefix='/chatbot')
 @router_chatbot.get("/infer", tags=tags)
 async def inferenceModel(question):
     start_time = time.time()
-    chatbot = ChatModel()
-    answer = chatbot.query(question=question)
+    answer = RAG.invoke(question=question)
     time_usage = time.time()-start_time
     logging.info(time_usage)
     return {
@@ -33,16 +34,3 @@ async def inferenceModel(question):
         "question": question,
         "answer": answer
         }
-
-# TODO: Make it can connect to database.
-@router_chatbot.get("/infer/{model}", tags=tags)
-async def inferenceModelSpecific():
-    pass
-
-# NOTE: Using for check Model on database.
-@router_chatbot.get("/available", tags=tags)
-async def availableModel():
-    pass
-
-
-# NOTE: It will have more database.

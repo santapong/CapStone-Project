@@ -76,19 +76,18 @@ class DBConnection:
     def query(self,
             Table
         ) -> List:
-        return self.session.query(Table).all()
+        return self.session.query(Table).all() # SELECT * From Table
     
     # Get data of Table of this database by condition.
     def query_condition(self,
                         Table,
                         **kwargs
         ) -> List:
-        return self.session.query(Table).filter_by(kwargs=kwargs).all()
+        return self.session.query(Table).filter_by(kwargs=kwargs).all() # SELECT * From Table where x = 1
     
     # CRUD Consept
     def update(self):
         pass
-
 
 if __name__ == '__main__':
     test = DBConnection(create_database=True, base_model=DATABASE_MODEL)

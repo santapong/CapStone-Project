@@ -23,6 +23,7 @@ dependencies = [
     "streamlit>=1.41.1",
     "altair>=5.5.0",
     "rank-bm25>=0.2.2",
+    "dash>=2.18.2",
 ]
 
 [dependency-groups]
