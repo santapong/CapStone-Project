@@ -1,20 +1,19 @@
 import io
-
 from typing import List
 from pypdf import PdfReader
 
-
 from fastapi.responses import JSONResponse
 from fastapi import (
-    APIRouter, 
+    File,
+    APIRouter,
     UploadFile, 
-    File
+    BackgroundTasks
     )
 
 from capstone.backend.llms import RAGmodel
 
 # Setting RAG model
-llms = RAGmodel().setEmbeddings().setModel()
+RAG = RAGmodel().setEmbeddings().setModel().setVectorDB()
 
 tags = ["Document"]
 router_document = APIRouter(prefix='/document')
@@ -25,16 +24,29 @@ router_document = APIRouter(prefix='/document')
 async def uploadFile(file: UploadFile = File(...)):
 
     # Read PDF Files.
-    contents = await file.read()
-    pdf_file = io.BytesIO(contents)
+    content = await file.read()
+    pdf_file = io.BytesIO(content)
     reader = PdfReader(pdf_file)
-    text = ""
+    
+    contents = ""
+    metadatas = []
 
-    # Extract text from each page
+    # Extract contents from each page
     for page in reader.pages:
-        text += page.extract_text()
+        contents += page.extract_text()
+        metadatas.append({"source":file.filename,
+                          "Page":page.page_number,
+                        })
 
-    return JSONResponse(content={"filename": file.filename, "content": text})
+    # Upload PDF to Vector Database
+    documents = await RAG.aload_from_API(
+        contents=contents,
+        metadatas=metadatas
+        )
+
+    return JSONResponse(content={"filename": file.filename, 
+                                 "example content": documents[0].page_content ,
+                                 "Metadata":metadatas})
 
 
 # TODO: Make Can upload multiple document beware error.

@@ -31,9 +31,7 @@ prefix = os.getenv("PATH_PREFIX", default='/')
 app = FastAPI(prefix=prefix)
 
 # Add router for API.
-app.include_router(router_dynamic)
 app.include_router(router_chatbot)
-app.include_router(router_dashboard)
 app.include_router(router_document)
 
 if __name__ == '__main__':
