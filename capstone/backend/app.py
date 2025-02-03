@@ -4,6 +4,7 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.responses import UJSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from capstone.backend.api.router.dynamic import router_dynamic
@@ -29,6 +30,15 @@ DBConnect = DBConnection(
 # Set API Prefix and API application.
 prefix = os.getenv("PATH_PREFIX", default='/')
 app = FastAPI(prefix=prefix)
+
+# Allow frontend to access API.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Add router for API.
 app.include_router(router_chatbot)
