@@ -1,5 +1,6 @@
 import io
 import os
+import json
 import time
 import logging
 
@@ -232,17 +233,20 @@ class RAGmodel:
 ## Evaluation
 
 if __name__ == '__main__':
-    import os
 
-    query = "Can you tell me about few shot"
+    # Load JSON file
+    with open("./evaluation/test_knowledge.json", "r") as f:
+        json_data = json.load(f)
 
-    file_path = os.getenv("PDFLOADER")
+    print(json_data[0]["prompt"])
 
-    PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
+    # query = "Can you tell me about few shot"
 
-    test = RAGmodel().setEmbeddings().setModel().setVectorDB()
+    # file_path = os.getenv("PDFLOADER")
 
+    # PERSIST_DIRECTORY ='capstone/backend/database/vector_database'
 
+    # test = RAGmodel().setEmbeddings().setModel().setVectorDB()
 
     # docs = test.load_PDF(file_path=file_path,
     #                      metadata={"test":"test"})

@@ -5,6 +5,7 @@ from langchain_core.prompts import (
     ChatPromptTemplate
     )
 
+# TODO: Make it must more good answer.
 # rlm/rag-prompt
 # see https://smith.langchain.com/hub/rlm/rag-prompt?organizationId=2ee7223e-2f84-4a9b-924e-232565e6e92c
 RAG_prompt_template = """
