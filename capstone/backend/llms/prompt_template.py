@@ -5,13 +5,17 @@ from langchain_core.prompts import (
     ChatPromptTemplate
     )
 
+
+
+# TODO: Make it must more good answer.
 # rlm/rag-prompt
 # see https://smith.langchain.com/hub/rlm/rag-prompt?organizationId=2ee7223e-2f84-4a9b-924e-232565e6e92c
 RAG_prompt_template = """
 
                 You are an assistant for question-answering tasks. Use the following pieces of 
                 retrieved context to answer the question. If you don't know the answer, just say 
-                that you don't know. Use three sentences maximum and keep the answer concise.
+                that you don't know. Use three sentences maximum and keep the answer concise.    
+
 
                 Context: {context} 
                 Answer:
