@@ -24,11 +24,11 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const response = await axios.post("https://your-api-endpoint.com/chat", {
-        message: text,
+      const response = await axios.post("https://localhost:8000/chatbot/infer", {
+        question: text,
       });
 
-      const botReply = response.data.reply || "ขออภัย ฉันไม่เข้าใจคำถามของคุณ";
+      const botReply = response.data.answer || "ขออภัย ฉันไม่เข้าใจคำถามของคุณ";
       setMessages((prev) => [...prev, { text: botReply, type: "bot" }]);
     } catch (error) {
       setMessages((prev) => [
