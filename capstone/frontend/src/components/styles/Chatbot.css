@@ -1,0 +1,129 @@
+/* -------------------- กล่องแชท -------------------- */
+#chatModal {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 450px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+  /* ส่วนหัวของ Chatbot */
+  #chatModal-header {
+    background-color: #f1582b;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #chatModal-header h4 {
+    margin: 0;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* ส่วนเนื้อหาแชท */
+  #chatModal-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* ข้อความของผู้ใช้ */
+  .user-message {
+    align-self: flex-end;
+    background-color: #ffe4b3;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    max-width: 70%;
+    text-align: right;
+  }
+  
+  /* ข้อความของบอท */
+  .bot-message {
+    align-self: flex-start;
+    background-color: #f2f2f2;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    max-width: 70%;
+  }
+  
+  /* แสดงสถานะกำลังพิมพ์ */
+  .bot-message.loading {
+    font-style: italic;
+    opacity: 0.7;
+  }
+  
+  
+  /* ปุ่มตัวเลือก (Prompt) */
+  .prompt-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+  }
+  
+  .prompt-buttons button {
+    background-color: #f1582b;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 0.8rem;
+  }
+  
+  .prompt-buttons button:hover {
+    background-color: #ff8147;
+  }
+  
+  /* ส่วนท้ายของ Chatbot */
+  #chatModal-footer {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    gap: 5px;
+  }
+  
+  #chatModal-footer input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  #chatModal-footer button {
+    background-color: #f1582b;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #chatModal-footer button:hover {
+    background-color: #ff8147;
+  }
+  
