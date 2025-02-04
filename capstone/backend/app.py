@@ -7,7 +7,6 @@ from fastapi.responses import UJSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from capstone.backend.api.router.dynamic import router_dynamic
 from capstone.backend.api.router.chatbot import router_chatbot
 from capstone.backend.api.router.document import router_document
 from capstone.backend.api.router.dashboard import router_dashboard
