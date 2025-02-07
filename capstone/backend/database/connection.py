@@ -44,7 +44,6 @@ DATABASE_URL = os.getenv('DATABASE_URL' ,default = SQLLITE_URL)
 # Database config
 DATABASE_CREATE = os.getenv('DATABASE_CREATE', default=False)
 
-# TODO: Make CRUD for this History database.
 class DBConnection:
     def __init__(
         self,
