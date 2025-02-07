@@ -5,23 +5,27 @@ from pypdf import PdfReader
 from fastapi.responses import JSONResponse
 from fastapi import (
     File,
+    Depends,
     APIRouter,
-    UploadFile, 
+    UploadFile,
     BackgroundTasks
     )
 
 from capstone.backend.llms import RAGmodel
+from capstone.backend.utils.database import (
+    get_db, 
+    DBConnection
+    )
 
 # Setting RAG model
-RAG = RAGmodel().setEmbeddings().setModel().setVectorDB()
+# RAG = RAGmodel().setEmbeddings().setModel().setVectorDB()
 
 tags = ["Document"]
 router_document = APIRouter(prefix='/document')
 
-
 # Uploadfile PDF from API.
 @router_document.post("/uploadfile", tags=tags)
-async def uploadFile(file: UploadFile = File(...)):
+async def uploadFile(file: UploadFile = File(...), db: DBConnection = Depends(get_db)):
 
     # Read PDF Files.
     content = await file.read()
