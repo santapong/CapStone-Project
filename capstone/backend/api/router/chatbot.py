@@ -11,8 +11,7 @@ from capstone.backend.api.schema.model_api import (
     ChatModel,
     ResponseModel
 )
-from capstone.backend.utils.database import DBConnection, get_db
-from capstone.backend.api.schema.model_database import Users
+from capstone.backend.database.connection import DBConnection, get_db
 
 load_dotenv()
 logging.getLogger(__name__)
@@ -34,8 +33,3 @@ async def inferenceModel(request: ChatModel, db: DBConnection = Depends(get_db))
         "question": request.question,
         "answer": answer['answer']
         })
-
-if __name__ == "__main__":
-    test = next(get_db())
-    test.insert(Users, fullname="test")
-    

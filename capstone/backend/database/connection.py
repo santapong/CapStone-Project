@@ -9,7 +9,7 @@ from sqlalchemy.orm import (
     sessionmaker, 
     declarative_base,
     )
-from capstone.backend.api.schema.model_database import DATABASE_MODEL
+from capstone.backend.database.model_database import DATABASE_MODEL
 
 load_dotenv()
 
@@ -32,7 +32,7 @@ logging.getLogger(__name__)
 
 # Default Database
 SQLLITE_PATH = os.getenv("PYTHONPATH")
-SQLLITE_URL = f'sqlite:///{SQLLITE_PATH}/capstone/backend/database/history_database/sqlalchemy_example.db'
+SQLLITE_URL = f'sqlite:///{SQLLITE_PATH}/database/history_database/sqlalchemy_example.db'
 
 # Database login info
 DATABASE_USERNAME = os.getenv('DATABASE_USERNAME' ,default = None)

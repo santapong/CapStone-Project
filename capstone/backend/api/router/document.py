@@ -12,7 +12,7 @@ from fastapi import (
     )
 
 from capstone.backend.llms import RAGmodel
-from capstone.backend.utils.database import (
+from capstone.backend.database.connection import (
     get_db, 
     DBConnection
     )
