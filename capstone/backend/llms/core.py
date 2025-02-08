@@ -42,7 +42,7 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME",default="langchain")
 # Using For Local
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
-# TODO: Reseacrh how to make it easy calls.
+# TODO: Learn About Websearch
 # I need it will chain calling
 class RAGModel:
     def __init__(self):
@@ -141,9 +141,5 @@ class RAGModel:
             retriever=self.retriever,
             combine_docs_chain=combine_docs_chain
             )
-        
+        print(question)
         return retrieval_chains.invoke({"input": question})
-
-if __name__ == "__main__":
-    test = RAGBase().pre_retrieval(question="What is the capital of France?")
-    print(test)

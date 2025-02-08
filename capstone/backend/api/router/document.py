@@ -18,7 +18,7 @@ from capstone.backend.database.connection import (
     )
 
 # Setting RAG model
-# RAG = RAGmodel().setEmbeddings().setModel().setVectorDB()
+RAG = RAGModel()
 
 tags = ["Document"]
 router_document = APIRouter(prefix='/document')
