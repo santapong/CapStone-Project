@@ -44,7 +44,7 @@ PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
 # TODO: Reseacrh how to make it easy calls.
 # I need it will chain calling
-class RAGBase:
+class RAGModel:
     def __init__(self):
         self.__llm = OllamaLLM(model=LLM_MODEL)
         self.__vector_store = self.__chroma_connect()
@@ -115,6 +115,7 @@ class RAGBase:
 
         return documents
 
+    # Load Multiple Documents and Sematics Chunk.
     def sematic_load():
         pass
 
