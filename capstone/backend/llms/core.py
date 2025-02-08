@@ -50,7 +50,7 @@ class RAGModel:
         self.__vector_store = self.__chroma_connect()
 
     # Pre Retrieval Process.
-    def pre_retrieval(
+    def __pre_retrieval(
             self, 
             question
             ):

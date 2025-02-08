@@ -2,7 +2,8 @@ import uuid
 import logging
 from sqlalchemy import (
     func,
-    UUID, 
+    UUID,
+    Float,
     Column, 
     String, 
     Integer, 
@@ -25,12 +26,24 @@ class ChatHistoryTable(DATABASE_MODEL):
     answer = Column(String)
     datetime = Column(String, default=func.now())
 
+# Summary Table
 class SummaryTable(DATABASE_MODEL):
     __tablename__ = 'summary'
 
-    id = Column(Integer, primary_key=True, increment=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     question = Column(String)
     question_freq = Column(Integer)
 
     # Relationship with ChartHistory
-    chathistory = relationship('ChatHistory', backref='summary')
+    # chathistory = relationship('ChatHistoryTable')
+
+# Logs Table
+class LogsTable(DATABASE_MODEL):
+    __tablename__ = 'logs'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    prompt  = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    time_usage = Column(Float)
+    datetime = Column(String, default=func.now())

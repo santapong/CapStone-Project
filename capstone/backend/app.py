@@ -40,9 +40,9 @@ def docs():
     return RedirectResponse(url='/docs')
 
 # Add router for API.
-# app.include_router(router_chatbot)
-# app.include_router(router_document)
-app.include_router(router_dashboard)
+app.include_router(router_chatbot)
+app.include_router(router_document)
+# app.include_router(router_dashboard)
 
 if __name__ == '__main__':
     uvicorn.run('app:app', reload=True)

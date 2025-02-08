@@ -11,7 +11,7 @@ from fastapi import (
     BackgroundTasks
     )
 
-from capstone.backend.llms import RAGmodel
+from capstone.backend.llms import RAGModel
 from capstone.backend.database.connection import (
     get_db, 
     DBConnection
