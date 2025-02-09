@@ -134,7 +134,7 @@ const data = [
   },
 ];
 
-const Example = ({width, height}) => {
+const Treemapchart = ({width, height, data}) => {
   return (
       <div>
       <h2>Treemap</h2>
@@ -143,4 +143,4 @@ const Example = ({width, height}) => {
   );
 };
 
-export default Example;
+export default Treemapchart;

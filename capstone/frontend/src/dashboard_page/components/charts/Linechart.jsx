@@ -46,7 +46,7 @@ const data = [
     },
   ];
 
-const Linechart = ({width, height}) => {
+const Linechart = ({width, height, data}) => {
     return(
         <LineChart
           width={width}
