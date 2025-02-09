@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.nav_bar {
+    @apply bg-black text-justify
+}
+
+.dashboard-button {
+    @apply box-border size-3.5 text-3xl text-blue-50
+}
+
+.home {
+    @apply text-2xl
+}
