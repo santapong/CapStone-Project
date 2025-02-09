@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios"; // เรียกใช้ Axios
-import "../components/styles/Chatbot.css";
+import "./styles/Chatbot.css";
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
