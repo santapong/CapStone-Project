@@ -47,3 +47,12 @@ class LogsTable(DATABASE_MODEL):
     answer = Column(String)
     time_usage = Column(Float)
     datetime = Column(String, default=func.now())
+
+# Document Table
+class DocumentTable(DATABASE_MODEL):
+    __tablename__ = "documents"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    document_name = Column(String)
+    pages = Column(Integer)
+    datetime = Column(String, default=func.now())
