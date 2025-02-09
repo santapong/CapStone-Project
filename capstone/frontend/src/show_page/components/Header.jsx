@@ -1,8 +1,8 @@
-import "../components/styles/Header.css";
+import "./styles/globals.css";
 
 export default function Header() {
   return (
-    <header>
+    <header className="Navbar">
       <div className="logo">
         <img src="https://via.placeholder.com/50" alt="Logo" />
         <h1>สำนักทะเบียนและบริการการศึกษา</h1>

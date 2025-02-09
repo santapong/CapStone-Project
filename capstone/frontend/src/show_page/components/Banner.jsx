@@ -1,4 +1,4 @@
-import "../components/styles/Banner.css";
+import "./styles/globals.css";
 
 export default function Banner() {
   return (

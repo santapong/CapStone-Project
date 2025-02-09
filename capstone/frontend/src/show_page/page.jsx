@@ -3,7 +3,7 @@ import Banner from "./components/Banner";
 import Events from "./components/Events";
 import Footer from "./components/Footer";
 import Chatbot from "./components/Chatbot";
-import "./index.css";
+import "../index.css";
 
 export default function App() {
   return (
