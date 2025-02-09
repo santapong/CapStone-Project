@@ -46,11 +46,11 @@ const data = [
     },
   ];
 
-const Linechart = () => {
+const Linechart = ({width, height}) => {
     return(
         <LineChart
-          width={500}
-          height={300}
+          width={width}
+          height={height}
           data={data}
           margin={{
             top: 5,

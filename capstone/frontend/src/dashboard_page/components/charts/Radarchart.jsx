@@ -30,11 +30,11 @@ const data = [
   },
 ];
 
-const Radarchart = () => {
+const Radarchart = ({width, height}) => {
   return (
     <div>
       <h2>Radar Chart Example</h2>
-      <RadarChart outerRadius={90} width={400} height={400} data={data}>
+      <RadarChart outerRadius={90} width={width} height={height} data={data}>
         <PolarGrid />
         <PolarAngleAxis dataKey="subject" />
         <PolarRadiusAxis angle={30} domain={[0, 150]} />

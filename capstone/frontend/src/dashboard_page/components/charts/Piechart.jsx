@@ -11,16 +11,16 @@ const data = [
 // Define custom colors for each slice
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-const Piechart = () => {
+const Piechart = ({width, height}) => {
   return (
     <div>
       <h2>Pie Chart</h2>
-      <PieChart width={400} height={400}>
+      <PieChart width={width} height={height}>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
-          outerRadius={120}
+          outerRadius={40}
           fill="#8884d8"
           dataKey="value"
           label

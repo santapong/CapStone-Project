@@ -8,11 +8,11 @@ const data = [
   { name: "D", value: 200 },
 ];
 
-const Barchart = () => {
+const Barchart = ({width, height}) => {
   return (
     <div>
       <h2>Bar Chart</h2>
-      <BarChart width={400} height={400} data={data}>
+      <BarChart width={width} height={height} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />

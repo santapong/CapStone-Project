@@ -134,11 +134,11 @@ const data = [
   },
 ];
 
-const Example = () => {
+const Example = ({width, height}) => {
   return (
       <div>
       <h2>Treemap</h2>
-      <Treemap width={400} height={200} data={data} dataKey="size" aspectRatio={4 / 3} stroke="#fff" fill="#8884d8" />
+      <Treemap width={width} height={height} data={data} dataKey="size" aspectRatio={4 / 3} stroke="#fff" fill="#8884d8" />
       </div>
   );
 };

@@ -11,3 +11,7 @@
 .home {
     @apply text-2xl
 }
+
+.chart_container {
+    @apply flex space-x-4 flex-wrap
+}
