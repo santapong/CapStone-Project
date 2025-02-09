@@ -12,6 +12,7 @@ from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
+from langchain_core.runnables import RunnableLambda
 from langchain_text_splitters import (
     TextSplitter, 
     RecursiveCharacterTextSplitter
@@ -22,31 +23,26 @@ from langchain_ollama import (
     OllamaLLM
     )
 
-from capstone.backend.llms.prompt_template import prompt
+from capstone.backend.llms.prompt_template import (
+    rag_prompt,
+    pre_retrieval
+    )
 
 # Get from ENV
 LLM_MODEL = os.getenv("LLM_MODEL",default= "llama3.2")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL",default='bge-m3')
 COLLECTION_NAME = os.getenv("COLLECTION_NAME",default="langchain")
-
-# For Chromadb server settings ( Using postgresql )
-# client_settings = {
-#     "chroma_server": "http://localhost:8000",  # Chroma server URL
-#     "database": os.getenv("DATABASE_TYPE",default="postgresql"), 
-#     "postgres_host": os.getenv("DATABASE_HOST", default="localhost"), 
-#     "postgres_port": os.getenv("DATABASE_PORT",default="5432"), 
-#     "postgres_user": os.getenv("DATABASE_USERNAME",default="postgres"),  
-#     "postgres_password": os.getenv("DATABASE_PASSWORD",default="postgres"),  
-#     "postgres_db": os.getenv("DATABASE_NAME",default="chromadb")  
-# }
-# Using For Local
+# Persist Directory
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
 # TODO: Learn About Websearch
 # I need it will chain calling
 class RAGModel:
     def __init__(self):
-        self.__llm = OllamaLLM(model=LLM_MODEL)
+        self.__llm = OllamaLLM(
+            model=LLM_MODEL,
+            temperature=0.5
+            )
         self.__vector_store = self.__chroma_connect()
 
     # Pre Retrieval Process.
@@ -57,16 +53,8 @@ class RAGModel:
         
         # TODO: Fix this shit
         # Rewritten Query Prompt
-        query_rewrite_prompt = f"""You are a helpful assistant that takes a
-        user's query and turns it into a short statement or paragraph so that
-        it can be used in a semantic similarity search on a vector database to
-        return the most similar chunks of content based on the rewritten query.
-        Please make no comments, just return the rewritten query.
-        \n\nquery: {question}\n\nai: """
-
-        answer = self.__llm.invoke(query_rewrite_prompt)
-
-        return answer
+        prompt = pre_retrieval(question=question)
+        return self.__llm.invoke(prompt)
 
     def __chroma_connect(self):
         return Chroma( 
@@ -124,15 +112,16 @@ class RAGModel:
             question:str,
             expand:bool = False,
             ):
-        if not expand:
-            question = self.__pre_retrieval(question)
 
         # Call Retriever
-        self.retriever = self.__vector_store.as_retriever()
+        self.retriever = self.__vector_store.as_retriever(
+            search_type="mmr",
+            search_kwargs={'k': 6, 'lambda_mult': 0.5}
+            )
 
         # Create Chains
         combine_docs_chain = create_stuff_documents_chain(
-            prompt=prompt,
+            prompt=rag_prompt(),
             llm=self.__llm
         )
 
@@ -141,5 +130,9 @@ class RAGModel:
             retriever=self.retriever,
             combine_docs_chain=combine_docs_chain
             )
-        print(question)
-        return retrieval_chains.invoke({"input": question})
+
+        return retrieval_chains.invoke({"question": question,"input":""})
+    
+if __name__ == '__main__':
+    test = RAGModel()
+    print(test.invoke("What is Automation")) 

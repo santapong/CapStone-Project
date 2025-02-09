@@ -25,6 +25,7 @@ dependencies = [
     "transformers[torch]>=4.46.3",
     "langchain-experimental>=0.3.4",
     "langchain-postgres>=0.0.13",
+    "ujson>=5.10.0",
 ]
 
 [dependency-groups]
