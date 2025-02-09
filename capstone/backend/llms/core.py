@@ -1,20 +1,19 @@
 import os
 import logging
 
+from typing_extensions import Self
 from typing import (
     List, 
     Union, 
     Dict,
     )
-from typing_extensions import Self
-from langchain_postgres import PGVector
+
 from langchain_chroma import Chroma
+from langchain_postgres import PGVector
 from langchain_core.documents import Document
-from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain_core.runnables import RunnableLambda
+from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_text_splitters import (
-    TextSplitter, 
     RecursiveCharacterTextSplitter
     )
 from langchain_experimental.text_splitter import SemanticChunker
@@ -36,14 +35,17 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME",default="langchain")
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
 # TODO: Learn About Websearch
-# I need it will chain calling
+# RAG Class model.
 class RAGModel:
-    def __init__(self):
+    def __init__(
+            self,
+            temperature: float = 0.5
+            ):
+        self.__vector_store = self.__chroma_connect()
         self.__llm = OllamaLLM(
             model=LLM_MODEL,
-            temperature=0.5
+            temperature=temperature,
             )
-        self.__vector_store = self.__chroma_connect()
 
     # Pre Retrieval Process.
     def __pre_retrieval(
@@ -107,10 +109,10 @@ class RAGModel:
     def sematic_load():
         pass
 
+    # Query to LLMs.
     def invoke(
             self, 
             question:str,
-            expand:bool = False,
             ):
 
         # Call Retriever

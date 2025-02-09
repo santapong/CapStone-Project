@@ -129,7 +129,7 @@ class DBConnection:
             self,
             table,
             **kwargs
-               ):
+               )-> None:
         try:
             self.session.query(table).filter_by(**kwargs).delete()
             self.session.commit()

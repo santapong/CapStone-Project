@@ -10,7 +10,10 @@ from capstone.backend.api.models import (
     ChatModel,
     ResponseModel,
 )
-from capstone.backend.database.connection import DBConnection, get_db
+from capstone.backend.database.connection import (
+    DBConnection, 
+    get_db,
+    )
 from capstone.backend.database.models import LogsTable
 from capstone.backend.llms.prompt_template import rag_prompt
 
