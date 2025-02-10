@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+body {
+    background-color: white;
+}
+
 .sidebar_root {
     @apply bg-orange-700 text-white w-64 h-screen p-4 flex flex-col
 }
