@@ -2,59 +2,8 @@ import React, { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Rnd } from "react-rnd";
 import './styles/global.css'
-
-// Sidebar Component
-const Sidebar = () => (
-  <div className="sidebar_root">
-    <h1 className="sidebar_header">KMITL Dashboard</h1>
-    <nav className="space-y-4">
-      <a href="/" className="sidebar_menu ">Home</a>
-      <a href="#" className="sidebar_menu ">Profile</a>
-      <a href="#" className="sidebar_menu ">Analytics</a>
-      <a href="#" className="sidebar_menu ">Settings</a>
-      <a href="#" className="sidebar_menu ">Messages</a>
-    </nav>
-  </div>
-);
-
-// Header Component
-const Header = () => (
-  <div className="bg-white shadow-md h-16 flex items-center justify-between px-6">
-    <input
-      type="text"
-      placeholder="Search..."
-      className="border rounded-lg px-4 py-2 w-1/3"
-    />
-    <div className="flex items-center space-x-4">
-      <span className="font-medium">Mike Lock</span>
-      <img
-        src="https://via.placeholder.com/40"
-        alt="Profile"
-        className="w-10 h-10 rounded-full"
-      />
-    </div>
-  </div>
-);
-
-// Stats Component
-const Stats = () => (
-  <div className="grid grid-cols-4 gap-6 my-6">
-    {[
-      { label: "Sessions", value: "24k" },
-      { label: "Avg Sessions", value: "00:18" },
-      { label: "Bounce Rate", value: "$2400" },
-      { label: "Avg Watch Time", value: "45.42" },
-    ].map((stat, index) => (
-      <div
-        key={index}
-        className="bg-white shadow-md rounded-xl p-4 text-center"
-      >
-        <p className="text-gray-500">{stat.label}</p>
-        <h2 className="text-xl font-bold text-purple-700">{stat.value}</h2>
-      </div>
-    ))}
-  </div>
-);
+import {Navbar, Footer} from "./components/main_pages";
+import Label from "./components/stats/Label";
 
 // Chart Component using Recharts
 const Chart = () => {
@@ -108,17 +57,19 @@ const DraggableChart = () => {
 // Dashboard Component
 const Dashboard = () => (
   <div className="flex h-screen">
-    <Sidebar />
+    {/* <Sidebar /> */}
     <div className="flex-1 bg-gray-100">
-      <Header />
+      <Navbar />
       <div className="p-6">
-        <Stats />
+        <Label />
         <div className="relative w-full h-[500px] bg-gray-200 rounded-lg">
           <DraggableChart />
-          <DraggableChart/>
+          <DraggableChart />
         </div>
       </div>
+      <Footer/>
     </div>
+    
   </div>
 );
 
