@@ -149,7 +149,7 @@ nav ul li a:hover {
   height: 60px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: #fff;
+  background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;

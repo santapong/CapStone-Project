@@ -11,6 +11,9 @@ import {
   Piechart,
   Barchart
 } from './components/charts'
+import { 
+  Chatbot 
+} from "./components/button";
 
 // Dashboard Component
 const Dashboard = () => (
@@ -46,6 +49,7 @@ const Dashboard = () => (
           <Barchart />
         </div>
       </div>
+      <Chatbot/>
       <Footer/>
       </div>
     </div>
