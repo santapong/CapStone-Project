@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
+.root_page {
+    @apply flex flex-col min-h-screen
+}
+
 .nav_bar {
-    @apply bg-black text-justify
+    @apply bg-black text-justify p-2
+}
+
+.footer_bar {
+    @apply bg-black text-white text-center p-2
+}
+
+.foot_content {
+    @apply text-xl
 }
 
 .dashboard-button {
@@ -13,5 +25,9 @@
 }
 
 .chart_container {
-    @apply flex space-x-4 flex-wrap
+    @apply flex flex-wrap space-x-1 gap-0.5 mt-3 items-center bg-red-600
+}
+
+.chart_box {
+    @apply w-full md:w-1/2 lg:w-1/6 
 }

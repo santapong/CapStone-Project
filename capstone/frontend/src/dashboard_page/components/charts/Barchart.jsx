@@ -8,7 +8,7 @@ const data = [
   { name: "D", value: 200 },
 ];
 
-const Barchart = ({width, height, data}) => {
+const Barchart = ({width, height}) => {
   return (
     <div>
       <h2>Bar Chart</h2>

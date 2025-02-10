@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import Navbar from "./components/main_pages/Navbar"
+import {
+  Navbar,
+  Footer
+} from "./components/main_pages"
 
 import { 
   Barchart,
@@ -22,33 +25,37 @@ function Dashboard() {
   const height = 200
   const API_URL = import.meta.env.VITE_API_URL
 
-  useEffect(()=>{
-    // Request API From Backend
-    fetch(API_URL)
-      .then(response => response.json())
-      .then(data => setPieData(data))
-      .catch(error => console.error('Error request from Backend', error))
-  },[])
+  // useEffect(()=>{
+  //   // Request API From Backend
+  //   fetch(API_URL)
+  //     .then(response => response.json())
+  //     .then(data => setPieData(data))
+  //     .catch(error => console.error('Error request from Backend', error))
+  // },[])
+  
   return (
-  <div>
+  <div className='root_page' >
       <Navbar/>
-      <div className='flex flex-wrap space-x-1 gap-2 mt-4'>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
+      <div className='menu_container'></div>
+      <div className='chart_container'>
+        <div className='chart_box'>
           <Barchart width={width} height={height}/>
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
+        <div className='chart_box'>
           <Piechart width={width} height={height}/>
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
+        <div className='chart_box'>
           <Treemapchart width={width} height={height}/>
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
+        <div className='chart_box'>
           <Linechart width={width} height={height}/>
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
+        <div className='chart_box'>
           <Radarchart width={width} height={height}/>
-        </div>
+        </div>  
       </div>
+
+      <Footer/>
     </div>
   )
 }

@@ -30,7 +30,7 @@ const data = [
   },
 ];
 
-const Radarchart = ({width, height, data}) => {
+const Radarchart = ({width, height}) => {
   return (
     <div>
       <h2>Radar Chart Example</h2>
