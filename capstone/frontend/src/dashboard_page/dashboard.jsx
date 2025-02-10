@@ -5,14 +5,14 @@ import './styles/global.css'
 
 // Sidebar Component
 const Sidebar = () => (
-  <div className="bg-orange-700 text-white w-64 h-screen p-4 flex flex-col">
-    <h1 className="text-2xl font-bold mb-6">Meta Dashboard</h1>
+  <div className="sidebar_root">
+    <h1 className="sidebar_header">KMITL Dashboard</h1>
     <nav className="space-y-4">
-      <a href="#" className="block py-2 px-4 rounded-lg hover:bg-purple-600">Dashboard</a>
-      <a href="#" className="block py-2 px-4 rounded-lg hover:bg-purple-600">Profile</a>
-      <a href="#" className="block py-2 px-4 rounded-lg hover:bg-purple-600">Analytics</a>
-      <a href="#" className="block py-2 px-4 rounded-lg hover:bg-purple-600">Settings</a>
-      <a href="#" className="block py-2 px-4 rounded-lg hover:bg-purple-600">Messages</a>
+      <a href="/" className="sidebar_menu ">Home</a>
+      <a href="#" className="sidebar_menu ">Profile</a>
+      <a href="#" className="sidebar_menu ">Analytics</a>
+      <a href="#" className="sidebar_menu ">Settings</a>
+      <a href="#" className="sidebar_menu ">Messages</a>
     </nav>
   </div>
 );

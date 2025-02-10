@@ -1,2 +1,13 @@
 @import "tailwindcss";
 
+.sidebar_root {
+    @apply bg-orange-700 text-white w-64 h-screen p-4 flex flex-col
+}
+
+.sidebar_header {
+    @apply text-2xl font-bold mb-6 bg-orange-500 rounded-2xl text-center
+}
+
+.sidebar_menu {
+    @apply  bg-orange-600 block py-2 px-4 rounded-lg hover:bg-orange-500
+}
