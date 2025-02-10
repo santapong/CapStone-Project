@@ -17,7 +17,7 @@ const Dashboard = () => (
   <div className="flex h-screen bg-black">
     {/* <Sidebar /> */}
     <div className="flex-1 bg-white">
-      <div className=" bg-white">
+      <div className="bg-gray-200">
       <Navbar />
       <div className="px-6">
         <Label />
