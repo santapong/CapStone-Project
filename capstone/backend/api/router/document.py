@@ -13,16 +13,13 @@ from fastapi import (
     HTTPException
     )
 
-from capstone.backend.llms import RAGModel
+from capstone.backend.llms import RAGModel, get_RAG
 from capstone.backend.api.models import FileLength
 from capstone.backend.database import (
     get_db, 
     DBConnection,
     DocumentTable,
     )
-
-# Setting RAG model
-RAG = RAGModel()
 
 tags = ["Document"]
 router_document = APIRouter(prefix='/document')
@@ -32,7 +29,8 @@ router_document = APIRouter(prefix='/document')
 async def uploadFile(
     data: str = Form(...), 
     file: UploadFile = File(...),
-    db: DBConnection = Depends(get_db)
+    db: DBConnection = Depends(get_db),
+    RAG: RAGModel = Depends(get_RAG)
     ):
 
     try:
@@ -49,7 +47,7 @@ async def uploadFile(
             interval.final_page > len(reader.pages) or 
             interval.start_page > interval.final_page):
 
-            # Raise an Exception 422
+            # Raise an Exception HTTP ERROR 422.
             raise HTTPException(422, f"The interval that given {interval} is not good.")
         
         # Specific target page to extract

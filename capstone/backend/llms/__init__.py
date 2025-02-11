@@ -1,1 +1,1 @@
-from capstone.backend.llms.core import RAGModel
+from capstone.backend.llms.core import get_RAG, RAGModel

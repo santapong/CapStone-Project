@@ -135,6 +135,11 @@ class RAGModel:
 
         return retrieval_chains.invoke({"question": question,"input":""})
     
+
+# Make for FastAPI Depends 
+def get_RAG():
+    yield RAGModel()
+
 if __name__ == '__main__':
     test = RAGModel()
     print(test.invoke("What is Automation")) 

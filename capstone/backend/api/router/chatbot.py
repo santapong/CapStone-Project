@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
-from capstone.backend.llms import RAGModel
+from capstone.backend.llms import get_RAG, RAGModel
 from capstone.backend.api.models import (
     ChatModel,
     ResponseModel,
@@ -20,8 +20,6 @@ from capstone.backend.llms.prompt_template import rag_prompt
 load_dotenv()
 logging.getLogger(__name__)
 
-RAG = RAGModel()
-
 tags = ["Chatbot"]
 router_chatbot = APIRouter(prefix='/chatbot')
 
@@ -29,7 +27,8 @@ router_chatbot = APIRouter(prefix='/chatbot')
 @router_chatbot.post("/infer", tags=tags, response_model=ResponseModel)
 async def inferenceModel(
     request: ChatModel, 
-    db: DBConnection = Depends(get_db)
+    db: DBConnection = Depends(get_db),
+    RAG: RAGModel = Depends(get_RAG)
     ):
     
     # Record Response time to Analysis.
