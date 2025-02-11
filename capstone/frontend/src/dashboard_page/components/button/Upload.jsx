@@ -14,24 +14,14 @@ const Upload = () => {
    }
  };
 
- // Optional: Handle form submission or file upload logic
- const handleSubmit = () => {
-   if (selectedFile) {
-     console.log("Selected file:", selectedFile);
-     // Here you can handle the file upload to the server or other logic
-   } else {
-     alert("No file selected.");
-   }
- };
-
  // Send file to Backend
  const handleFileUpload = async () => {
   if (selectedFile) {
     const formData = new FormData();
-    formData.append("document", selectedFile);  // Append the file
+    formData.append("file", selectedFile);  // Append the file
 
     try {
-      const response = await fetch("http://localhost:8000/document", {
+      const response = await fetch("http://localhost:8000/document/upload_multiple", {
         method: "POST",
         body: formData,  // Send the FormData with the file
       });
