@@ -4,6 +4,6 @@ router_dashboard = APIRouter(prefix='/dashboard')
 
 tags = ['Dashboard']
 
-@router_dashboard.get('/history', tags=tags)
+@router_dashboard.get('/data', tags=tags)
 def history():
-    pass
+    return {"msg":"test"}

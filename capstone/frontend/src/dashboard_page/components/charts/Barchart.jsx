@@ -8,10 +8,10 @@ const data = [
   { name: "D", value: 200 },
 ];
 
-const Barchart = () => {
+const Barchart = ({chartName}) => {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <h2>Bar Chart</h2>
+    <ResponsiveContainer width="100%" height="90%">
+      <div>{chartName}</div>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />

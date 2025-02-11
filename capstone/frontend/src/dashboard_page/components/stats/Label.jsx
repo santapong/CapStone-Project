@@ -4,7 +4,7 @@ function Label() {
   const [data , setData] = useState([]);
 
   return (
-    <div className="grid grid-cols-4 gap-6 my-6">
+    <>
     {[
       { label: "Usage", value: "24", unit: 'time' },
       { label: "Avg Sessions", value: "00:18", unit: 'time' },
@@ -20,8 +20,7 @@ function Label() {
         <div>{stat.unit}</div>
       </div>
     ))}
-    
-  </div>
+    </>
   )
 }
 
