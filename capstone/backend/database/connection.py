@@ -76,6 +76,10 @@ class DBConnection:
     def get_table(self):
         return self.base_model.metadata.tables
 
+    # Get session to database
+    def get_session(self):
+        return self.session
+
     # Query data from table of this database.
     def query(
             self,

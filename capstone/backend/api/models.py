@@ -16,3 +16,6 @@ class FileLength(BaseModel):
 
 class UploadFileMultiple(BaseModel):
     files: List[UploadFile] = File(...)
+
+class SQLModel(BaseModel):
+    sql: str
