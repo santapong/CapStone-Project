@@ -1,43 +1,27 @@
 import logging
 import os
-from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
 
 logging.getLogger(__name__)
 
-""" TODO: Make it will read from toml file.
-#################################################################################################
-#                                       Logging Note                                            #
-#  LOGGING Level in default is "INFO" you can config in .env of your                            #
-#  LOGGING Format in default is "%(asctime)s - %(name)s - %(levelname)s - %(message)s"          #
-#                                                                                               #           
-#  :See more https://docs.python.org/3/library/logging.html#logging-levels                      #
-#                                                                                               #
-#################################################################################################
-"""
-
-LOG_PATH = os.getenv('LOG_PATH')
-
-# TODO: Make log level will work with any level.
-LOG_LEVEL = os.getenv("LOG_LEVEL")
-LOG_FORMAT = os.getenv('LOG_FORMAT')
+LOG_PATH = os.getenv('LOG_PATH', 'app.log')  # Default log path
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()  # Default log level
+LOG_FORMAT = os.getenv('LOG_FORMAT', '%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Default format
 
 def setup_logging():
+    """ Configure the logging system for the application. """
+    # Set up logging configuration
     logging.basicConfig(
-        level=logging.INFO,  # Set logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        level=LOG_LEVEL,  # Set logging level (INFO, DEBUG, etc.)
         format=LOG_FORMAT,
         handlers=[
             logging.FileHandler(LOG_PATH),  # Write logs to a file
+            logging.StreamHandler()  # Optional: log to console as well
         ]
     )
-    logging.info("Intial logs")
+    logging.info("Logging initialized successfully.")
 
-    # Suppress logs from 'watchfiles' at INFO level
+    # Suppress unwanted log messages from specific libraries like watchfiles
     logging.getLogger("watchfiles.main").setLevel(logging.WARNING)
-
-# TODO: Make logs for database
-
-# Intial Log
-setup_logging()
