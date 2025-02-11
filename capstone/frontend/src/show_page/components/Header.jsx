@@ -15,7 +15,7 @@ export default function Header() {
           <li><a href="#">ปฏิทินการศึกษา</a></li>
           <li><a href="#">งานทะเบียน</a></li>
           <li><a href="#">บริการ</a></li>
-          <li><a href="#">Data Visualization</a></li>
+          <li><a href="/dashboard">Data Visualization</a></li>
         </ul>
       </nav>
       <div className="login-lang">

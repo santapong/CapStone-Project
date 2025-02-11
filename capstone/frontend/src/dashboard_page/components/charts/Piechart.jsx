@@ -1,5 +1,5 @@
 import React from "react";
-import { PieChart, Pie, Tooltip, Cell, Legend } from "recharts";
+import { PieChart, Pie, Tooltip, Cell, Legend, ResponsiveContainer } from "recharts";
 
 const data = [
   { name: "Group A", value: 400 },
@@ -8,19 +8,17 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-// Define custom colors for each slice
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-const Piechart = ({width, height, data}) => {
+const Piechart = ({Radius_size}) => {
   return (
-    <div>
-      <h2>Pie Chart</h2>
-      <PieChart width={width} height={height}>
+    <ResponsiveContainer width="100%" height="90%">
+      <PieChart>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
-          outerRadius={40}
+          outerRadius={Radius_size}
           fill="#8884d8"
           dataKey="value"
           label
@@ -32,7 +30,7 @@ const Piechart = ({width, height, data}) => {
         <Tooltip />
         <Legend />
       </PieChart>
-    </div>
+    </ResponsiveContainer>
   );
 };
 

@@ -1,56 +1,59 @@
-import React, {useEffect, useState} from 'react'
-import Navbar from "./components/main_pages/Navbar"
-
+import React, { useState } from "react";
+import Label from "./components/stats/Label";
+import {
+  Navbar, 
+  Footer
+} from "./components/main_pages";
 import { 
-  Barchart,
-  Piechart,
   Linechart,
-  Radarchart,
-  Treemapchart,
- } from './components/charts'
+  DraggableChart, 
+  Piechart,
+  Barchart,
+  Radarchart
+} from './components/charts'
+import { 
+  Chatbot 
+} from "./components/button";
+import './styles/global.css'
 
-import { DBQuery } from './components/database'
-
-import "./styles/global.css"
-
-function Dashboard() {
-  const [piedata, setPieData] = useState(null);
-
-  // Call DBQuery class
-  const query = new DBQuery()
-  const width = 200
-  const height = 200
-  const API_URL = import.meta.env.VITE_API_URL
-
-  useEffect(()=>{
-    // Request API From Backend
-    fetch(API_URL)
-      .then(response => response.json())
-      .then(data => setPieData(data))
-      .catch(error => console.error('Error request from Backend', error))
-  },[])
-  return (
-  <div>
-      <Navbar/>
-      <div className='flex flex-wrap space-x-1 gap-2 mt-4'>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
-          <Barchart width={width} height={height}/>
+// Dashboard Component
+const Dashboard = () => (
+  
+  <div className="flex-auto h-screen bg-black">
+    {/* <Sidebar /> */}
+    <div className="flex-1 bg-white">
+      <Navbar />
+      <div className="bg-gray-200">
+      {/* Stats Show */}
+      {/* <div className="px-6 space-x-2"> */}
+      <div className="grid grid-cols-4 gap-4 my-4 px-6">
+          <Label />
+      </div>
+      {/* </div> */}
+      {/* Chart Zone */}
+      <div className="grid grid-cols-3 grid-rows-3 px-6 py-5 gap-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-4 items-center justify-center h-[300px]">
+          <Radarchart />
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
-          <Piechart width={width} height={height}/>
+        <div className="bg-white rounded-2xl shadow-2xl p-4 items-center justify-center h-[300px]">
+          <Piechart />
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
-          <Treemapchart width={width} height={height}/>
+        <div className="bg-white rounded-2xl shadow-2xl p-4 items-center justify-center h-[300px]">
+          <Barchart />
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
-          <Linechart width={width} height={height}/>
+        <div className="col-span-2 row-span-2 bg-white rounded-2xl shadow-2xl p-4 items-center justify-center h-[450px]">
+          <Linechart />
         </div>
-        <div className='w-full md:w-1/2 lg:w-1/4'>
-          <Radarchart width={width} height={height}/>
+        <div className="row-span-2 bg-white rounded-2xl shadow-2xl p-4 items-center justify-center h-[450px]">
+          <Piechart Radius_size={90}/>
         </div>
       </div>
+      {/* Chart Zone */}
+      <Chatbot/>
+      <Footer/>
+      </div>
     </div>
-  )
-}
+  </div>
+);
 
-export default Dashboard
+export default Dashboard;

@@ -134,7 +134,7 @@ const data = [
   },
 ];
 
-const Treemapchart = ({width, height, data}) => {
+const Treemapchart = ({width, height}) => {
   return (
       <div>
       <h2>Treemap</h2>

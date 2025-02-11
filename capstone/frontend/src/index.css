@@ -132,13 +132,13 @@ nav ul li a:hover {
 }
 
 /* -------------------- FOOTER -------------------- */
-.footer {
+/* .footer {
   text-align: center;
   padding: 2rem;
   color: #fff;
   background-color: #f1582b;
   font-size: 1rem;
-}
+} */
 
 /* -------------------- CHATBOT BUTTON -------------------- */
 .chatbot-btn {
@@ -149,7 +149,7 @@ nav ul li a:hover {
   height: 60px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: #fff;
+  background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -30,11 +30,11 @@ const data = [
   },
 ];
 
-const Radarchart = ({width, height, data}) => {
+const Radarchart = () => {
   return (
-    <div>
-      <h2>Radar Chart Example</h2>
-      <RadarChart outerRadius={90} width={width} height={height} data={data}>
+    <ResponsiveContainer width='100%' height='90%'>
+      {/* <h2>Radar Chart Example</h2> */}
+      <RadarChart outerRadius={90} data={data}>
         <PolarGrid />
         <PolarAngleAxis dataKey="subject" />
         <PolarRadiusAxis angle={30} domain={[0, 150]} />
@@ -42,7 +42,7 @@ const Radarchart = ({width, height, data}) => {
         <Tooltip />
         <Legend />
       </RadarChart>
-    </div>
+    </ResponsiveContainer>
   );
 };
 

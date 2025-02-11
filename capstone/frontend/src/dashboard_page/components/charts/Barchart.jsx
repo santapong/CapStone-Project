@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 
 const data = [
   { name: "A", value: 400 },
@@ -8,11 +8,11 @@ const data = [
   { name: "D", value: 200 },
 ];
 
-const Barchart = ({width, height, data}) => {
+const Barchart = ({chartName}) => {
   return (
-    <div>
-      <h2>Bar Chart</h2>
-      <BarChart width={width} height={height} data={data}>
+    <ResponsiveContainer width="100%" height="90%">
+      <div>{chartName}</div>
+      <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
@@ -20,7 +20,7 @@ const Barchart = ({width, height, data}) => {
         <Legend />
         <Bar dataKey="value" fill="#8884d8" />
       </BarChart>
-    </div>
+    </ResponsiveContainer>
   );
 };
 
