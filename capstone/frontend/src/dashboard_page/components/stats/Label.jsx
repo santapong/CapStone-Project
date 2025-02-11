@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Label() {
   const [data , setData] = useState([]);
+  const API = "http://localhost:8000/dashboard/data"
+
+  useEffect(() => {
+    fetch(API, {
+      method: "GET",
+    })
+      .then((Response) => Response.json())
+      .then((data) => setData(data.data))
+  }, [])
 
   return (
     <>
-    {[
-      { label: "Usage", value: "24", unit: 'time' },
-      { label: "Avg Sessions", value: "00:18", unit: 'time' },
-      { label: "Most Ask", value: "Process", unit: 'Ask' },
-      { label: "Avg Watch Time", value: "45.42", unit: 'time' },
-    ].map((stat, index) => (
+    {data.map((stat, index) => (
       <div
         key={index}
         className="bg-white shadow-md rounded-xl p-4 text-center"
