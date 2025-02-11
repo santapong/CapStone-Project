@@ -1,0 +1,36 @@
+
+
+.Navbar {
+    background-color: #f1582b;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    position: sticky;
+    top: 0;
+  }
+
+.foot {
+  text-align: center;
+  padding: 1.5rem;
+  color: #fff;
+  background-color: #f1582b;
+  margin-top: 2rem;
+}
+
+.important_events {
+  max-width: 875px;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1rem;
+}

@@ -5,11 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    
-]
-
-[dependency-groups]
-dev = [
     "chromadb>=0.5.23",
     "fastapi>=0.115.6",
     "langchain-chroma>=0.1.4",
@@ -23,11 +18,17 @@ dev = [
     "langgraph>=0.2.61",
     "beautifulsoup4>=4.12.3",
     "python-multipart>=0.0.20",
-    "rank-bm25>=0.2.2",
-    "dash>=2.18.2",
     "pulumi>=3.33.1",
     "pulumi-aws>=6.55.0",
+    "datasets>=3.2.0",
+    "torch>=2.5.1",
+    "transformers[torch]>=4.46.3",
+    "langchain-experimental>=0.3.4",
+    "langchain-postgres>=0.0.13",
+    "ujson>=5.10.0",
 ]
+
+[dependency-groups]
 diagram = [
     "diagrams>=0.24.1",
 ]
@@ -42,7 +43,4 @@ fine-tine = [
 
 [tool.uv]
 default-groups = [
-    "dev",
-    "diagram",
-    "text-analysis",
     ]
