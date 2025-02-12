@@ -26,17 +26,16 @@ dependencies = [
     "langchain-experimental>=0.3.4",
     "langchain-postgres>=0.0.13",
     "ujson>=5.10.0",
+    "langdetect>=1.0.9",
+    "pythainlp>=5.0.5",
+    "scikit-learn>=1.6.1",
 ]
 
 [dependency-groups]
 diagram = [
     "diagrams>=0.24.1",
 ]
-text-analysis = [
-    "langdetect>=1.0.9",
-    "pythainlp>=5.0.5",
-    "scikit-learn>=1.6.1",
-]
+
 fine-tine = [
     "unsloth>=2025.1.5",
 ]

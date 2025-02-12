@@ -314,11 +314,14 @@ dependencies = [
     { name = "langchain-experimental" },
     { name = "langchain-ollama" },
     { name = "langchain-postgres" },
+    { name = "langdetect" },
     { name = "langgraph" },
     { name = "pulumi" },
     { name = "pulumi-aws" },
     { name = "pypdf" },
+    { name = "pythainlp" },
     { name = "python-multipart" },
+    { name = "scikit-learn" },
     { name = "sqlalchemy" },
     { name = "torch" },
     { name = "transformers", extra = ["torch"] },
@@ -331,11 +334,6 @@ diagram = [
 ]
 fine-tine = [
     { name = "unsloth" },
-]
-text-analysis = [
-    { name = "langdetect" },
-    { name = "pythainlp" },
-    { name = "scikit-learn" },
 ]
 
 [package.metadata]
@@ -352,11 +350,14 @@ requires-dist = [
     { name = "langchain-experimental", specifier = ">=0.3.4" },
     { name = "langchain-ollama", specifier = ">=0.2.2" },
     { name = "langchain-postgres", specifier = ">=0.0.13" },
+    { name = "langdetect", specifier = ">=1.0.9" },
     { name = "langgraph", specifier = ">=0.2.61" },
     { name = "pulumi", specifier = ">=3.33.1" },
     { name = "pulumi-aws", specifier = ">=6.55.0" },
     { name = "pypdf", specifier = ">=5.1.0" },
+    { name = "pythainlp", specifier = ">=5.0.5" },
     { name = "python-multipart", specifier = ">=0.0.20" },
+    { name = "scikit-learn", specifier = ">=1.6.1" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "torch", specifier = ">=2.5.1" },
     { name = "transformers", extras = ["torch"], specifier = ">=4.46.3" },
@@ -366,11 +367,6 @@ requires-dist = [
 [package.metadata.requires-dev]
 diagram = [{ name = "diagrams", specifier = ">=0.24.1" }]
 fine-tine = [{ name = "unsloth", specifier = ">=2025.1.5" }]
-text-analysis = [
-    { name = "langdetect", specifier = ">=1.0.9" },
-    { name = "pythainlp", specifier = ">=5.0.5" },
-    { name = "scikit-learn", specifier = ">=1.6.1" },
-]
 
 [[package]]
 name = "certifi"
