@@ -55,9 +55,11 @@ const Upload = () => {
       <button className="btn" onClick={handleFileUpload}>test</button>
       {/* <p className="py-4 text-white">Press ESC key or click outside to close</p> */}
     </div>
-    <form method="dialog" className="modal-backdrop">
-      <button>close</button>
+    <div className="modal-action">
+    <form method="dialog">
+      <button className="btn">close</button>
     </form>
+    </div>
   </dialog>
     </>
   );
