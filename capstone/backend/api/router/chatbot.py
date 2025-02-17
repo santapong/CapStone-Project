@@ -1,5 +1,6 @@
 import time
 import logging
+import capstone.backend.database.events
 
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends
