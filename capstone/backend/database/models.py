@@ -37,6 +37,13 @@ class SummaryTable(DATABASE_MODEL):
     # Relationship with ChartHistory
     # chathistory = relationship('ChatHistoryTable')
 
+class CategoryTable(DATABASE_MODEL):
+    __tablename__ = "category"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    question = Column(String)
+    category = Column(String)
+
 # Logs Table
 class LogsTable(DATABASE_MODEL):
     __tablename__ = 'logs'

@@ -10,6 +10,6 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Add a new user
-new_user = User(name="John Doe", age=30)
+new_user = User(name="test", age=30)
 session.add(new_user)
 session.commit()  # This will trigger the `before_insert` event and print the message
