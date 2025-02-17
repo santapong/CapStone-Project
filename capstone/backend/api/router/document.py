@@ -75,11 +75,11 @@ async def uploadFile(
             pages=len(target_interval)
             )
         
-        # # Upload PDF to Vector Database
-        # documents = await RAG.aload_from_API(
-        #     contents=contents,
-        #     metadatas=metadatas
-        #     )
+        # Upload PDF to Vector Database
+        documents = await RAG.aload_from_API(
+            contents=contents,
+            metadatas=metadatas
+            )
 
         return JSONResponse(content={
             "filename": file.filename,

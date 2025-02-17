@@ -9,6 +9,7 @@ from typing import (
     )
 
 from langchain_chroma import Chroma
+from langchain_openai import ChatOpenAI
 from langchain_postgres import PGVector
 from langchain_core.documents import Document
 from langchain.chains.retrieval import create_retrieval_chain
@@ -31,6 +32,9 @@ from capstone.backend.llms.prompt_template import (
 LLM_MODEL = os.getenv("LLM_MODEL",default= "llama3.2")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL",default='bge-m3')
 COLLECTION_NAME = os.getenv("COLLECTION_NAME",default="langchain")
+MODEL_BASE_URL = os.getenv("MODEL_BASE_URL")
+API_KEY = os.getenv("TYPHOON_API_KEY")
+
 # Persist Directory
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
@@ -42,10 +46,11 @@ class RAGModel:
             temperature: float = 0.5
             ):
         self.__vector_store = self.__chroma_connect()
-        self.__llm = OllamaLLM(
+        self.__llm = ChatOpenAI(
+            base_url=MODEL_BASE_URL,
             model=LLM_MODEL,
-            temperature=temperature,
-            )
+            api_key=API_KEY,
+        )
 
     # Pre Retrieval Process.
     def __pre_retrieval(
@@ -118,7 +123,7 @@ class RAGModel:
         # Call Retriever
         self.retriever = self.__vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={'k': 6, 'lambda_mult': 0.5}
+            search_kwargs={'k': 3}
             )
 
         # Create Chains
@@ -134,7 +139,6 @@ class RAGModel:
             )
 
         return retrieval_chains.invoke({"question": question,"input":""})
-    
 
 # Make for FastAPI Depends 
 def get_RAG():
@@ -142,4 +146,4 @@ def get_RAG():
 
 if __name__ == '__main__':
     test = RAGModel()
-    print(test.invoke("What is Automation")) 
+    print(test.invoke(""))

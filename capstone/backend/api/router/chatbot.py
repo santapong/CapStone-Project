@@ -37,11 +37,11 @@ async def inferenceModel(
     answer = RAG.invoke(question=request.question)
     time_usage = time.time()-start_time
     logging.info(time_usage)
-
+    logging.info(answer)
     # Insert to database
     db.insert(
         table=LogsTable, 
-        prompt=rag_prompt.__name__+" temp=0.5", 
+        prompt=rag_prompt.__name__, 
         question=request.question, 
         answer=answer['answer'], 
         time_usage=time_usage
