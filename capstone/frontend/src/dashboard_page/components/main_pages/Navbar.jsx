@@ -1,5 +1,9 @@
 import React, {useState} from 'react'
-import { Menu, Modal } from '../button'
+import { 
+  Menu, 
+  Upload,
+  Export 
+} from '../button'
 import "../../styles/global.css"
 
 function Navbar() {
@@ -21,9 +25,8 @@ function Navbar() {
       
       {/* Buttons on the right */}
       <div className="flex items-center space-x-2">
-        <button className="btn">Export</button>
-        <button className="btn">Upload Docs</button>
-        <Modal/>
+        <Export/>
+        <Upload/>
         <input 
           type="checkbox" 
           value="synthwave" 
