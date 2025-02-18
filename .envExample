@@ -27,12 +27,20 @@ LOG_LEVEL='INFO'
 DATABASE_CREATE=True
 
 # Vector Database
+EMBEDDING_MODEL="bge-m3"
 PERSIST_DIR='database/vector_database'
 
 # LangSmith
 LANGSMITH_TRACING="true"
-LANGSMITH_API_KEY=""
+LANGSMITH_API_KEY="langsmith-api-key"
 
+# LLM Model
+LLM_MODEL='typhoon-model'
+MODEL_BASE_URL='https://api.opentyphoon.ai/v1'
+# LLM_MODEL=''
+
+# TYPHOON API
+TYPHOON_API_KEY="typhoon-api-key"
 
 #---------------- VITE ENV ----------------#
 # Dashboard Defualt
