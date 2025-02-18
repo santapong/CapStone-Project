@@ -50,6 +50,7 @@ class RAGModel:
             base_url=MODEL_BASE_URL,
             model=LLM_MODEL,
             api_key=API_KEY,
+            max_completion_tokens=8192,
         )
 
     # Pre Retrieval Process.
@@ -123,7 +124,7 @@ class RAGModel:
         # Call Retriever
         self.retriever = self.__vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={'k': 3}
+            search_kwargs={'k': 5}
             )
 
         # Create Chains
@@ -146,4 +147,4 @@ def get_RAG():
 
 if __name__ == '__main__':
     test = RAGModel()
-    print(test.invoke(""))
+    print(test.invoke("ปรัชญา"))

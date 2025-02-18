@@ -37,7 +37,7 @@ async def inferenceModel(
     answer = RAG.invoke(question=request.question)
     time_usage = time.time()-start_time
     logging.info(time_usage)
-    logging.info(answer)
+
     # Insert to database
     db.insert(
         table=LogsTable, 
@@ -48,6 +48,7 @@ async def inferenceModel(
         )
     
     logging.info(len(answer['context']))
+    
     return JSONResponse(content={
         "time usage": time_usage,
         "question": request.question,

@@ -27,7 +27,7 @@ router_document = APIRouter(prefix='/document')
 # Uploadfile PDF from API.
 @router_document.post("/uploadfile", tags=tags)
 async def uploadFile(
-    data: str = Form(...), 
+    data: str = Form(default={"first_page":0,"final_page":0}), 
     file: UploadFile = File(...),
     db: DBConnection = Depends(get_db),
     RAG: RAGModel = Depends(get_RAG)
