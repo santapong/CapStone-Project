@@ -15,9 +15,6 @@ class FileLength(BaseModel):
     start_page: int = 0
     final_page: int = 0
 
-class UploadFileMultiple(BaseModel):
-    files: List[UploadFile] = File(...)
-
 class SQLModel(BaseModel):
     sql: str
 

@@ -17,11 +17,13 @@ from capstone.backend.api.router import (
     router_dashboard,
     )
 
+# Setup log and load .env
 load_dotenv()
 setup_logging()
 logging.getLogger(__name__)
 
 # Set API Prefix and API application.
+tags = ["Documents"]
 prefix = os.getenv("PATH_PREFIX", default='/')
 app = FastAPI(prefix=prefix)
 
@@ -34,7 +36,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-tags = ["Documents"]
 
 @app.get('/',tags=tags)
 def docs():
