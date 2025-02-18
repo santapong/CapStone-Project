@@ -1,13 +1,29 @@
+import joblib
+import logging
+from sqlalchemy.sql import text
 from sqlalchemy.event import listens_for
 from capstone.backend.database.models import (
-    ChatHistory, 
-    Summary
+    LogsTable, 
+    CategoryTable
     )
 
-from sqlalchemy.orm import Session
+logging.getLogger(__name__)
 
-# TODO: Implement Event to Extract Summary from ChatHistory 
-# Event to Extract Summary from ChatHistory
-@listens_for(ChatHistory, 'after_insert')
-def update_summary(mapper, connection, target):
-    pass
+def get_model():
+    try:
+        logging.info("Downloaded Model Success")
+        return joblib.load('text_classification.pkl')
+    except: 
+        raise FileNotFoundError("Cannot find Model location")
+    
+# Event to Extract Summary from Logs
+@listens_for(LogsTable, 'after_insert')
+def categorize_question(mapper, connection, target):
+    model = get_model()
+    category_data = model.predict([target.question])
+    print(category_data[0])
+    # Use the existing transaction via connection.execute()
+    connection.execute(
+        CategoryTable.__table__.insert(),
+        {"question": target.question, "category": category_data[0]}
+    )

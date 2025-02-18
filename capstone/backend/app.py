@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import (
-    UJSONResponse,
     RedirectResponse
     )
 
@@ -17,11 +16,13 @@ from capstone.backend.api.router import (
     router_dashboard,
     )
 
+# Setup log and load .env
 load_dotenv()
 setup_logging()
 logging.getLogger(__name__)
 
 # Set API Prefix and API application.
+tags = ["Default"]
 prefix = os.getenv("PATH_PREFIX", default='/')
 app = FastAPI(prefix=prefix)
 
@@ -34,8 +35,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-tags = ["Documents"]
-
+# Set redirect to /docs when enter root path ('/')
 @app.get('/',tags=tags)
 def docs():
     return RedirectResponse(url='/docs')

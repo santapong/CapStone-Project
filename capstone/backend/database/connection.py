@@ -2,12 +2,11 @@ import os
 import logging
 from dotenv import load_dotenv
 from typing import List, Optional, Any
-from typing_extensions import Self
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import (
     Query,
-    sessionmaker, 
-    declarative_base,
+    sessionmaker,
     )
 from capstone.backend.database.models import DATABASE_MODEL
 
@@ -75,6 +74,10 @@ class DBConnection:
     # Get table inside database.
     def get_table(self):
         return self.base_model.metadata.tables
+
+    # Get session to database
+    def get_session(self):
+        return self.session
 
     # Query data from table of this database.
     def query(

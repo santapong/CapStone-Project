@@ -1,0 +1,521 @@
+,text,category
+0,Robotic welding arms increase automotive assembly speed,Factory Automation
+1,PLC ladder logic programming for conveyor synchronization,Factory Automation
+2,Automated packaging systems using delta robots,Factory Automation
+3,HMI design principles for production line monitoring,Factory Automation
+4,Industrial robot calibration using laser alignment,Factory Automation
+5,Machine tending automation with collaborative robots,Factory Automation
+6,Automated optical inspection (AOI) for PCB assembly,Factory Automation
+7,Palletizing robot programming with ROS framework,Factory Automation
+8,Industrial automation using OPC UA communication,Factory Automation
+9,CNC machine integration with MES systems,Factory Automation
+10,Automated guided vehicle navigation using LiDAR,Factory Automation
+11,Pick-and-place robots in electronics manufacturing,Factory Automation
+12,Automated storage and retrieval systems (AS/RS),Factory Automation
+13,Industrial robot end-effector tooling design,Factory Automation
+14,Production line balancing using automation software,Factory Automation
+15,Automated lubrication systems for machinery,Factory Automation
+16,Machine vision guided robotic assembly,Factory Automation
+17,Industrial automation network segmentation,Factory Automation
+18,Automated quality assurance through force sensing,Factory Automation
+19,Robotic deburring applications in machining,Factory Automation
+20,Automated screwdriving systems for appliance assembly,Factory Automation
+21,Vision-guided robotic bin picking solutions,Factory Automation
+22,Automated leak testing systems for quality control,Factory Automation
+23,Industrial robot offline programming techniques,Factory Automation
+24,Automated conveyor belt alignment procedures,Factory Automation
+25,Robotic painting systems with adaptive path planning,Factory Automation
+26,Automated fastener verification using torque sensors,Factory Automation
+27,Industrial cobot payload capacity optimization,Factory Automation
+28,Automated dimensional inspection with CMMs,Factory Automation
+29,Robotic waterjet cutting cell integration,Factory Automation
+30,Automated tool changing systems for CNC,Factory Automation
+31,Production line OEE monitoring systems,Factory Automation
+32,Automated soldering systems for PCB assembly,Factory Automation
+33,Robotic adhesive dispensing cell calibration,Factory Automation
+34,Automated stamping press feeding mechanisms,Factory Automation
+35,Industrial robot collision detection systems,Factory Automation
+36,Automated vision-based sorting conveyors,Factory Automation
+37,Robotic arc welding seam tracking systems,Factory Automation
+38,Automated press-fit assembly validation,Factory Automation
+39,Industrial automation cabinet cooling solutions,Factory Automation
+40,Wireless vibration sensors for motor health monitoring,IoT
+41,IoT-enabled smart valves in water treatment plants,IoT
+42,BLE mesh networks for factory equipment tracking,IoT
+43,IoT data ingestion pipelines using Apache Kafka,IoT
+44,Predictive maintenance through thermal imaging sensors,IoT
+45,LoRaWAN gateways for long-range sensor networks,IoT
+46,Digital twin implementation for HVAC systems,IoT
+47,IoT device management using Azure Sphere,IoT
+48,Wireless pressure monitoring in hydraulic systems,IoT
+49,Edge AI processing for vibration analytics,IoT
+50,MQTT brokers in industrial IoT architectures,IoT
+51,Energy monitoring using smart IoT meters,IoT
+52,Vibration spectrum analysis for bearing health,IoT
+53,IoT security protocols for device authentication,IoT
+54,RFID-based inventory tracking in warehouses,IoT
+55,Wireless tank level sensors with NB-IoT,IoT
+56,Predictive quality analytics using sensor fusion,IoT
+57,IoT-enabled smart gloves for worker safety,IoT
+58,5G private networks for factory IoT devices,IoT
+59,Condition monitoring using ultrasonic sensors,IoT
+60,IoT-enabled predictive corrosion monitoring,IoT
+61,Wireless gas detection sensors with LTE-M,IoT
+62,Digital shadow implementation for pumps,IoT
+63,IoT-based energy harvesting sensor nodes,IoT
+64,Vibration-based gearbox health monitoring,IoT
+65,IoT-enabled smart bearing wear detection,IoT
+66,Wireless acoustic emission monitoring,IoT
+67,IoT-driven compressed air leak detection,IoT
+68,Smart lighting control using occupancy sensors,IoT
+69,IoT-enabled steam trap monitoring systems,IoT
+70,Wireless flowmeter integration with SCADA,IoT
+71,IoT-based lubrication level monitoring,IoT
+72,Smart electrical panel thermal monitoring,IoT
+73,IoT-enabled valve position feedback systems,IoT
+74,Wireless strain gauge data acquisition,IoT
+75,IoT-based hydraulic fluid quality sensing,IoT
+76,Smart motor current signature analysis,IoT
+77,IoT-enabled conveyor belt wear monitoring,IoT
+78,Wireless proximity sensor network design,IoT
+79,PID loop tuning methods for heat exchangers,IoT
+80,Distributed control system (DCS) architecture,Process Control
+81,Advanced process control for distillation columns,Process Control
+82,Mass flow controller calibration techniques,Process Control
+83,Model predictive control in chemical reactors,Process Control
+84,Pressure control loops in steam systems,Process Control
+85,Cascade control configuration for reactors,Process Control
+86,Statistical process control (SPC) chart analysis,Process Control
+87,Flow transmitter installation best practices,Process Control
+88,Control valve positioner configuration,Process Control
+89,Batch process automation in pharma industry,Process Control
+90,Multi-variable control for furnace operation,Process Control
+91,Feedforward control for disturbance rejection,Process Control
+92,Level control strategies for separator vessels,Process Control
+93,Process historian data analysis trends,Process Control
+94,Control loop performance monitoring tools,Process Control
+95,Safety instrumented systems in process plants,Process Control
+96,PID anti-windup techniques implementation,Process Control
+97,Process variable filtering and signal damping,Process Control
+98,Ratio control systems for mixing processes,Process Control
+99,Advanced regulatory control configurations,Process Control
+100,Split-range control valve methodologies,Process Control
+101,Process gain calculation for controller tuning,Process Control
+102,Override control strategies for safety,Process Control
+103,Adaptive control for nonlinear processes,Process Control
+104,Dead-time compensation using Smith predictors,Process Control
+105,Process reaction curve analysis methods,Process Control
+106,Valve stiction detection and compensation,Process Control
+107,Relative gain analysis for loop pairing,Process Control
+108,Inferential control using soft sensors,Process Control
+109,Process decoupling control techniques,Process Control
+110,Real-time optimization (RTO) integration,Process Control
+111,Surge control for centrifugal compressors,Process Control
+112,Boiler drum level control strategies,Process Control
+113,pH neutralization process control methods,Process Control
+114,Distributed temperature control systems,Process Control
+115,Exothermic reactor temperature control,Process Control
+116,Flooded condenser control in distillation,Process Control
+117,Reboiler steam flow control optimization,Process Control
+118,Pump minimum flow protection controls,Process Control
+119,ISO 13849 PL ratings for machine safety,Process Control
+120,Safety door interlock circuit design,Safety and Standards
+121,IEC 62061 functional safety compliance,Safety and Standards
+122,ATEX zone classification for hazardous areas,Safety and Standards
+123,Machine safety risk assessment methodology,Safety and Standards
+124,Safety relay configuration for E-stop circuits,Safety and Standards
+125,ANSI B11 standards for press brake safety,Safety and Standards
+126,SIL verification for safety instrumented systems,Safety and Standards
+127,Lockout-tagout (LOTO) procedure compliance,Safety and Standards
+128,Emergency stop circuit design principles,Safety and Standards
+129,Safety light curtain integration guidelines,Safety and Standards
+130,NFPA 79 electrical standards for machinery,Safety and Standards
+131,Functional safety certification process,Safety and Standards
+132,Safety PLC programming standards (IEC 61131),Safety and Standards
+133,Risk reduction factors in machine guarding,Safety and Standards
+134,CE marking requirements for industrial equipment,Safety and Standards
+135,"Safety network protocols (CIP Safety, PROFIsafe)",Safety and Standards
+136,Hazardous area classification per NEC 500,Safety and Standards
+137,Safety validation documentation requirements,Safety and Standards
+138,Human-machine interface safety standards,Safety and Standards
+139,Safety mat installation and configuration,Safety and Standards
+140,Two-hand control system implementation,Safety and Standards
+141,Emergency stop button ergonomic placement,Safety and Standards
+142,Safety-rated monitored stop systems,Safety and Standards
+143,ISO 10218 robot safety compliance,Safety and Standards
+144,Safety controller response time analysis,Safety and Standards
+145,Machine safety distance calculations,Safety and Standards
+146,Safety encoder integration for position monitoring,Safety and Standards
+147,Safety over Ethernet protocols implementation,Safety and Standards
+148,Pilz safety relay configuration guidelines,Safety and Standards
+149,Safety laser scanner zone configuration,Safety and Standards
+150,ISO 12100 risk assessment procedures,Safety and Standards
+151,Safety contactor selection criteria,Safety and Standards
+152,Emergency stop circuit redundancy design,Safety and Standards
+153,Safety interlock switch mounting standards,Safety and Standards
+154,Safety control cabinet layout requirements,Safety and Standards
+155,ISO 13857 reach distance regulations,Safety and Standards
+156,Safety function performance level verification,Safety and Standards
+157,Safe torque off (STO) circuit design,Safety and Standards
+158,Safety limit switch installation standards,Safety and Standards
+159,How to update my account password?,Safety and Standards
+160,Where can I find my purchase history?,General
+161,The website is not loading images properly,General
+162,How to contact customer support team?,General
+163,Need help recovering my account email,General
+164,Why am I getting payment gateway errors?,General
+165,How to cancel my subscription plan?,General
+166,Download link not working for manuals,General
+167,Two-factor authentication setup guide,General
+168,Invoice format customization options,General
+169,System requirements for mobile app,General
+170,Request for VAT exemption documents,General
+171,Trouble accessing online training portal,General
+172,How to change account permissions?,General
+173,Software license transfer procedure,General
+174,Report inappropriate forum content,General
+175,Data export format options available,General
+176,Request extension for service trial,General
+177,Update billing address information,General
+178,Troubleshoot notification delays,General
+179,How to merge duplicate user accounts?,General
+180,Where are my saved configuration files?,General
+181,Error when uploading profile picture,General
+182,How to request API documentation?,General
+183,Trouble printing from web interface,General
+184,How to reset dashboard preferences?,General
+185,Mobile app crashing on startup,General
+186,Request product compatibility matrix,General
+187,How to share project access?,General
+188,Trouble redeeming license key,General
+189,Where to find software checksums?,General
+190,How to report a translation error?,General
+191,Request archived report generation,General
+192,Trouble with search functionality,General
+193,How to enable dark mode theme?,General
+194,Missing toolbar icons in interface,General
+195,How to request training materials?,General
+196,Trouble with auto-save feature,General
+197,How to check service uptime?,General
+198,Request custom report templates,General
+199,Request custom report templates,General
+200,Automated CNC tool changers for machining centers,Factory Automation
+201,Vision-guided robotic inspection of weld seams,Factory Automation
+202,Automated labeling systems with print-and-apply technology,Factory Automation
+203,Industrial robot singularity avoidance algorithms,Factory Automation
+204,Automated leak testing using pressure decay methods,Factory Automation
+205,Robotic arc welding parameter optimization techniques,Factory Automation
+206,Automated fixture calibration for assembly stations,Factory Automation
+207,Conveyor belt tracking adjustment using laser alignment,Factory Automation
+208,Automated spindel runout compensation systems,Factory Automation
+209,Robotic ultrasonic cleaning cell integration,Factory Automation
+210,Automated coordinate system calibration for robots,Factory Automation
+211,Industrial robot payload dynamic compensation,Factory Automation
+212,Automated glue dispensing system nozzle maintenance,Factory Automation
+213,Machine vision-based robot workcell monitoring,Factory Automation
+214,Automated press brake tooling configuration,Factory Automation
+215,Robotic sanding path optimization algorithms,Factory Automation
+216,Automated coolant concentration monitoring systems,Factory Automation
+217,Industrial robot collision avoidance zone setup,Factory Automation
+218,Automated vision-based part orientation detection,Factory Automation
+219,Robotic gripper force feedback calibration,Factory Automation
+220,Wireless corrosion monitoring using IoT sensors,IoT
+221,IoT-enabled predictive bearing failure detection,IoT
+222,BLE-based personnel tracking in restricted areas,IoT
+223,IoT-driven pump cavitation detection systems,IoT
+224,Wireless torque sensor networks for rotating equipment,IoT
+225,IoT-based hydraulic system contamination monitoring,IoT
+226,LoRa-enabled outdoor tank level monitoring,IoT
+227,Edge computing for vibration frequency analysis,IoT
+228,IoT-enabled motor current signature analysis,IoT
+229,Wireless infrared thermography for electrical panels,IoT
+230,MQTT-SN protocol for constrained IoT devices,IoT
+231,IoT-based steam trap efficiency monitoring,IoT
+232,Wireless strain gauge networks on structural beams,IoT
+233,Digital shadow implementation for compressor health,IoT
+234,IoT-enabled lubricant viscosity monitoring,IoT
+235,Wireless partial discharge detection in switchgear,IoT
+236,NB-IoT based environmental monitoring in plants,IoT
+237,Edge AI for abnormal sound pattern detection,IoT
+238,IoT-driven predictive valve packing maintenance,IoT
+239,Wireless encoder feedback monitoring systems,IoT
+240,Split-range control for heating/cooling systems,Process Control
+241,Adaptive PID tuning using process gain scheduling,Process Control
+242,Cascade control for reactor temperature management,Process Control
+243,Dead-band adjustment in level control systems,Process Control
+244,Ratio control for chemical dosing applications,Process Control
+245,Override control for pump protection systems,Process Control
+246,Feedforward control for feed temperature variations,Process Control
+247,Nonlinear control strategies for pH regulation,Process Control
+248,Model-based predictive control for distillation,Process Control
+249,Anti-surge control for centrifugal compressors,Process Control
+250,Constraint handling in advanced process control,Process Control
+251,Valve position tracking for stiction detection,Process Control
+252,Multivariable control for furnace pressure/temp,Process Control
+253,Self-tuning regulators for process variability,Process Control
+254,Gain margin analysis in control loop design,Process Control
+255,Real-time optimization of cracking furnaces,Process Control
+256,Inferential control using Raman spectroscopy,Process Control
+257,Adaptive filtering for noisy process variables,Process Control
+258,Decoupling control for interacting processes,Process Control
+259,Bumpless transfer between manual/auto modes,Process Control
+260,ISO 14119 interlock device safety requirements,Safety and Standards
+261,Safety mat response time validation procedures,Safety and Standards
+262,IEC 61496 safety light curtain classifications,Safety and Standards
+263,ATEX Category 2 equipment installation guidelines,Safety and Standards
+264,Safety controller watchdog timer configurations,Safety and Standards
+265,ISO 13855 safety distance calculation formulas,Safety and Standards
+266,Emergency stop circuit redundancy verification,Safety and Standards
+267,Safety PLC code compliance auditing procedures,Safety and Standards
+268,EN 62061 subsystem architecture requirements,Safety and Standards
+269,Lockout tagout procedure documentation standards,Safety and Standards
+270,Safety relay force-guided contact verification,Safety and Standards
+271,ISO 13857 machine reach distance regulations,Safety and Standards
+272,Safety function diagnostic coverage analysis,Safety and Standards
+273,EN 1037 machinery unexpected start prevention,Safety and Standards
+274,Safety network heartbeat monitoring protocols,Safety and Standards
+275,IEC 60204 electrical equipment safety checks,Safety and Standards
+276,Safety-rated encoder signal validation,Safety and Standards
+277,PLr (Performance Level required) determination,Safety and Standards
+278,Safety controller validation test procedures,Safety and Standards
+279,Emergency stop circuit voltage drop analysis,Safety and Standards
+280,How to export my transaction history to CSV?,General
+281,Why are my notification settings resetting?,General
+282,Trouble accessing archived project files,General
+283,How to request a certificate of compliance?,General
+284,Mobile app compatibility with Android 14,General
+285,Procedure to merge duplicate contacts,General
+286,How to reset two-factor authentication?,General
+287,Download speed issues with large files,General
+288,Request custom API rate limit increase,General
+289,Trouble applying discount codes at checkout,General
+290,How to enable keyboard shortcuts?,General
+291,Missing email attachments in web client,General
+292,Request historical audit trail reports,General
+293,How to change account timezone settings?,General
+294,Trouble with auto-renewal cancellation,General
+295,Procedure to escalate support tickets,General
+296,How to access previous software versions?,General
+297,Calendar sync issues with mobile app,General
+298,Request custom data retention policies,General
+299,How to report broken documentation links?,General
+300,Robotic polishing cells with adaptive force control,Factory Automation
+301,Automated coordinate measuring machine (CMM) integration,Factory Automation
+302,Vision-guided robotic deburring of cast parts,Factory Automation
+303,Automated tool life monitoring using acoustic emissions,Factory Automation
+304,Robotic adhesive application path optimization,Factory Automation
+305,Automated guided vehicle (AGV) traffic management systems,Factory Automation
+306,Machine vision-based robotic sorting systems,Factory Automation
+307,Automated spindle temperature compensation algorithms,Factory Automation
+308,Robotic welding seam tracking with laser sensors,Factory Automation
+309,Automated fixtureless clamping systems,Factory Automation
+310,Industrial robot singularity avoidance algorithms,Factory Automation
+311,Automated coolant filtration system monitoring,Factory Automation
+312,Robotic laser cutting head focal distance adjustment,Factory Automation
+313,Automated press tonnage monitoring systems,Factory Automation
+314,Robot-mounted 3D scanning for inline inspection,Factory Automation
+315,Automated vacuum gripper pressure monitoring,Factory Automation
+316,Robotic assembly error proofing techniques,Factory Automation
+317,Automated conveyor belt tension regulation,Factory Automation
+318,Machine tending robots with dual gripper systems,Factory Automation
+319,Automated vision-based fastener verification,Factory Automation
+320,Wireless motor current signature analysis,IoT
+321,IoT-enabled bearing temperature trend monitoring,IoT
+322,LoRa-based pipeline cathodic protection monitoring,IoT
+323,Edge computing for pump performance degradation alerts,IoT
+324,Wireless ultrasonic thickness measurement systems,IoT
+325,IoT-driven predictive refractory wear monitoring,IoT
+326,BLE mesh networks for factory environmental sensing,IoT
+327,Vibration-based gearbox fault prediction models,IoT
+328,IoT-enabled steam system trap failure detection,IoT
+329,Wireless power quality monitoring in distribution panels,IoT
+330,NB-IoT enabled fire detection in remote facilities,IoT
+331,Edge AI for predictive conveyor belt wear,IoT
+332,IoT-based compressed air moisture content monitoring,IoT
+333,Wireless thermocouple networks for furnace profiling,IoT
+334,Digital twin integration for pump system optimization,IoT
+335,IoT-enabled predictive grease lubrication scheduling,IoT
+336,Wireless dissolved oxygen monitoring in process water,IoT
+337,LPWAN-based tank farm overfill protection,IoT
+338,Edge computing for real-time bearing FFT analysis,IoT
+339,IoT-driven predictive heat exchanger fouling,IoT
+340,Model predictive control for batch reactors,Process Control
+341,Adaptive PID for non-linear heat transfer processes,Process Control
+342,Cascade control for distillation column pressure,Process Control
+343,Ratio control optimization in polymerization,Process Control
+344,Override control for reactor pressure relief,Process Control
+345,Feedforward compensation for feed composition changes,Process Control
+346,Dead-time dominant process Smith predictor design,Process Control
+347,Multivariable control for extractive distillation,Process Control
+348,Robust control for varying raw material properties,Process Control
+349,Inferential control using near-infrared spectroscopy,Process Control
+350,Constraint handling in ethylene cracking furnaces,Process Control
+351,Valve positioner tuning for fast response loops,Process Control
+352,Nonlinear model predictive control for pH swings,Process Control
+353,Adaptive filtering for noisy level measurements,Process Control
+354,Decoupling control for interactive temperature zones,Process Control
+355,Bumpless transfer in split-range control systems,Process Control
+356,Real-time optimization of steam methane reformers,Process Control
+357,Fault-tolerant control system architecture design,Process Control
+358,Gain scheduling for seasonal cooling variations,Process Control
+359,Anti-windup strategies for integral saturation,Process Control
+360,IEC 62061 safety function response time analysis,Safety and Standards
+361,ISO 13849-1 architecture category validation,Safety and Standards
+362,Safety laser scanner configuration for AGV paths,Safety and Standards
+363,ATEX Zone 0 equipment certification requirements,Safety and Standards
+364,Emergency stop circuit impedance testing,Safety and Standards
+365,Safety controller cross-checking methodologies,Safety and Standards
+366,ISO 14123 machinery hazardous substance reduction,Safety and Standards
+367,Safety mat system fault injection testing,Safety and Standards
+368,EN ISO 10218-2 robot safety standard compliance,Safety and Standards
+369,Lockout tagout device durability testing,Safety and Standards
+370,Safety PLC program sequence verification,Safety and Standards
+371,ISO 13856 pressure-sensitive mat specifications,Safety and Standards
+372,Safety function performance level (PL) verification,Safety and Standards
+373,Emergency stop button ergonomic placement guidelines,Safety and Standards
+374,Safety relay contact welding detection methods,Safety and Standards
+375,IEC 61496 electro-sensitive protective equipment,Safety and Standards
+376,Machine safety risk graph methodology application,Safety and Standards
+377,Safety network communication integrity checks,Safety and Standards
+378,PL (Performance Level) calculation worksheets,Safety and Standards
+379,Emergency stop circuit voltage sag immunity tests,Safety and Standards
+380,How to recover deleted user permissions?,General
+381,Troubleshooting API authentication failures,General
+382,Mobile app notification delay issues,General
+383,Requesting historical access logs,General
+384,How to transfer project ownership?,General
+385,Resolving certificate expiration warnings,General
+386,Two-step verification backup code recovery,General
+387,Exporting system configuration backups,General
+388,Trouble accessing legacy API versions,General
+389,How to request custom report templates?,General
+390,Password complexity rule configuration,General
+391,Troubleshooting dashboard data latency,General
+392,Requesting SCORM package exports,General
+393,How to enable dark mode in web interface?,General
+394,Resolving time zone synchronization issues,General
+395,Procedure to archive inactive projects,General
+396,How to generate usage trend reports?,General
+397,Troubleshooting CSV import formatting,General
+398,Requesting increased file storage quota,General
+399,How to report translation errors in UI?,General
+400,Fundamental components of a PLC system,General
+401,Difference between open-loop and closed-loop control,General
+402,Purpose of ladder logic in industrial automation,General
+403,Basic principles of PID controller operation,General
+404,"Common industrial communication protocols (e.g., Modbus, Profibus)",General
+405,Safety standards for machine guarding (ISO 13857),General
+406,Types of industrial sensors and their applications,General
+407,Concept of human-machine interface (HMI) design,General
+408,Principles of pneumatic system operation,General
+409,Basics of motor control circuits,General
+410,Importance of failsafe design in automation,General
+411,Types of industrial robots and their configurations,General
+412,Fundamentals of SCADA system architecture,General
+413,Purpose of safety instrumented systems (SIS),General
+414,Basic electrical symbols used in control diagrams,General
+415,Concept of machine vision in quality inspection,General
+416,Principles of variable frequency drive (VFD) operation,General
+417,Types of industrial actuators and their applications,General
+418,Basics of hydraulic system maintenance,General
+419,Fundamentals of industrial networking topologies,General
+420,การเชื่อมโลหะด้วยหุ่นยนต์แบบใช้ระบบวิทัศน์ในสายการประกอบยานยนต์,Factory Automation
+421,การวางแผนเส้นทาง AGV ด้วยเซนเซอร์ LiDAR,Factory Automation
+422,ระบบตรวจสอบการสึกหรอของเครื่องมือ CNC แบบอัตโนมัติ,Factory Automation
+423,การผสานหุ่นยนต์ร่วมงานกับระบบ PLC แบบเดิม,Factory Automation
+424,ระบบตรวจสอบข้อบกพร่องพื้นผิวด้วยการมองเห็นอัตโนมัติ,Factory Automation
+425,กลไกเปลี่ยนอุปกรณ์จับชิ้นงานของหุ่นยนต์,Factory Automation
+426,เทคนิคการซิงโครไนซ์ความเร็วสายพานอัตโนมัติ,Factory Automation
+427,ขั้นตอนการปรับเทียบเซลล์ทำงานของหุ่นยนต์อุตสาหกรรม,Factory Automation
+428,การเพิ่มประสิทธิภาพการผลิตไลน์บรรจุภัณฑ์อัตโนมัติ,Factory Automation
+429,ระบบให้บริการเครื่อง CNC แบบอัตโนมัติ,Factory Automation
+430,หุ่นยนต์ขัดเงาแบบควบคุมแรงกดอัตโนมัติ,Factory Automation
+431,ระบบวัดพิกัดด้วยเครื่อง CMM แบบอัตโนมัติ,Factory Automation
+432,หุ่นยนต์กำจัดคราบด้วยระบบวิทัศน์สำหรับชิ้นส่วนหล่อ,Factory Automation
+433,ระบบตรวจสอบอายุเครื่องมือด้วยคลื่นเสียง,Factory Automation
+434,การปรับเส้นทางปะกาวด้วยหุ่นยนต์อัตโนมัติ,Factory Automation
+435,ระบบจัดการจราจร AGV ในโรงงาน,Factory Automation
+436,ระบบคัดแยกด้วยหุ่นยนต์และระบบวิทัศน์,Factory Automation
+437,อัลกอริทึมชดเชยอุณหภูมิสปินเดิลอัตโนมัติ,Factory Automation
+438,การติดตามรอยเชื่อมด้วยเลเซอร์ในหุ่นยนต์เชื่อม,Factory Automation
+439,ระบบจับชิ้นงานไร้ฟิกซ์เจอร์อัตโนมัติ,Factory Automation
+440,ระบบตรวจสอบการสั่นสะเทือนแบบไร้สายสำหรับตลับลูกปืนปั๊ม,IoT
+441,การสร้างฝาแฝดดิจิทัลเพื่อเพิ่มประสิทธิภาพพลังงาน HVAC,IoT
+442,ระบบตรวจสอบระดับถังด้วย LoRaWAN,IoT
+443,การวิเคราะห์การสั่นสะเทือนแบบเรียลไทม์ที่ Edge,IoT
+444,การบำรุงรักษาเชิงพยากรณ์สำหรับคอมเพรสเซอร์ด้วย IoT,IoT
+445,เครือข่ายเซนเซอร์แบบ Wireless Mesh ในโรงงาน,IoT
+446,การใช้งานโปรโตคอล MQTT ในเกตเวย์ IIoT,IoT
+447,การวิเคราะห์ข้อมูลเซนเซอร์อุณหภูมิบนคลาวด์,IoT
+448,การควบคุมคุณภาพด้วยเซนเซอร์หลายประเภท,IoT
+449,การเชื่อมต่อระบบวิทัศน์เครื่องด้วย 5G,IoT
+450,ระบบติดตามทรัพย์สินด้วย BLE ในคลังสินค้า,IoT
+451,การตรวจสอบการใช้พลังงานมอเตอร์ผ่าน IoT,IoT
+452,เซนเซอร์อัจฉริยะสำหรับระบบไฮดรอลิก,IoT
+453,การตรวจสอบเครื่องทำความเย็นทางไกลผ่าน IoT,IoT
+454,ระบบตรวจสอบอุปกรณ์เกษตรด้วย LPWAN,IoT
+455,การวิเคราะห์สภาพใบพัดกังหันลมด้วยการสั่นสะเทือน,IoT
+456,ระบบจัดการหล่อลื่นอัจฉริยะด้วย IoT,IoT
+457,การควบคุมแสงสว่างอัจฉริยะด้วยเซนเซอร์ตรวจจับการเคลื่อนไหว,IoT
+458,การตรวจสอบการกัดกร่อนในท่อเคมีแบบไร้สาย,IoT
+459,ระบบตรวจจับการรั่วในระบบลมอัดด้วย IoT,IoT
+460,การปรับแต่ง PID ขั้นสูงสำหรับเครื่องปฏิกรณ์เอกโซเทอร์มิก,Process Control
+461,การควบคุมแบบพยากรณ์สำหรับคอลัมน์กลั่น,Process Control
+462,การตั้งค่าควบคุมแบบ Cascade สำหรับเครื่องแลกเปลี่ยนความร้อน,Process Control
+463,การชดเชยการติดขัดของวาล์วควบคุมความดัน,Process Control
+464,การควบคุมหลายตัวแปรสำหรับเครื่องปฏิกรณ์แบบฟลูอิไดซ์เบด,Process Control
+465,กลยุทธ์การควบคุมแบบปรับตัวสำหรับการควบคุม pH,Process Control
+466,การชดเชยเวลาตายในวงจรควบคุมอุณหภูมิ,Process Control
+467,ระบบป้องกันปั๊มด้วยการควบคุม Override,Process Control
+468,การควบคุมกระบวนการแบบสถิติสำหรับการผลิตเป็นชุด,Process Control
+469,การควบคุมอัตราส่วนในกระบวนการผสม,Process Control
+470,การควบคุม Feedforward สำหรับหม้อต้ม,Process Control
+471,การควบคุมแบบเมทริกซ์ไดนามิกสำหรับเครื่องปฏิกรณ์พอลิเมอไรเซชัน,Process Control
+472,การควบคุม Split-range สำหรับระบบความดัน,Process Control
+473,กลยุทธ์ควบคุมแบบไม่เชิงเส้นสำหรับเครื่องปฏิกรณ์ชีวภาพ,Process Control
+474,การควบคุมผลึกแบบแบตช์ด้วยวิธี Optimal Control,Process Control
+475,การปรับจูนวาล์วโพสิชันเนอร์สำหรับการตอบสนองเร็ว,Process Control
+476,การควบคุมความชื้นด้วย Fuzzy Logic,Process Control
+477,การปรับ Gain ตามฤดูกาลสำหรับกระบวนการอบความร้อน,Process Control
+478,การควบคุมแบบแยกคู่สำหรับถาดกลั่น,Process Control
+479,การควบคุม Robust สำหรับกระบวนการเอกโซเทอร์มิกไม่เสถียร,Process Control
+480,การใช้งานระบบความปลอดภัย SIL-2 สำหรับเครื่องกด,Safety and Standards
+481,การติดตั้งเซนเซอร์ตามมาตรฐาน ATEX ในโซน 1,Safety and Standards
+482,การติดตั้งม่านแสงปลอดภัยสำหรับเซลล์หุ่นยนต์,Safety and Standards
+483,การรับรอง ISO 13849 สำหรับเครื่องบรรจุภัณฑ์,Safety and Standards
+484,การตรวจสอบระบบหยุดฉุกเฉินแบบซ้ำซ้อน,Safety and Standards
+485,การประเมินความปลอดภัยเชิงหน้าที่สำหรับอุปกรณ์ CNC,Safety and Standards
+486,วิธีการประเมินความเสี่ยงตาม ISO 12100,Safety and Standards
+487,การเขียนโปรแกรม PLC ความปลอดภัยสำหรับระบบดับเพลิง,Safety and Standards
+488,การปฏิบัติตามมาตรฐาน NFPA 79 สำหรับแผงควบคุม,Safety and Standards
+489,มาตรฐานเอกสารขั้นตอน Lockout-Tagout,Safety and Standards
+490,การตรวจสอบเวลาตอบสนองฟังก์ชันความปลอดภัย IEC 62061,Safety and Standards
+491,การคำนวณระยะปลอดภัยตาม ISO 13855,Safety and Standards
+492,การทดสอบแรงกดปุ่มหยุดฉุกเฉิน,Safety and Standards
+493,วิธีการตรวจจับการเชื่อมต่อรีเลย์ความปลอดภัย,Safety and Standards
+494,การวิเคราะห์ระดับประสิทธิภาพความปลอดภัย (PL),Safety and Standards
+495,การตรวจสอบโปรแกรม PLC ความปลอดภัย,Safety and Standards
+496,การประยุกต์ใช้แผนภูมิความเสี่ยงเครื่องจักร,Safety and Standards
+497,การตรวจสอบความสมบูรณ์ของเครือข่ายความปลอดภัย,Safety and Standards
+498,การทดสอบระบบระบายอากาศฉุกเฉิน,Safety and Standards
+499,การตรวจสอบการให้คะแนนตู้กันระเบิด,Safety and Standards
+500,วิธีการรีเซ็ตรหัสผ่านบัญชีผู้ใช้,General
+501,ปัญหาในการเข้าถึงใบแจ้งหนี้เดิม,General
+502,แอพมือถือหยุดทำงานบน iOS 17.2,General
+503,วิธีการขอเพิ่มขีดจำกัด API,General
+504,ไม่สามารถดาวน์โหลดไฟล์ซอฟต์แวร์ที่ซื้อแล้ว,General
+505,วิธีการอัปเดตที่อยู่การเรียกเก็บเงิน,General
+506,ปัญหาการตั้งค่าการยืนยันตัวสองขั้นตอน,General
+507,วิธีการรายงานเนื้อหาไม่เหมาะสมในฟอรัม,General
+508,แก้ไขปัญหาการส่งออกไฟล์ PDF ล้มเหลว,General
+509,วิธีการขยายระยะเวลาทดลองใช้,General
+510,การรวมบัญชีผู้ใช้หลายบัญชี,General
+511,ปัญหาเซสชันล็อกอินหมดอายุ,General
+512,วิธีการขอใบรับรองความถูกต้องซอฟต์แวร์,General
+513,กู้คืนไฟล์โครงการที่ถูกลบจากคลาวด์,General
+514,แก้ไขปัญหาการชำระเงินต่ออายุสมาชิก,General
+515,วิธีการส่งออกประวัติข้อมูลจากแดชบอร์ด,General
+516,เปลี่ยนการตั้งค่าการแจ้งเตือนในพอร์ทัล,General
+517,แก้ไขปัญหาความเข้ากันได้กับระบบปฏิบัติการเก่า,General
+518,วิธีการโอนใบอนุญาตระหว่างอุปกรณ์,General
+519,ทำความเข้าใจข้อตกลงระดับบริการ (SLA),General

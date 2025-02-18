@@ -1,5 +1,7 @@
-PYTHONPATH='/path/of/project'
 
+#-------------------- Python ENV --------------------#
+# Setup python PATH
+PYTHONPATH='project/path'
 
 # ENV for Loader ( Using for test )
 TEXTLOADER='./document/test.txt'
@@ -8,12 +10,11 @@ PDFLOADER='./document/Train.pdf'
 # User Agent for Webbase. ( Using for Webbaseloadder )
 USER_AGENT='myagent'
 
-
 # Logging config
-LOG_PATH='/path/to/logs/file.log'
+LOG_PATH='capstone/backend/logs/logs.log'
 LOG_NAME=''
-LOG_FORMAT=''
-LOG_LEVEL=''
+LOG_FORMAT='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+LOG_LEVEL='INFO'
 
 # Database login
 # DATABASE_USERNAME=
@@ -24,3 +25,18 @@ LOG_LEVEL=''
 
 # Database adjustment
 DATABASE_CREATE=True
+
+# Vector Database
+PERSIST_DIR='database/vector_database'
+
+# LangSmith
+LANGSMITH_TRACING="true"
+LANGSMITH_API_KEY=""
+
+
+#---------------- VITE ENV ----------------#
+# Dashboard Defualt
+VITE_API_URL=''
+
+# Frontend database (Only Query)
+PRISMA_DATABASE_URL=''

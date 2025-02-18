@@ -1,8 +1,11 @@
+import os
 import io
 import json
-from typing import List
-from pypdf import PdfReader
+import time
+import logging
 
+from pypdf import PdfReader
+from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from fastapi import (
     File,
@@ -13,7 +16,7 @@ from fastapi import (
     HTTPException
     )
 
-from capstone.backend.llms import RAGModel
+from capstone.backend.llms import RAGModel, get_RAG
 from capstone.backend.api.models import FileLength
 from capstone.backend.database import (
     get_db, 
@@ -21,21 +24,24 @@ from capstone.backend.database import (
     DocumentTable,
     )
 
-# Setting RAG model
-RAG = RAGModel()
+load_dotenv()
+logging.getLogger(__name__)
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", default="bge-m3")
 
 tags = ["Document"]
 router_document = APIRouter(prefix='/document')
 
 # Uploadfile PDF from API.
-@router_document.post("/uploadfile", tags=tags)
-async def uploadFile(
-    data: str = Form(...), 
+@router_document.post("/document", tags=tags)
+async def upload_Docs(
+    data: str = Form(default={"first_page":0,"final_page":0}), 
     file: UploadFile = File(...),
-    db: DBConnection = Depends(get_db)
+    db: DBConnection = Depends(get_db),
+    RAG: RAGModel = Depends(get_RAG)
     ):
 
     try:
+        start_time = time.time()
         # Parse the JSON string into the Pydantic model
         interval = FileLength.model_validate_json(data)
 
@@ -44,12 +50,51 @@ async def uploadFile(
         pdf_file = io.BytesIO(content)
         reader = PdfReader(pdf_file)
 
-        # Make sure the interval is good.
-        if (interval.start_page < 1 or 
-            interval.final_page > len(reader.pages) or 
-            interval.start_page > interval.final_page):
+        # IF start page = final page and zero must extract all.
+        # Example reqeust body 
+        # { "start_page":0, "final_page":0 }
+        if ((interval.start_page == interval.final_page) and 
+            (interval.start_page == 0 and interval.final_page == 0)):
+            
+            # Make to extract all data.
+            interval.start_page = 1 # first_page = 1 in PDF
+            interval.final_page = len(reader.pages)
 
-            # Raise an Exception 422
+            # logging info.
+            logging.info(f"Receive start_page = 0 and final_page = 0 >> Set inteval to extract all")
+        
+        # IF start_page != 0 and final_page > max_page or == 0
+        # Example request body 
+        # { "start_page":1, "final_page":0 ( < start_page ) }
+        elif ((interval.start_page != 0) and
+              ((interval.final_page > len(reader.pages)) or 
+               (interval.final_page == 0))):
+            
+            # Set final page to Extract all page.
+            interval.final_page = len(reader.pages)
+
+            # logging info.
+            logging.info(f"Set final_page = {len(reader.pages)} >> Set to extract all from start_page")
+
+        # IF start_page == 0 and final_page != 0
+        # Example request body
+        # { "start_page":0, "final_page":10 }
+        # Must extract from first_page to final_page
+        elif (interval.start_page == 0 and interval.final_page != 0):
+            
+            # Set start_page = 1
+            interval.start_page = 1
+
+            # logging info.
+            logging.info("Set start_page = 1")
+
+
+        # start_page must less than final_page and final_page must max to pages.
+        # Example request body 
+        # { "start_page":2, "final_page":1 }
+        elif (interval.start_page > interval.final_page):
+
+            # Raise an Exception HTTP ERROR 422.
             raise HTTPException(422, f"The interval that given {interval} is not good.")
         
         # Specific target page to extract
@@ -57,8 +102,9 @@ async def uploadFile(
                     interval.start_page-1, # First page is zero. 
                     interval.final_page
                     )] 
-        print(target_interval)
-        # Prepare Temp Varr
+        logging.info(f'Extract {target_interval}')
+
+        # Prepare Temp Varr.
         contents = ""
         metadatas = []
 
@@ -66,45 +112,44 @@ async def uploadFile(
         for page in reader.pages:
             if page.page_number in target_interval:
                 contents += page.extract_text()
-                metadatas.append({"source": file.filename,
-                                "Page":page.page_number,
+                metadatas.append({
+                    "page":page.page_number,
+                    "source": file.filename,
                                 })
         
+        # Upload PDF to Vector Database
+        documents = await RAG.aload_from_API(
+            contents=contents,
+            metadatas=metadatas
+            )
+        time_usage = time.time() - start_time
+
         # Insert to Document Table.
         db.insert(
             DocumentTable, 
-            document_name = file.filename, 
+            embedding_model = EMBEDDING_MODEL,
+            document_name = file.filename,
+            time_usage=time_usage,
             pages=len(target_interval)
             )
-        
-        # # Upload PDF to Vector Database
-        # documents = await RAG.aload_from_API(
-        #     contents=contents,
-        #     metadatas=metadatas
-        #     )
 
         return JSONResponse(content={
-            "filename": file.filename,
-            "Metadata":metadatas}
-            )
+            "Filename": file.filename,
+            "Metadata": metadatas,
+            "time_usage": time_usage,
+            })
 
     except json.JSONDecodeError:
         raise HTTPException(400, "Invalid JSON format")
     except Exception as e:
         raise HTTPException(400, f"Data validation error: {str(e)}")
+    
+# Use to remove Document inside vector database.
+@router_document.delete("/document", tags=tags)
+async def remove_Docs():
+    pass
 
-# # TODO: Make Can upload multiple document beware error.
-# @router_document.post("/upload_multiple", tags=tags)
-# async def uploadFileMultiple(files: List[UploadFile] = File(...)):
-#     file_contents = {}
-
-#     for file in files:
-#         file_data = await file.read()  # Read file asynchronously
-#         pdf_reader = PdfReader(io.BytesIO(file_data))  # Convert bytes to PDF reader
-        
-#         # Extract text from all pages
-#         extracted_text = "\n".join(page.extract_text() or "" for page in pdf_reader.pages)
-        
-#         file_contents[file.filename] = extracted_text  # Map filename to extracted text
-
-#     return JSONResponse(content={"files": file_contents})  # Return JSON response
+# Get Document from database.
+@router_document.get('/documents', tags=tags)
+async def get_Docs():
+    pass
