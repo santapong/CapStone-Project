@@ -1,5 +1,4 @@
 import uuid
-import logging
 from sqlalchemy import (
     func,
     UUID,
@@ -7,11 +6,9 @@ from sqlalchemy import (
     Column, 
     String, 
     Integer, 
-    ForeignKey,
     ) 
 from sqlalchemy.orm import (
     declarative_base, 
-    relationship
     )
 
 # Define DDL for database.
@@ -49,6 +46,7 @@ class LogsTable(DATABASE_MODEL):
     __tablename__ = 'logs'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    llm_model = Column(String)
     prompt  = Column(String)
     question = Column(String)
     answer = Column(String)

@@ -1,7 +1,6 @@
 import os
 import logging
 
-from typing_extensions import Self
 from typing import (
     List, 
     Union, 
@@ -10,7 +9,6 @@ from typing import (
 
 from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI
-from langchain_postgres import PGVector
 from langchain_core.documents import Document
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -18,15 +16,14 @@ from langchain_text_splitters import (
     RecursiveCharacterTextSplitter
     )
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain_ollama import (
-    OllamaEmbeddings, 
-    OllamaLLM
-    )
+from langchain_ollama import OllamaEmbeddings 
 
 from capstone.backend.llms.prompt_template import (
     rag_prompt,
     pre_retrieval
     )
+
+logging.getLogger(__name__)
 
 # Get from ENV
 LLM_MODEL = os.getenv("LLM_MODEL",default= "llama3.2")

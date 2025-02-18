@@ -3,7 +3,7 @@ import io
 import json
 import time
 import logging
-from typing import List
+
 from pypdf import PdfReader
 from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
@@ -25,6 +25,7 @@ from capstone.backend.database import (
     )
 
 load_dotenv()
+logging.getLogger(__name__)
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", default="bge-m3")
 
 tags = ["Document"]

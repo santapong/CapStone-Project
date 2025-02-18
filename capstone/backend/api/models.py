@@ -1,14 +1,12 @@
 import base64
-from typing import List
 from pydantic import BaseModel
-from fastapi import UploadFile, File
 
 class ChatModel(BaseModel):
     question: str
 
 class ResponseModel(BaseModel):
     answer: str
-    tinme_usage: float
+    time_usage: float
     question: str
 
 class FileLength(BaseModel):

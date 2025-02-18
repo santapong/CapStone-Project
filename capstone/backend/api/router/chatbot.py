@@ -1,5 +1,8 @@
 import time
 import logging
+import os
+
+# Import to use Event of SQLalchemy
 import capstone.backend.database.events
 
 from dotenv import load_dotenv
@@ -39,7 +42,8 @@ async def inferenceModel(
 
     # Insert to database
     db.insert(
-        table=LogsTable, 
+        table=LogsTable,
+        llm_model= os.getenv("LLM_MODEL"),
         prompt=rag_prompt.__name__, 
         question=request.question, 
         answer=answer['answer'], 

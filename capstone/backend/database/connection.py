@@ -2,12 +2,11 @@ import os
 import logging
 from dotenv import load_dotenv
 from typing import List, Optional, Any
-from typing_extensions import Self
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import (
     Query,
-    sessionmaker, 
-    declarative_base,
+    sessionmaker,
     )
 from capstone.backend.database.models import DATABASE_MODEL
 

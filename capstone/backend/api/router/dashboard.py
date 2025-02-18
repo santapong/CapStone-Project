@@ -1,11 +1,8 @@
 import os
 import logging
-import json
 
-from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from fastapi import (
-    Request,
     Depends, 
     APIRouter, 
 )
@@ -15,9 +12,10 @@ from capstone.backend.api.models import SQLModel
 from capstone.backend.database import (
     get_db,
     DBConnection,
-    ChatHistoryTable,
     )
-     
+
+logging.getLogger(__name__)
+
 router_dashboard = APIRouter(prefix='/dashboard')
 tags = ['Dashboard']    
 
@@ -29,6 +27,12 @@ def sqlexpress(
     ):
     # Decode Base64 SQL
     sql_query = request.get_decoded_sql()
+
+    # logging Debug
+    logging.debug(f"Recieve SQL >> {sql_query}")
+
+    # logging info
+    logging.info(f"Get SQL query")
 
     # Query data from database
     session = db.get_session()
