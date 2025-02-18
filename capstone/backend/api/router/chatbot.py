@@ -28,7 +28,7 @@ tags = ["Chatbot"]
 router_chatbot = APIRouter(prefix='/chatbot')
 
 @router_chatbot.post("/infer", tags=tags, response_model=ResponseModel)
-async def inferenceModel(
+async def inference_Model(
     request: ChatModel, 
     db: DBConnection = Depends(get_db),
     RAG: RAGModel = Depends(get_RAG)

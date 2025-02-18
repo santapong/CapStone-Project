@@ -32,8 +32,8 @@ tags = ["Document"]
 router_document = APIRouter(prefix='/document')
 
 # Uploadfile PDF from API.
-@router_document.post("/uploadfile", tags=tags)
-async def uploadFile(
+@router_document.post("/document", tags=tags)
+async def upload_Docs(
     data: str = Form(default={"first_page":0,"final_page":0}), 
     file: UploadFile = File(...),
     db: DBConnection = Depends(get_db),
@@ -145,11 +145,11 @@ async def uploadFile(
         raise HTTPException(400, f"Data validation error: {str(e)}")
     
 # Use to remove Document inside vector database.
-@router_document.delete("/documents")
-async def removeDocs():
+@router_document.delete("/document", tags=tags)
+async def remove_Docs():
     pass
 
 # Get Document from database.
-@router_document.get('/documents')
-async def getDocs():
+@router_document.get('/documents', tags=tags)
+async def get_Docs():
     pass

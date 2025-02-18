@@ -20,8 +20,8 @@ router_dashboard = APIRouter(prefix='/dashboard')
 tags = ['Dashboard']    
 
 # Using Base 64 to query Database.
-@router_dashboard.post('/data/sql', tags=tags)
-def sqlexpress(
+@router_dashboard.post('/query', tags=tags)
+def SQL_query(
         request: SQLModel,
         db: DBConnection = Depends(get_db)
     ):

@@ -22,7 +22,7 @@ setup_logging()
 logging.getLogger(__name__)
 
 # Set API Prefix and API application.
-tags = ["Documents"]
+tags = ["Default"]
 prefix = os.getenv("PATH_PREFIX", default='/')
 app = FastAPI(prefix=prefix)
 
