@@ -21,28 +21,8 @@ from capstone.backend.database import (
 router_dashboard = APIRouter(prefix='/dashboard')
 tags = ['Dashboard']    
 
-# API for get Data from database
+# Using Base 64 to query Database.
 @router_dashboard.post('/data/sql', tags=tags)
-def sqlexpress(
-        request:SQLModel,
-        db: DBConnection = Depends(get_db)
-    ):
-
-    # Query data from database from request.
-    sql = request.sql
-    session = db.get_session()    
-    query_data = session.execute(text(sql))
-
-    # Convert data to Json format    print(json_data)
-    column_name = [column for column in query_data.keys()]
-    row_data = [data for data in query_data.all()]
-    json_data = [dict(zip(column_name,row_data)) for row_data in row_data]
-
-    return JSONResponse(content={"data":json_data})
-
-
-
-@router_dashboard.post('/data/chatgpt', tags=tags)
 def sqlexpress(
         request: SQLModel,
         db: DBConnection = Depends(get_db)

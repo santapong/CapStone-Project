@@ -60,6 +60,8 @@ class DocumentTable(DATABASE_MODEL):
     __tablename__ = "documents"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    embedding_model = Column(String)
     document_name = Column(String)
     pages = Column(Integer)
+    time_usage = Column(Float)
     datetime = Column(String, default=func.now())

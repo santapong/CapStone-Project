@@ -16,8 +16,7 @@ def get_model():
     except: 
         raise FileNotFoundError("Cannot find Model location")
     
-# TODO: Implement Event to Extract Summary from ChatHistory 
-# Event to Extract Summary from ChatHistory
+# Event to Extract Summary from Logs
 @listens_for(LogsTable, 'after_insert')
 def categorize_question(mapper, connection, target):
     model = get_model()

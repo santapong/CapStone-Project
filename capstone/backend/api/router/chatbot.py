@@ -24,7 +24,6 @@ logging.getLogger(__name__)
 tags = ["Chatbot"]
 router_chatbot = APIRouter(prefix='/chatbot')
 
-# TODO: Make it will connect to database.
 @router_chatbot.post("/infer", tags=tags, response_model=ResponseModel)
 async def inferenceModel(
     request: ChatModel, 
@@ -46,8 +45,6 @@ async def inferenceModel(
         answer=answer['answer'], 
         time_usage=time_usage
         )
-    
-    logging.info(len(answer['context']))
     
     return JSONResponse(content={
         "time usage": time_usage,
