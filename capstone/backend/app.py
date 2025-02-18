@@ -35,7 +35,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
+# Set redirect to /docs when enter root path ('/')
 @app.get('/',tags=tags)
 def docs():
     return RedirectResponse(url='/docs')
