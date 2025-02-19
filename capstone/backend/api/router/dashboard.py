@@ -8,6 +8,9 @@ from fastapi import (
 )
 
 from sqlalchemy import text
+
+from capstone.backend.api.utils import convert_to_table
+from capstone.backend.api.utils.dashboard_query import *
 from capstone.backend.api.models import SQLModel
 from capstone.backend.database import (
     get_db,
@@ -47,12 +50,20 @@ def SQL_query(
 
 
 @router_dashboard.get("/query")
-def query(
+async def query(
     db: DBConnection = Depends(get_db)
 ):
+    # Get session from database
+    session = db.get_session()
     
+    # Prepare Data for Dashboard
+    queries = {
+        "total_user": OVERALL_CHAT,
+        "avg_time_usage": TIME_USAGE,
+        "user_time": TOP_USER_TIME,
+        "top_category": TOP_CATEGORY
+    }
+
+    combined_data = {key: convert_to_table(session=session, sql=sql) for key, sql in queries.items()}
     
-    combinded_data = {"test":["hello"],
-                      "test2":"hello"}
-    
-    return JSONResponse(content={"data":combinded_data})
+    return JSONResponse(content={"data": combined_data})
