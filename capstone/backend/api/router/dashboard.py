@@ -16,11 +16,11 @@ from capstone.backend.database import (
 
 logging.getLogger(__name__)
 
-router_dashboard = APIRouter(prefix='/dashboard')
 tags = ['Dashboard']    
+router_dashboard = APIRouter(prefix='/dashboard', tags=tags)
 
 # Using Base 64 to query Database.
-@router_dashboard.post('/query', tags=tags)
+@router_dashboard.post('/query')
 def SQL_query(
         request: SQLModel,
         db: DBConnection = Depends(get_db)
@@ -44,3 +44,15 @@ def SQL_query(
     json_data = [dict(zip(column_name, row_data)) for row_data in row_data]
 
     return JSONResponse(content={"data": json_data})
+
+
+@router_dashboard.get("/query")
+def query(
+    db: DBConnection = Depends(get_db)
+):
+    
+    
+    combinded_data = {"test":["hello"],
+                      "test2":"hello"}
+    
+    return JSONResponse(content={"data":combinded_data})
