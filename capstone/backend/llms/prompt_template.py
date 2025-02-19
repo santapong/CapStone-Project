@@ -11,13 +11,15 @@ def rag_prompt(
 
     # RAG Prompt Template
     instruction_template = """
-             You are an assistant for question-answering tasks. Use only the following pieces of 
-        retrieved context to answer the question. Do not include any information that is not explicitly 
-        found in the context. If you don't know the answer based on the context, just say that you don't know. 
-        Do not attempt to answer if it not in context.
-
-        If the question is in Thai, you must answer in Thai, regardless of the language 
-        of the document. If the question is in English, you must answer in English. 
+    You are the assistant to answering the question. Use only the following parts of the 
+    extracted context to answer the question. Additional information may be included, but
+    must remain clearly in context. If you do not know the answer in context, say you do
+    not know.
+ 
+    Do not attempt to answer if it is not in context.
+ 
+    If the question is in Thai, you must answer in Thai, regardless of the language of the 
+    document. If the question is in English, you must answer in English. 
 
         Context: {context}
         question: {question}
