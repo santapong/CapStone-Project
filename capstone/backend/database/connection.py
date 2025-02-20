@@ -6,6 +6,7 @@ from typing import List, Optional, Any
 from sqlalchemy import create_engine
 from sqlalchemy.orm import (
     Query,
+    Session,
     sessionmaker,
     )
 from capstone.backend.database.models import DATABASE_MODEL
@@ -76,7 +77,7 @@ class DBConnection:
         return self.base_model.metadata.tables
 
     # Get session to database
-    def get_session(self):
+    def get_session(self)-> Session:
         return self.session
 
     # Query data from table of this database.

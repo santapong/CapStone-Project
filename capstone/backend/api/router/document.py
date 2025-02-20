@@ -29,10 +29,10 @@ logging.getLogger(__name__)
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", default="bge-m3")
 
 tags = ["Document"]
-router_document = APIRouter(prefix='/document')
+router_document = APIRouter(prefix='/document',tags=tags)
 
 # Uploadfile PDF from API.
-@router_document.post("/document", tags=tags)
+@router_document.post("/document")
 async def upload_Docs(
     data: str = Form(default={"first_page":0,"final_page":0}), 
     file: UploadFile = File(...),

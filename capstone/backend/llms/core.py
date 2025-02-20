@@ -48,6 +48,7 @@ class RAGModel:
             model=LLM_MODEL,
             api_key=API_KEY,
             max_completion_tokens=8192,
+            temperature=temperature,
         )
 
     # Pre Retrieval Process.
@@ -121,7 +122,7 @@ class RAGModel:
         # Call Retriever
         self.retriever = self.__vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={'k': 5}
+            search_kwargs={'k': 15}
             )
 
         # Create Chains
@@ -136,7 +137,7 @@ class RAGModel:
             combine_docs_chain=combine_docs_chain
             )
 
-        return retrieval_chains.invoke({"question": question,"input":""})
+        return retrieval_chains.invoke({"question": question,"input":question})
 
 # Make for FastAPI Depends 
 def get_RAG():
