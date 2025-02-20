@@ -48,7 +48,7 @@ def SQL_query(
 
     return JSONResponse(content={"data": json_data})
 
-
+# Query from Database.
 @router_dashboard.get("/query")
 async def query(
     db: DBConnection = Depends(get_db)
