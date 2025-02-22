@@ -1,11 +1,19 @@
-import { useState } from "react";
-import { FaRobot } from "react-icons/fa"; // ใช้ไอคอนบอท
+import { useState, useRef, useEffect } from "react";
+import { FaRobot } from "react-icons/fa";
 import axios from "axios";
 
 export default function Chatbot() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef(null); // Create a reference for the chat container
+
+  // Scroll to the bottom whenever messages change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!message.trim()) return;
@@ -35,22 +43,25 @@ export default function Chatbot() {
         className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center"
         onClick={() => document.getElementById("chatbot-modal").showModal()}
       >
-        <FaRobot className="text-2xl" /> {/* ไอคอนบอท */}
+        <FaRobot className="text-2xl" />
       </button>
 
       {/* DaisyUI Modal */}
       <dialog id="chatbot-modal" className="modal">
         <div className="modal-box bg-gray-900 text-white w-[600px] max-w-2xl">
           {/* Header */}
-          <div className="flex justify-between items-center bg-gray-800 px-4 py-3 rounded-t-lg">
+          <div className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-t-lg">
             <h4 className="text-lg font-semibold">ChatKMITL - Ask a question</h4>
             <form method="dialog">
-              <button className="text-2xl text-gray-400 hover:text-white">×</button>
+              <button className="text-2xl text-gray-400 hover:text-white">x</button>
             </form>
           </div>
 
           {/* Body - ส่วนแสดงข้อความแชท */}
-          <div className="p-4 h-[300px] overflow-y-auto">
+          <div
+            ref={chatContainerRef} // Attach ref to chat container
+            className="p-4 h-[300px] overflow-y-auto"
+          >
             {messages.map((msg, index) => (
               <div key={index} className={`mb-2 ${msg.type === "user" ? "text-right" : "text-left"}`}>
                 <div className={`inline-block px-3 py-2 rounded-lg break-words max-w-[80%] text-left ${
@@ -60,7 +71,11 @@ export default function Chatbot() {
                 </div>
               </div>
             ))}
-            {loading && <div className="text-left italic text-gray-400">AI กำลังพิมพ์...</div>}
+            {loading && (
+              <div>
+                <span className="loading loading-spinner loading-lg">AI กำลังพิมพ์ </span>
+              </div>
+            )}
           </div>
 
           {/* Footer - ส่วนพิมพ์ข้อความ */}
