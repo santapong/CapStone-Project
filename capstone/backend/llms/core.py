@@ -1,6 +1,7 @@
 import os
 import logging
 
+from uuid import uuid4
 from typing import (
     List, 
     Union, 
@@ -51,6 +52,9 @@ class RAGModel:
             temperature=temperature,
         )
 
+    def get_vector_store(self):
+        return self.__vector_store
+
     # Pre Retrieval Process.
     def __pre_retrieval(
             self, 
@@ -72,11 +76,12 @@ class RAGModel:
 
     # Internal Split Text
     def __split_text(self,
+                    metadatas,
                     contents:str,
-                    metadatas: Dict[str,str],
-                    chunk_size:int = 1000,
-                    separaters: str ='/n'
+                    chunk_size:int = 1024,
+                    separaters: str ='/n',
                     ):
+        
         # Splitter text API contents.
         splitter = RecursiveCharacterTextSplitter(
             chunk_size = chunk_size,
@@ -84,34 +89,40 @@ class RAGModel:
             separators=separaters
             )
         texts =  splitter.split_text(contents)
+        
+        # Generate Metadata
+        generate_metadata = [ metadatas[0] for _ in range(len(texts)) ]
+        
+        # Create Document from Text.
         documents = splitter.create_documents(
             texts=texts,
+            metadatas=generate_metadata
             )
 
         return documents
 
     # Load Document From API
     async def aload_from_API(self,
+                  metadatas,
                   contents:Union[Dict[str,str],str],
-                  metadatas: Dict[str,str],
-                  chunk_size:int = 1000,
                   )-> List[Document]:
         
         # Split text from API
         documents = self.__split_text(
             contents=contents,
-            metadatas=metadatas)
+            metadatas=metadatas
+            )
+        
+        # Add Metadata for documents.
+        ids = [str(uuid4()) for _ in range(len(documents))]
         
         # Add Document to Vector store.
-        self.__vector_store.add_documents(
+        metadata = self.__vector_store.add_documents(
             documents=documents,
+            ids=ids
             )
 
-        return documents
-
-    # Load Multiple Documents and Sematics Chunk.
-    def sematic_load():
-        pass
+        return metadata
 
     # Query to LLMs.
     def invoke(
@@ -145,4 +156,4 @@ def get_RAG():
 
 if __name__ == '__main__':
     test = RAGModel()
-    print(test.invoke("ปรัชญา"))
+    vector_store = test.get_vector_store()
