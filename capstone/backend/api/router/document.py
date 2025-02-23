@@ -145,8 +145,7 @@ async def upload_Docs(
         raise HTTPException(400, f"Data validation error: {str(e)}")
     
     
-    
-@router_document.delete("/document", tags=["Documents"])
+@router_document.delete("/document")
 async def remove_docs(
     document_name: str,
     db: DBConnection = Depends(get_db),
@@ -172,11 +171,11 @@ async def remove_docs(
             ids=documents[0].ids
             )
     
-    return JSONResponse(content={"message": "Document deleted successfully"})
+    return JSONResponse(content={"message": f"Document {document_name} deleted successfully"})
 
 
 # Get Document from database.
-@router_document.get('/documents', tags=tags)
+@router_document.get('/documents')
 async def get_Docs(
     db: DBConnection = Depends(get_db)
 ):
