@@ -1,85 +1,107 @@
-import { useState } from "react";
-import axios from "axios"; // เรียกใช้ Axios
-import "../../styles/chatbot.css";
+import { useState, useRef, useEffect } from "react";
+import { FaRobot } from "react-icons/fa";
+import axios from "axios";
 
 export default function Chatbot() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { text: "สวัสดีค่ะ มีอะไรให้ช่วยไหมคะ?", type: "bot" },
-    {
-      text: "โปรดเลือกสิ่งที่ต้องการทราบ:",
-      type: "bot",
-      options: ["หลักสูตร", "สถาบัน", "เกี่ยวกับ"],
-    },
-  ]);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef(null); // Create a reference for the chat container
 
-  const sendMessage = async (text) => {
-    if (!text.trim()) return; // ป้องกันการส่งข้อความว่าง
+  // Scroll to the bottom whenever messages change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
-    // เพิ่มข้อความของผู้ใช้ไปยังกล่องแชท
-    setMessages([...messages, { text, type: "user" }]);
+  const sendMessage = async () => {
+    if (!message.trim()) return;
+    setMessages([...messages, { text: message, type: "user" }]);
+    setMessage("");
 
-    // แสดงสถานะกำลังโหลด
     setLoading(true);
-
     try {
       const response = await axios.post("https://localhost:8000/chatbot/infer", {
-        question: text,
+        question: message,
       });
-
       const botReply = response.data.answer || "ขออภัย ฉันไม่เข้าใจคำถามของคุณ";
       setMessages((prev) => [...prev, { text: botReply, type: "bot" }]);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { text: "เกิดข้อผิดพลาดในการเชื่อมต่อ API", type: "bot" },
+        { text: "เกิดข้อผิดพลาดในการเชื่อมต่อ AI", type: "bot" },
       ]);
     }
-
     setLoading(false);
   };
 
   return (
     <>
-      <div className="chatbot-btn" onClick={() => setOpen(!open)}>
-        {/* <img src="https://via.placeholder.com/60x60?text=Chat" alt="Chatbot Button" /> */}
-        <div className="text-white text-3xl font-extralight text-center">AI</div>
-      </div>
+      {/* ปุ่มเปิด Chatbot (ไอคอนบอท) */}
+      <button
+        className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center"
+        onClick={() => document.getElementById("chatbot-modal").showModal()}
+      >
+        <FaRobot className="text-2xl" />
+      </button>
 
-      {open && (
-        <div id="chatModal">
-          <div id="chatModal-header">
-            <h4>Chatbot</h4>
-            <button className="close-btn" onClick={() => setOpen(false)}>×</button>
+      {/* DaisyUI Modal */}
+      <dialog id="chatbot-modal" className="modal">
+        <div className="modal-box bg-gray-900 text-white w-[600px] max-w-2xl">
+          {/* Header */}
+          <div className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-t-lg">
+            <h4 className="text-lg font-semibold">ChatKMITL - Ask a question</h4>
+            <form method="dialog">
+              <button className="text-2xl text-gray-400 hover:text-white">x</button>
+            </form>
           </div>
-          <div id="chatModal-body">
+
+          {/* Body - ส่วนแสดงข้อความแชท */}
+          <div
+            ref={chatContainerRef} // Attach ref to chat container
+            className="p-4 h-[300px] overflow-y-auto"
+          >
             {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.type}-message`}>
-                {msg.text}
-                {msg.options && (
-                  <div className="prompt-buttons">
-                    {msg.options.map((option, i) => (
-                      <button key={i} onClick={() => sendMessage(option)}>
-                        {option}
-                      </button>
-                    ))}
-                  </div>
-                )}
+              <div key={index} className={`mb-2 ${msg.type === "user" ? "text-right" : "text-left"}`}>
+                <div className={`inline-block px-3 py-2 rounded-lg break-words max-w-[80%] text-left ${
+                  msg.type === "user" ? "bg-blue-500 text-white" : "bg-gray-700"
+                }`}>
+                  {msg.text}
+                </div>
               </div>
             ))}
-            {loading && <div className="bot-message">กำลังพิมพ์...</div>}
+            {loading && (
+              <div>
+                <span className="loading loading-spinner loading-lg">AI กำลังพิมพ์ </span>
+              </div>
+            )}
           </div>
-          <div id="chatModal-footer">
+
+          {/* Footer - ส่วนพิมพ์ข้อความ */}
+          <div className="flex px-4 py-3 border-t border-gray-700">
             <input
               type="text"
-              placeholder="พิมพ์ข้อความที่นี่..."
-              onKeyDown={(e) => e.key === "Enter" && sendMessage(e.target.value)}
+              placeholder="Ask anything"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              className="flex-1 bg-gray-800 text-white px-3 py-2 rounded-l-lg focus:outline-none"
             />
-            <button onClick={() => sendMessage(document.querySelector("#chatModal-footer input").value)}>ส่ง</button>
+            <button
+              onClick={sendMessage}
+              className="bg-blue-500 text-white px-4 py-2 rounded-r-lg"
+            >
+              Ask AI
+            </button>
+          </div>
+
+          {/* Copyright */}
+          <div className="text-center text-gray-500 text-sm py-2">
+            © Copyright 2025, The Jolf Team.
           </div>
         </div>
-      )}
+      </dialog>
     </>
   );
 }
