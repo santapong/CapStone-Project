@@ -3,8 +3,8 @@ import {
   Menu, 
   Upload,
   Export 
-} from '../button'
-import "../../styles/global.css"
+} from '../dashboard_page/components/button'
+// import "../../styles/global.css"
 
 function Navbar() {
   const [theme, setTheme] = useState("dark");
@@ -19,14 +19,12 @@ function Navbar() {
           <Menu/>
         </div>
       <div className="flex-1 space-x-5 items-center">
-        <a className="text-white text-xl font-bold" href='/dashboard'>Dashboard</a>
-        <a className="text-white text-xl font-bold" href='/'>Showcase</a>
+        <a className="text-white text-xl font-bold" href='/'>Dashboard</a>
+        <a className="text-white text-xl font-bold" href='/manage'>Manage</a>
       </div>
       
       {/* Buttons on the right */}
       <div className="flex items-center space-x-2">
-        <Export/>
-        <Upload/>
         <input 
           type="checkbox" 
           value="synthwave" 

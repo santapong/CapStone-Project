@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Label from "./components/stats/Label";
-import { Navbar, Footer } from "./components/main_pages";
 import { Linechart, Piechart, Barchart, Radarchart } from "./components/charts";
-import { Chatbot } from "./components/button";
-import "./styles/global.css";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -33,7 +29,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
       <div className="flex">
         <main className="flex-1 p-6">
           {/* Overview & Summary */}
@@ -176,8 +171,6 @@ const Dashboard = () => {
           </section>
         </main>
       </div>
-      <Chatbot />
-      <Footer />
     </div>
   );
 };
