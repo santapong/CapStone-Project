@@ -106,19 +106,17 @@ async def upload_Docs(
 
         # Prepare Temp Varr.
         contents = ""
-        metadatas = []
 
         # Extract contents from each page
         for page in reader.pages:
             if page.page_number in target_interval:
                 contents += page.extract_text()
-                metadatas.append({
-                    "page":page.page_number,
-                    "source": file.filename,
-                                })
+                
+                
+        metadatas = [{"source":file.filename}]
         
         # Upload PDF to Vector Database
-        documents = await RAG.aload_from_API(
+        ids = await RAG.aload_from_API(
             contents=contents,
             metadatas=metadatas
             )
@@ -127,16 +125,18 @@ async def upload_Docs(
         # Insert to Document Table.
         db.insert(
             DocumentTable, 
+            ids=ids,
             embedding_model = EMBEDDING_MODEL,
             document_name = file.filename,
             time_usage=time_usage,
-            pages=len(target_interval)
+            pages=len(target_interval),
             )
 
         return JSONResponse(content={
             "Filename": file.filename,
             "Metadata": metadatas,
             "time_usage": time_usage,
+            "ids":ids,
             })
 
     except json.JSONDecodeError:

@@ -32,7 +32,7 @@ logging.getLogger(__name__)
 
 # Default Database
 SQLLITE_PATH = os.getenv("PYTHONPATH")
-SQLLITE_URL = f'sqlite:///{SQLLITE_PATH}/database/history_database/sqlalchemy_example.db'
+SQLLITE_URL = f'sqlite:///{SQLLITE_PATH}/database/history_database/internal.db'
 
 # Database login info
 DATABASE_USERNAME = os.getenv('DATABASE_USERNAME' ,default = None)
