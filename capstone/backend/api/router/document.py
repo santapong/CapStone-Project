@@ -144,12 +144,54 @@ async def upload_Docs(
     except Exception as e:
         raise HTTPException(400, f"Data validation error: {str(e)}")
     
-# Use to remove Document inside vector database.
-@router_document.delete("/document", tags=tags)
-async def remove_Docs():
-    pass
+    
+    
+@router_document.delete("/document", tags=["Documents"])
+async def remove_docs(
+    document_name: str,
+    db: DBConnection = Depends(get_db),
+    RAG: RAGModel = Depends(get_RAG)
+):
+    # Find the document in the SQL database
+    documents = db.query(
+                        table=DocumentTable,
+                        filters=DocumentTable.document_name == document_name
+                        )
+    
+    # Error Handling when document does not exist.
+    if not documents:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    # Remove from vector database
+    vector_store = RAG.get_vector_store()
+    vector_store.delete(documents[0].ids)  # Ensure this method exists in your RAGModel
+
+    # Remove from SQL database
+    db.delete(
+            table=DocumentTable,
+            ids=documents[0].ids
+            )
+    
+    return JSONResponse(content={"message": "Document deleted successfully"})
+
 
 # Get Document from database.
 @router_document.get('/documents', tags=tags)
-async def get_Docs():
-    pass
+async def get_Docs(
+    db: DBConnection = Depends(get_db)
+):
+    # Get data from Document Table.
+    results = db.query(DocumentTable)
+    
+    # Wrapping up data for Dashboard Management.
+    documents = [ 
+        {
+            "document": result.document_name,
+            "id":result.id,
+            "pages": result.pages,
+            "upload_time": result.datetime,
+        } 
+            for result in results 
+    ]
+    
+    return JSONResponse(content={"data":documents})
