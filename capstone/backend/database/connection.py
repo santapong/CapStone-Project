@@ -9,7 +9,7 @@ from sqlalchemy.orm import (
     Session,
     sessionmaker,
     )
-from capstone.backend.database.models import DATABASE_MODEL
+from capstone.backend.database.models import DATABASE_MODEL, DocumentTable
 
 load_dotenv()
 
@@ -155,3 +155,14 @@ def get_db():
 
 if __name__ == '__main__':
     test = DBConnection()
+    
+    results = test.query(
+        table=DocumentTable
+    )
+    for row in results:
+        print(row.ids)
+        print(type(row.ids))
+    
+    delete_target = ['06b75c94-00a8-4adc-abab-08116d94c12d', '8c0a649a-5d3a-4b2d-a7a1-c506a646c36c', '65f3d60a-2e7b-4d75-8b97-a3f7aeba8759', '5244acd3-e09a-4bd3-ab73-ace5ddd31b99', 'e396eeaf-26ef-4aff-af69-031ec1cfd666', '471c4654-b598-4b58-bb95-d723c8dff944', '0452cd9e-4fbc-4282-b0cf-9953929d049d', '50dce891-a19d-4197-a49e-15ea125dd354', 'faea1076-cf15-4501-8790-853f47729d06', 'f9c3cadf-422e-47e8-a104-b4146e45bebf', '771c32c3-3440-4705-8537-372ba421b818', '85f7cc1f-8c14-4da8-9802-df2220138ef3', 'bba290d0-907f-4288-b7c3-db50fd5e1cd1']
+    test.delete(table=DocumentTable,
+                ids=delete_target)
