@@ -97,11 +97,11 @@ function Manage() {
 
   return (
     <div className="min-h-screen bg-gray-500 flex items-center justify-center">
-      <div className="p-6 bg-gray-800 w-[500px] rounded-lg">
+      <div className="p-6 bg-gray-800 w-[1250px] rounded-lg">
         <div className="flex justify-between mb-4">
-          <h2 className="text-white text-lg">Manage Documents</h2>
+          <h2 className="font-bold text-white text-lg">Manage Documents</h2>
           <button
-            className="btn btn-primary"
+            className="btn bg-blue-600"
             onClick={() => document.getElementById("upload-modal").showModal()}
             disabled={loading || deleteLoading} // Disable when uploading or deleting
           >
@@ -141,21 +141,21 @@ function Manage() {
       {/* Upload Modal */}
       <dialog id="upload-modal" className="modal">
         <div className="modal-box">
-          <h3 className="text-lg font-semibold">Upload PDF File</h3>
+          <h3 className="text-lg text-white font-semibold">Upload PDF File</h3>
           <input
             type="file"
             accept="application/pdf"
             onChange={handleFileChange}
-            className="file-input w-full my-4"
+            className="file-input text-white w-full my-4"
             disabled={loading}
           />
 
           <div className="flex space-x-4">
             <div className="w-1/2">
-              <label className="block">Start Page:</label>
+              <label className="block text-white">Start Page:</label>
               <input
                 type="text"
-                className="input input-bordered w-full"
+                className="input text-white input-bordered w-full"
                 value={startPage}
                 onChange={(e) => setStartPage(e.target.value.replace(/\D/, ""))}
                 placeholder="Enter start page"
@@ -163,10 +163,10 @@ function Manage() {
               />
             </div>
             <div className="w-1/2">
-              <label className="block">Final Page:</label>
+              <label className="block text-white">Final Page:</label>
               <input
                 type="text"
-                className="input input-bordered w-full"
+                className="input text-white input-bordered w-full"
                 value={finalPage}
                 onChange={(e) => setFinalPage(e.target.value.replace(/\D/, ""))}
                 placeholder="Enter final page"
@@ -177,13 +177,13 @@ function Manage() {
 
           <div className="modal-action">
             <button
-              className="btn"
+              className="btn bg-red-900"
               onClick={() => document.getElementById("upload-modal").close()}
               disabled={loading}
             >
               Cancel
             </button>
-            <button className="btn btn-primary" onClick={handleUpload} disabled={loading}>
+            <button className="btn bg-green-700" onClick={handleUpload} disabled={loading}>
               {loading ? "Uploading..." : "Upload"}
             </button>
           </div>
