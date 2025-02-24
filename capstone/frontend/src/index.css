@@ -1,3 +1,8 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+    themes: light --default, dark --prefersdark;
+}
+
 body {
   margin: 0;
   font-family: 'Sarabun', sans-serif;

@@ -4,41 +4,79 @@ import axios from "axios";
 
 export default function Chatbot() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const chatContainerRef = useRef(null); // Create a reference for the chat container
+  const [messages, setMessages] = useState(() => {
+    const savedMessages = localStorage.getItem("chat_messages");
+    const savedExpiry = localStorage.getItem("chat_messages_expiry");
+    const currentTime = new Date().getTime();
 
-  // Scroll to the bottom whenever messages change
+    if (savedMessages && savedExpiry) {
+      const expiry = JSON.parse(savedExpiry);
+
+      // Check if messages are expired
+      if (currentTime > expiry) {
+        localStorage.removeItem("chat_messages");
+        localStorage.removeItem("chat_messages_expiry");
+        return [];
+      }
+      return JSON.parse(savedMessages) || [];
+    }
+    return [];
+  });
+
+  const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef(null);
+  const MESSAGE_LIFETIME = 1000 * 30; // 30 seconds
+
+  // Check expiration on page load
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const savedExpiry = localStorage.getItem("chat_messages_expiry");
+      if (savedExpiry && new Date().getTime() > JSON.parse(savedExpiry)) {
+        setMessages([]); // Clear messages
+        localStorage.removeItem("chat_messages");
+        localStorage.removeItem("chat_messages_expiry");
+      }
+    }, 1000); // Check every second
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-scroll chat
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
+
+    // Store messages
+    localStorage.setItem("chat_messages", JSON.stringify(messages));
   }, [messages]);
 
   const sendMessage = async () => {
     if (!message.trim()) return;
-    setMessages([...messages, { text: message, type: "user" }]);
+
+    const newMessages = [...messages, { text: message, type: "user" }];
+    setMessages(newMessages);
     setMessage("");
+
+    // Reset expiration time when the user sends a message
+    const expirationTime = new Date().getTime() + MESSAGE_LIFETIME;
+    localStorage.setItem("chat_messages_expiry", JSON.stringify(expirationTime));
 
     setLoading(true);
     try {
-      const response = await axios.post("https://localhost:8000/chatbot/infer", {
+      const response = await axios.post("http://localhost:8000/chatbot/infer", {
         question: message,
       });
       const botReply = response.data.answer || "ขออภัย ฉันไม่เข้าใจคำถามของคุณ";
       setMessages((prev) => [...prev, { text: botReply, type: "bot" }]);
     } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        { text: "เกิดข้อผิดพลาดในการเชื่อมต่อ AI", type: "bot" },
-      ]);
+      setMessages((prev) => [...prev, { text: "เกิดข้อผิดพลาดในการเชื่อมต่อ AI", type: "bot" }]);
     }
     setLoading(false);
   };
 
   return (
     <>
-      {/* ปุ่มเปิด Chatbot (ไอคอนบอท) */}
       <button
         className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center"
         onClick={() => document.getElementById("chatbot-modal").showModal()}
@@ -46,10 +84,8 @@ export default function Chatbot() {
         <FaRobot className="text-2xl" />
       </button>
 
-      {/* DaisyUI Modal */}
       <dialog id="chatbot-modal" className="modal">
         <div className="modal-box bg-gray-900 text-white w-[600px] max-w-2xl">
-          {/* Header */}
           <div className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-t-lg">
             <h4 className="text-lg font-semibold">ChatKMITL - Ask a question</h4>
             <form method="dialog">
@@ -57,16 +93,14 @@ export default function Chatbot() {
             </form>
           </div>
 
-          {/* Body - ส่วนแสดงข้อความแชท */}
-          <div
-            ref={chatContainerRef} // Attach ref to chat container
-            className="p-4 h-[300px] overflow-y-auto"
-          >
+          <div ref={chatContainerRef} className="p-4 h-[300px] overflow-y-auto">
             {messages.map((msg, index) => (
               <div key={index} className={`mb-2 ${msg.type === "user" ? "text-right" : "text-left"}`}>
                 <div className={`inline-block px-3 py-2 rounded-lg break-words max-w-[80%] text-left ${
                   msg.type === "user" ? "bg-blue-500 text-white" : "bg-gray-700"
-                }`}>
+                }`}
+                style={{ whiteSpace: "pre-line" }}
+                >
                   {msg.text}
                 </div>
               </div>
@@ -78,7 +112,6 @@ export default function Chatbot() {
             )}
           </div>
 
-          {/* Footer - ส่วนพิมพ์ข้อความ */}
           <div className="flex px-4 py-3 border-t border-gray-700">
             <input
               type="text"
@@ -96,7 +129,6 @@ export default function Chatbot() {
             </button>
           </div>
 
-          {/* Copyright */}
           <div className="text-center text-gray-500 text-sm py-2">
             © Copyright 2025, The Jolf Team.
           </div>
