@@ -5,15 +5,23 @@ function Manage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [startPage, setStartPage] = useState("");
   const [finalPage, setFinalPage] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state for upload
-  const [deleteLoading, setDeleteLoading] = useState(false); // Loading state for delete
-  const [documentToDelete, setDocumentToDelete] = useState(null); // Track document to delete
+  const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState(null);
+
+  // Function to fetch documents
+  const fetchDocuments = async () => {
+    try {
+      const res = await fetch("/document/documents");
+      const data = await res.json();
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+    }
+  };
 
   useEffect(() => {
-    fetch("/document/documents")
-      .then((res) => res.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error("Error fetching documents:", error));
+    fetchDocuments();
   }, []);
 
   const handleFileChange = (event) => {
@@ -50,8 +58,7 @@ function Manage() {
       });
 
       if (response.ok) {
-        const newDocument = await response.json();
-        setData([...data, newDocument]);
+        await fetchDocuments(); // Fetch updated document list
         document.getElementById("upload-modal").close();
         setSelectedFile(null);
         setStartPage("");
@@ -73,16 +80,20 @@ function Manage() {
 
   const handleDelete = async () => {
     if (!documentToDelete) return;
-
+  
     setDeleteLoading(true);
-
+  
     try {
-      const response = await fetch(`/document/delete/${documentToDelete.id}`, {
+      const response = await fetch(`/document/delete`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ document_name: documentToDelete.document_name }), // Send document name
       });
-
+  
       if (response.ok) {
-        setData(data.filter((doc) => doc.id !== documentToDelete.id));
+        await fetchDocuments(); // Fetch updated document list
         document.getElementById("delete-modal").close();
       } else {
         console.error("Failed to delete document");
@@ -94,6 +105,7 @@ function Manage() {
       setDocumentToDelete(null);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-500 flex items-center justify-center">
@@ -103,7 +115,7 @@ function Manage() {
           <button
             className="btn bg-blue-600"
             onClick={() => document.getElementById("upload-modal").showModal()}
-            disabled={loading || deleteLoading} // Disable when uploading or deleting
+            disabled={loading || deleteLoading}
           >
             Add
           </button>
@@ -127,7 +139,7 @@ function Manage() {
                   <button
                     className="btn btn-error btn-sm"
                     onClick={() => confirmDelete(row)}
-                    disabled={loading || deleteLoading} // Disable during loading
+                    disabled={loading || deleteLoading}
                   >
                     Delete
                   </button>

@@ -10,49 +10,61 @@ export default function Chatbot() {
     const currentTime = new Date().getTime();
 
     if (savedMessages && savedExpiry) {
-      const parsedMessages = JSON.parse(savedMessages);
       const expiry = JSON.parse(savedExpiry);
-      
-      // Check if the messages are expired
+
+      // Check if messages are expired
       if (currentTime > expiry) {
         localStorage.removeItem("chat_messages");
         localStorage.removeItem("chat_messages_expiry");
         return [];
       }
-      return parsedMessages || [];
+      return JSON.parse(savedMessages) || [];
     }
     return [];
   });
+
   const [loading, setLoading] = useState(false);
   const chatContainerRef = useRef(null);
-  const MESSAGE_LIFETIME = 1000 * 60; // 30 secs per question
+  const MESSAGE_LIFETIME = 1000 * 30; // 30 seconds
 
+  // Check expiration on page load
   useEffect(() => {
-    if (messages.length > 0) {
+    const interval = setInterval(() => {
       const savedExpiry = localStorage.getItem("chat_messages_expiry");
-      if (!savedExpiry) {
-        // Set the expiration time only if it's not already set in localStorage
-        const expirationTime = new Date().getTime() + MESSAGE_LIFETIME;
-        localStorage.setItem("chat_messages_expiry", JSON.stringify(expirationTime));
+      if (savedExpiry && new Date().getTime() > JSON.parse(savedExpiry)) {
+        setMessages([]); // Clear messages
+        localStorage.removeItem("chat_messages");
+        localStorage.removeItem("chat_messages_expiry");
       }
-    }
-    
+    }, 1000); // Check every second
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-scroll chat
+  useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
 
+    // Store messages
     localStorage.setItem("chat_messages", JSON.stringify(messages));
   }, [messages]);
 
   const sendMessage = async () => {
     if (!message.trim()) return;
+
     const newMessages = [...messages, { text: message, type: "user" }];
     setMessages(newMessages);
     setMessage("");
 
+    // Reset expiration time when the user sends a message
+    const expirationTime = new Date().getTime() + MESSAGE_LIFETIME;
+    localStorage.setItem("chat_messages_expiry", JSON.stringify(expirationTime));
+
     setLoading(true);
     try {
-      const response = await axios.post("https://localhost:8000/chatbot/infer", {
+      const response = await axios.post("http://localhost:8000/chatbot/infer", {
         question: message,
       });
       const botReply = response.data.answer || "ขออภัย ฉันไม่เข้าใจคำถามของคุณ";
