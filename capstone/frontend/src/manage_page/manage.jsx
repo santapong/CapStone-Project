@@ -5,21 +5,44 @@ function Manage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [startPage, setStartPage] = useState("");
   const [finalPage, setFinalPage] = useState("");
+  const [sortConfig, setSortConfig] = useState({});
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [documentToDelete, setDocumentToDelete] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL
+  const API_PORT = import.meta.env.VITE_API_PORT
 
-  // Function to fetch documents
   const fetchDocuments = async () => {
     try {
-      const res = await fetch("/document/documents");
-      const data = await res.json();
-      setData(data);
+      const res = await fetch(`${API_URL}:${API_PORT}/document/documents`);
+      const result = await res.json();
+      let sortedData = Array.isArray(result.data) ? [...result.data] : [];
+
+      Object.keys(sortConfig).forEach((column) => {
+        const order = sortConfig[column];
+
+        if (order !== "disabled") {
+          sortedData.sort((a, b) => {
+            const valA = a[column];
+            const valB = b[column];
+
+            if (typeof valA === "string" && typeof valB === "string") {
+              return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            } else {
+              return order === "asc" ? valA - valB : valB - valA;
+            }
+          });
+        }
+      });
+
+      setData(sortedData);
     } catch (error) {
       console.error("Error fetching documents:", error);
+      setData([]);
     }
   };
-
+  
+  
   useEffect(() => {
     fetchDocuments();
   }, []);
@@ -29,6 +52,16 @@ function Manage() {
     setSelectedFile(file);
     setStartPage("");
     setFinalPage("");
+  };
+
+  const handleSort = (column) => {
+    setSortConfig((prev) => {
+      const currentOrder = prev[column] || "disabled";
+      const newOrder = currentOrder === "disabled" ? "asc" : currentOrder === "asc" ? "desc" : "disabled";
+      
+      return { ...prev, [column]: newOrder };
+    });
+    fetchDocuments();
   };
 
   const handleUpload = async () => {
@@ -122,12 +155,18 @@ function Manage() {
         </div>
         <table className="table w-full text-white">
           <thead>
-            <tr>
-              <th className="px-2 py-1 border-b">Document Name</th>
-              <th className="px-2 py-1 border-b">Pages</th>
-              <th className="px-2 py-1 border-b">Upload At</th>
-              <th className="px-2 py-1 border-b">Actions</th>
-            </tr>
+          <tr className="bg-gray-700 text-white">
+          {["upload_time", "file_name", "file_size", "status"].map((column) => (
+                <th key={column} className="cursor-pointer p-2" onClick={() => handleSort(column)}>
+                  {column.replace("_", " ").toUpperCase()}{" "}
+                  {sortConfig[column] === "asc"
+                    ? "↑"
+                    : sortConfig[column] === "desc"
+                    ? "↓"
+                    : "⏺"} {/* Use ⏺ for disabled */}
+                </th>
+              ))}
+          </tr>
           </thead>
           <tbody>
             {data.map((row) => (
