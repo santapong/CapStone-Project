@@ -85,7 +85,7 @@ function Manage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/document/uploadfile", {
+      const response = await fetch(`${API_URL}:${API_PORT}/document/document`, {
         method: "POST",
         body: formData,
       });
@@ -117,7 +117,7 @@ function Manage() {
     setDeleteLoading(true);
   
     try {
-      const response = await fetch(`/document/delete`, {
+      const response = await fetch(`${API_URL}:${API_PORT}/document/document`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
