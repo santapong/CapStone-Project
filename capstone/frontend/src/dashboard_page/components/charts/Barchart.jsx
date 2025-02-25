@@ -10,16 +10,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Barchart = ({ chartName, data }) => {
-  // ใช้ข้อมูลที่ส่งเข้ามา หากไม่มีให้ใช้ array ว่าง
-  const chartData = data || [
+const Barchart = ({ chartName, data = [], barColor = "#8884d8" }) => {
+  // ตรวจสอบว่า `data` มีค่าหรือไม่
+  const chartData = data.length ? data : [
     { day: "2025-02-10", user: 120 },
     { day: "2025-02-11", user: 150 },
     { day: "2025-02-12", user: 90 },
-    // ...
   ];
 
-  // จัดอันดับวันที่มีการใช้งานสูงสุดโดยเรียงจากมากไปน้อย
+  // จัดอันดับวันที่มีการใช้งานสูงสุด
   const sortedData = [...chartData].sort((a, b) => b.user - a.user);
   const top3 = sortedData.slice(0, 3);
 
@@ -35,7 +34,7 @@ const Barchart = ({ chartName, data }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="user" fill="#8884d8" />
+          <Bar dataKey="user" fill={barColor} />
         </BarChart>
       </ResponsiveContainer>
       <div className="mt-4">
