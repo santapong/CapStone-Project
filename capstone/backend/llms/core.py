@@ -36,7 +36,6 @@ API_KEY = os.getenv("TYPHOON_API_KEY")
 # Persist Directory
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
-# TODO: Learn About Websearch
 # RAG Class model.
 class RAGModel:
     def __init__(
@@ -61,7 +60,6 @@ class RAGModel:
             question
             ):
         
-        # TODO: Fix this shit
         # Rewritten Query Prompt
         prompt = pre_retrieval(question=question)
         return self.__llm.invoke(prompt)
@@ -78,7 +76,7 @@ class RAGModel:
     def __split_text(self,
                     metadatas,
                     contents:str,
-                    chunk_size:int = 1024,
+                    chunk_size:int = 4096,
                     separaters: str ='/n',
                     ):
         
@@ -133,7 +131,11 @@ class RAGModel:
         # Call Retriever
         self.retriever = self.__vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={'k': 15}
+            search_kwargs={
+                'k': 15,
+                "lambda_mult":0.1,
+                "fetch_k":30,
+                }
             )
 
         # Create Chains

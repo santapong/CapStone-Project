@@ -17,7 +17,7 @@ from fastapi import (
     )
 
 from capstone.backend.llms import RAGModel, get_RAG
-from capstone.backend.api.models import FileLength
+from capstone.backend.api.models import FileLength, DocumentModel
 from capstone.backend.database import (
     get_db, 
     DBConnection,
@@ -147,10 +147,12 @@ async def upload_Docs(
     
 @router_document.delete("/document")
 async def remove_docs(
-    document_name: str,
+    request: DocumentModel,
     db: DBConnection = Depends(get_db),
     RAG: RAGModel = Depends(get_RAG)
 ):
+    
+    document_name = request.document_name
     # Find the document in the SQL database
     documents = db.query(
                         table=DocumentTable,
