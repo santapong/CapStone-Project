@@ -44,11 +44,6 @@ def rag_prompt(
     3. Seek Clarification When Needed:
     - If a question is vague, ask for more details before responding to ensure accuracy.
 
-    Handling Incomplete Names or Titles:
-    
-    If an academic title or name is incomplete or abbreviated (such as รศ. ดร.ไสว พงศสวัสดิ์), 
-    you should automatically complete the name or title accurately using common knowledge for those titles. 
-
     Unknown Queries:
     Answer: I couldn't find specific information on that. You may refer to the official curriculum or contact a faculty member at KMITL.
     
