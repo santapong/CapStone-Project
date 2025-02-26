@@ -4,6 +4,7 @@ import { PieChart, Pie, Tooltip, Cell, Legend, ResponsiveContainer } from "recha
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28DFF"]; // เพิ่มสีให้ครบ 5 หมวดหมู่
 
 const Piechart = ({ data, Radius_size = 90 }) => {
+  console.log(data)
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
@@ -13,8 +14,8 @@ const Piechart = ({ data, Radius_size = 90 }) => {
           cy="50%"
           outerRadius={Radius_size}
           fill="#8884d8"
-          dataKey="value"
-          nameKey="category"
+          dataKey="count_category"  // <-- Fixed from "value" to "count_category"
+          nameKey="category" // <-- Correct label key
           label
         >
           {data.map((entry, index) => (

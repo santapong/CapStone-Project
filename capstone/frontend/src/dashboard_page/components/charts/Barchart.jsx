@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Barchart = ({ chartName, data = [], barColor = "#8884d8" }) => {
+const Barchart = ({ chartName, data = [], barColor = "#006600" }) => {
   // ตรวจสอบว่า `data` มีค่าหรือไม่
   const chartData = data.length ? data : [
     { day: "2025-02-10", user: 120 },
@@ -30,24 +30,24 @@ const Barchart = ({ chartName, data = [], barColor = "#8884d8" }) => {
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
+          <XAxis dataKey="datetime" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="user" fill={barColor} />
+          <Bar dataKey="usage" fill={barColor} />
         </BarChart>
       </ResponsiveContainer>
       <div className="mt-4">
-        <h3 className="text-lg font-bold text-center">
+        {/* <h3 className="text-lg font-bold text-center">
           Top 3 วันที่มีผู้ใช้เยอะที่สุด
-        </h3>
-        <ol className="list-decimal list-inside text-center">
+        </h3> */}
+        {/* <ol className="list-decimal list-inside text-center">
           {top3.map((item, index) => (
             <li key={index}>
-              {item.day}: {item.user} ครั้ง
+              {item.datetime}: {item.us} ครั้ง
             </li>
           ))}
-        </ol>
+        </ol> */}
       </div>
     </div>
   );

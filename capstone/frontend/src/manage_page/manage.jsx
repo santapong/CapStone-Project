@@ -5,7 +5,6 @@ function Manage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [startPage, setStartPage] = useState("");
   const [finalPage, setFinalPage] = useState("");
-  const [sortConfig, setSortConfig] = useState({});
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [documentToDelete, setDocumentToDelete] = useState(null);
@@ -16,33 +15,17 @@ function Manage() {
     try {
       const res = await fetch(`${API_URL}:${API_PORT}/document/documents`);
       const result = await res.json();
-      let sortedData = Array.isArray(result.data) ? [...result.data] : [];
-
-      Object.keys(sortConfig).forEach((column) => {
-        const order = sortConfig[column];
-
-        if (order !== "disabled") {
-          sortedData.sort((a, b) => {
-            const valA = a[column];
-            const valB = b[column];
-
-            if (typeof valA === "string" && typeof valB === "string") {
-              return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
-            } else {
-              return order === "asc" ? valA - valB : valB - valA;
-            }
-          });
-        }
-      });
-
-      setData(sortedData);
+  
+      // If result contains a 'data' key, extract the array
+      setData(Array.isArray(result.data) ? result.data : []);
     } catch (error) {
       console.error("Error fetching documents:", error);
-      setData([]);
+      console.error("Cannot find The API_URL ">> `${API_URL}`)
+      setData([]); // Set to empty array on error
     }
   };
   
-  
+
   useEffect(() => {
     fetchDocuments();
   }, []);
@@ -52,50 +35,46 @@ function Manage() {
     setSelectedFile(file);
     setStartPage("");
     setFinalPage("");
+  
   };
-
-  const handleSort = (column) => {
-    setSortConfig((prev) => {
-      const currentOrder = prev[column] || "disabled";
-      const newOrder = currentOrder === "disabled" ? "asc" : currentOrder === "asc" ? "desc" : "disabled";
-      
-      return { ...prev, [column]: newOrder };
-    });
-    fetchDocuments();
-  };
+  
 
   const handleUpload = async () => {
     if (!selectedFile) {
       alert("Please select a file.");
       return;
     }
-
-    const start = parseInt(startPage, 10);
-    const end = parseInt(finalPage, 10);
-
-    if (isNaN(start) || isNaN(end) || start < 1 || end < start) {
+  
+    const start = startPage ? parseInt(startPage, 10) : 0;
+    const end = finalPage ? parseInt(finalPage, 10) : 0;
+  
+    // Allow 0 to mean "extract all pages"
+    if (isNaN(start) || isNaN(end) || start < 0 || end < 0 || (start > 0 && end < start)) {
       alert("Invalid page range!");
       return;
     }
-
+  
     const formData = new FormData();
     formData.append("file", selectedFile);
     formData.append("data", JSON.stringify({ start_page: start, final_page: end }));
-
+  
     setLoading(true);
-
+  
     try {
       const response = await fetch(`${API_URL}:${API_PORT}/document/document`, {
         method: "POST",
         body: formData,
       });
-
+  
       if (response.ok) {
         await fetchDocuments(); // Fetch updated document list
         document.getElementById("upload-modal").close();
         setSelectedFile(null);
         setStartPage("");
         setFinalPage("");
+  
+        // Clear the file input manually
+        document.querySelector(".file-input").value = "";
       } else {
         console.error("Failed to upload document");
       }
@@ -105,6 +84,7 @@ function Manage() {
       setLoading(false);
     }
   };
+  
 
   const confirmDelete = (doc) => {
     setDocumentToDelete(doc);
@@ -122,7 +102,8 @@ function Manage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ document_name: documentToDelete.document_name }), // Send document name
+        body: JSON.stringify({ 
+          document_name: documentToDelete.document }), // Send document name
       });
   
       if (response.ok) {
@@ -138,7 +119,8 @@ function Manage() {
       setDocumentToDelete(null);
     }
   };
-  
+
+  console.log(data)
 
   return (
     <div className="min-h-screen bg-gray-500 flex items-center justify-center">
@@ -155,25 +137,19 @@ function Manage() {
         </div>
         <table className="table w-full text-white">
           <thead>
-          <tr className="bg-gray-700 text-white">
-          {["upload_time", "file_name", "file_size", "status"].map((column) => (
-                <th key={column} className="cursor-pointer p-2" onClick={() => handleSort(column)}>
-                  {column.replace("_", " ").toUpperCase()}{" "}
-                  {sortConfig[column] === "asc"
-                    ? "↑"
-                    : sortConfig[column] === "desc"
-                    ? "↓"
-                    : "⏺"} {/* Use ⏺ for disabled */}
-                </th>
-              ))}
-          </tr>
+            <tr>
+              <th className="px-2 py-1 border-b">Document Name</th>
+              <th className="px-2 py-1 border-b">Pages</th>
+              <th className="px-2 py-1 border-b">Upload At</th>
+              <th className="px-2 py-1 border-b">Actions</th>
+            </tr>
           </thead>
           <tbody>
             {data.map((row) => (
               <tr key={row.id}>
-                <td className="px-2 py-1 border-b">{row.document_name}</td>
+                <td className="px-2 py-1 border-b">{row.document}</td>
                 <td className="px-2 py-1 border-b">{row.pages}</td>
-                <td className="px-2 py-1 border-b">{row.upload_at}</td>
+                <td className="px-2 py-1 border-b">{row.upload_time}</td>
                 <td className="px-2 py-1 border-b">
                   <button
                     className="btn btn-error btn-sm"
@@ -245,7 +221,7 @@ function Manage() {
       <dialog id="delete-modal" className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-semibold text-red-500">Confirm Delete</h3>
-          <p>Are you sure you want to delete <strong>{documentToDelete?.document_name}</strong>?</p>
+          <p>Are you sure you want to delete <strong>{documentToDelete?.document}</strong>?</p>
           
           <div className="modal-action">
             <button

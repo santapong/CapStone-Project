@@ -61,7 +61,9 @@ async def query(
         "total_user": OVERALL_CHAT,
         "avg_time_usage": TIME_USAGE,
         "user_time": TOP_USER_TIME,
-        "top_category": TOP_CATEGORY
+        "top_category": TOP_CATEGORY,
+        "history_table": HISTORY_TABLE,
+        "document_table": DOCUMENT_TABLE
     }
 
     combined_data = {key: convert_to_table(session=session, sql=sql) for key, sql in queries.items()}
