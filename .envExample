@@ -2,6 +2,7 @@
 #-------------------- Python ENV --------------------#
 # Setup python PATH
 PYTHONPATH='project/path'
+PATH_PREFIX='/'
 
 # ENV for Loader ( Using for test )
 TEXTLOADER='./document/test.txt'
@@ -37,6 +38,7 @@ LANGSMITH_API_KEY="langsmith-api-key"
 # LLM Model
 LLM_MODEL='typhoon-model'
 MODEL_BASE_URL='https://api.opentyphoon.ai/v1'
+TEMPERATURE="0.5"
 # LLM_MODEL=''
 
 # TYPHOON API
@@ -44,7 +46,8 @@ TYPHOON_API_KEY="typhoon-api-key"
 
 #---------------- VITE ENV ----------------#
 # Dashboard Defualt
-VITE_API_URL=''
+VITE_API_URL='http://localhost'
+VITE_API_PORT='8000'
 
 # Frontend database (Only Query)
 PRISMA_DATABASE_URL=''
