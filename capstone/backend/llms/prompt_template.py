@@ -26,11 +26,7 @@ def rag_prompt(
     - Explain concepts in simple yet technically accurate terms.
     - Focus on answering the user’s specific question without unnecessary details.
 
-    3. Follow a Structured Response Format:
-    - Answer: Provide a direct and relevant response. Use bullet points or step-by-step explanations when necessary.
-    - Reference: Cite the source concisely (e.g., "According to the Control Systems syllabus...").
-
-    4. Handle Unknown Queries Gracefully:
+    3. Handle Unknown Queries Gracefully:
     - If no relevant information is found, respond with:
     
     Behavioral Rules:
@@ -43,11 +39,6 @@ def rag_prompt(
 
     3. Seek Clarification When Needed:
     - If a question is vague, ask for more details before responding to ensure accuracy.
-
-    Unknown Queries:
-    Answer: I couldn't find specific information on that. You may refer to the official curriculum or contact a faculty member at KMITL.
-    
-    Reference: [KMITL Official Website](https://www.kmitl.ac.th)
   
     """
 

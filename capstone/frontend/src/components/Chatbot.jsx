@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { FaRobot } from "react-icons/fa";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function Chatbot() {
   const [message, setMessage] = useState("");
@@ -11,8 +13,6 @@ export default function Chatbot() {
 
     if (savedMessages && savedExpiry) {
       const expiry = JSON.parse(savedExpiry);
-
-      // Check if messages are expired
       if (currentTime > expiry) {
         localStorage.removeItem("chat_messages");
         localStorage.removeItem("chat_messages_expiry");
@@ -25,7 +25,7 @@ export default function Chatbot() {
 
   const [loading, setLoading] = useState(false);
   const chatContainerRef = useRef(null);
-  const MESSAGE_LIFETIME = 1000 * 30; // 30 seconds
+  const MESSAGE_LIFETIME = 1000 * 60 * 60; // 1 hour
 
   // Check expiration on page load
   useEffect(() => {
@@ -46,7 +46,6 @@ export default function Chatbot() {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-
     // Store messages
     localStorage.setItem("chat_messages", JSON.stringify(messages));
   }, [messages]);
@@ -54,6 +53,7 @@ export default function Chatbot() {
   const sendMessage = async () => {
     if (!message.trim()) return;
 
+    // User message
     const newMessages = [...messages, { text: message, type: "user" }];
     setMessages(newMessages);
     setMessage("");
@@ -87,7 +87,7 @@ export default function Chatbot() {
       <dialog id="chatbot-modal" className="modal">
         <div className="modal-box bg-gray-900 text-white w-[600px] max-w-2xl">
           <div className="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-t-lg">
-            <h4 className="text-lg font-semibold">ChatKMITL - Ask a question</h4>
+            <h4 className="text-lg font-semibold">ChatKMITL</h4>
             <form method="dialog">
               <button className="text-2xl text-gray-400 hover:text-white">x</button>
             </form>
@@ -96,12 +96,14 @@ export default function Chatbot() {
           <div ref={chatContainerRef} className="p-4 h-[300px] overflow-y-auto">
             {messages.map((msg, index) => (
               <div key={index} className={`mb-2 ${msg.type === "user" ? "text-right" : "text-left"}`}>
-                <div className={`inline-block px-3 py-2 rounded-lg break-words max-w-[80%] text-left ${
-                  msg.type === "user" ? "bg-blue-500 text-white" : "bg-gray-700"
-                }`}
-                style={{ whiteSpace: "pre-line" }}
+                <div
+                  className={`inline-block px-3 py-2 rounded-lg break-words max-w-[80%] ${
+                    msg.type === "user" ? "bg-blue-500 text-white" : "bg-gray-700 text-white"
+                  }`}
                 >
-                  {msg.text}
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.text}
+                  </ReactMarkdown>
                 </div>
               </div>
             ))}
