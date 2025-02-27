@@ -162,10 +162,7 @@ async def remove_docs(
                             DocumentTable.id == document_id
                             ]
                         )
-    
-    print(document_name)
-    logging.info(documents[0].document_name)
-    
+
     # Error Handling when document does not exist.
     if not documents:
         raise HTTPException(status_code=404, detail="Document not found")

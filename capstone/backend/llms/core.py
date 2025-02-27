@@ -36,6 +36,8 @@ API_KEY = os.getenv("TYPHOON_API_KEY")
 # Persist Directory
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
+
+# Need to change the name to Vector Database
 # RAG Class model.
 class RAGModel:
     def __init__(
