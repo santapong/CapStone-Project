@@ -168,12 +168,22 @@ class Garph(AgenticModel):
         def __init__(self):
             super().__init__()
     
+        # Compile workflow here.
         def compile(self):
             self.workflow = StateGraph(AgentState)
             
             
-            return "test"
+            return self.workflow.compile()
         
+        
+        def display(self):
+            try:
+                display(Image(self.compile().get_graph(xray=True).draw_mermaid_png()))
+            except Exception:
+                pass
+
+def get_agent():
+    yield Garph.complie()
         
 if __name__ == "__main__":
     test = Garph()
