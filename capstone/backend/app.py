@@ -16,7 +16,7 @@ from capstone.backend.api.router import (
     router_dashboard,
     )
 
-# Setup log and load .env
+# Setup log and load .envcl
 load_dotenv()
 setup_logging()
 logging.getLogger(__name__)

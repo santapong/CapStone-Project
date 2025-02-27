@@ -26,7 +26,7 @@ SELECT
 	,question
 	,answer
 	,time_usage
-	,strftime('%k', datetime) as datetime
+	,strftime('%F', datetime) as datetime
 from
 	logs
 ),
@@ -62,4 +62,13 @@ group by
 	category
 order by
 	count_category DESC
+"""
+
+DOCUMENT_TABLE="""
+SELECT * FROM documents
+
+"""
+
+HISTORY_TABLE="""
+SELECT * FROM logs
 """
