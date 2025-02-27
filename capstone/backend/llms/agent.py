@@ -1,11 +1,9 @@
 import os
 import logging
 
-from uuid import uuid4
-from functools import wraps
 from abc import abstractmethod
 from dotenv import load_dotenv
-from typing import Annotated, Sequence, List, Callable
+from typing import Annotated, Sequence, List
 from typing_extensions import TypedDict
 
 from langchain_core.tools.simple import Tool
@@ -13,8 +11,12 @@ from langchain_core.messages import BaseMessage
 from langchain.chat_models import init_chat_model
 from langchain.tools.retriever import create_retriever_tool
 from langchain_core.output_parsers import StrOutputParser
+from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from langgraph.graph.message import add_messages
+from langgraph.graph import END, StateGraph, START
+from langgraph.prebuilt import ToolNode, tools_condition
 
 from capstone.backend.llms.core import RAGModel
 from capstone.backend.llms.tools.webseacrh import searchtool
@@ -24,6 +26,8 @@ from pydantic import BaseModel, Field
 from capstone.backend.llms.prompts.decision_prompt import decision_prompt
 from capstone.backend.llms.prompts.rag_prompt import rag_prompt
 from capstone.backend.llms.utils.register import register_tool
+
+from IPython.display import Image, display
 
 load_dotenv()
 
@@ -69,19 +73,22 @@ class AgenticModel(RAGModel):
         
     # FIXME: Need to use At vector_database model
     @register_tool
-    def retriver_tool(self):
-        self.retriever_tool = create_retriever_tool(
+    def retriever_tool(self)-> Tool:
+        tool = create_retriever_tool(
             retriever=self.retriever,
             name="Automation Agent",
             description="Use to retrived document about Automation Engineering in KMITL.",
         )
         
-        return self.retriever_tool
+        return tool
     
     # Search tool Using Duckduckgo seacrh
     @register_tool
-    def search_tool(self):
-        return "seacrh"
+    def search_tool(self)->Tool:
+        wrapper = DuckDuckGoSearchAPIWrapper(max_results=10)
+        tool = DuckDuckGoSearchRun(api_wrapper=wrapper)
+        
+        return tool
     
     # Abstract to collect tool inside AgenticModel class.
     @abstractmethod
@@ -156,9 +163,18 @@ class AgenticModel(RAGModel):
         return {"message": [respond]}
         
         
-        
+# Create Garph using inheritance to AgenticModel.
+class Garph(AgenticModel):
+        def __init__(self):
+            super().__init__()
+    
+        def compile(self):
+            self.workflow = StateGraph(AgentState)
+            
+            
+            return "test"
         
         
 if __name__ == "__main__":
-    test = AgenticModel()
-    print(test.get_tools())
+    test = Garph()
+    print(test.compile())
