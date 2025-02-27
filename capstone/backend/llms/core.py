@@ -19,9 +19,8 @@ from langchain_text_splitters import (
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_ollama import OllamaEmbeddings 
 
-from capstone.backend.llms.prompt_template import (
+from capstone.backend.llms.prompts.rag_prompt import (
     rag_prompt,
-    pre_retrieval
     )
 
 logging.getLogger(__name__)
