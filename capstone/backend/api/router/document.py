@@ -153,11 +153,18 @@ async def remove_docs(
 ):
     
     document_name = request.document_name
+    document_id = request.id
     # Find the document in the SQL database
     documents = db.query(
                         table=DocumentTable,
-                        filters=DocumentTable.document_name == document_name
+                        filters=[
+                            DocumentTable.document_name == document_name,
+                            DocumentTable.id == document_id
+                            ]
                         )
+    
+    print(document_name)
+    logging.info(documents[0].document_name)
     
     # Error Handling when document does not exist.
     if not documents:

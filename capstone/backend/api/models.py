@@ -15,6 +15,7 @@ class FileLength(BaseModel):
 
 class DocumentModel(BaseModel):
     document_name: str
+    id: int
 
 class SQLModel(BaseModel):
     sql: str

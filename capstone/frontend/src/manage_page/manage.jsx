@@ -103,9 +103,11 @@ function Manage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
-          document_name: documentToDelete.document }), // Send document name
+          document_name: documentToDelete.document,
+          id: documentToDelete.id,
+        }), // Send document name
       });
-  
+
       if (response.ok) {
         await fetchDocuments(); // Fetch updated document list
         document.getElementById("delete-modal").close();
