@@ -15,9 +15,13 @@ from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 from langgraph.graph import END, StateGraph, START
 
 from capstone.backend.llms.core import RAGModel
-from capstone.backend.llms.models import GradeDocuments, decision_prompt, AgentState
 from capstone.backend.llms.prompts.rag_prompt import rag_prompt
 from capstone.backend.llms.utils.register import register_tool
+from capstone.backend.llms.models import (
+    AgentState,
+    GradeDocuments, 
+    decision_prompt,
+    ) 
 
 from IPython.display import Image, display
 
@@ -26,7 +30,7 @@ load_dotenv()
 logging.getLogger(__name__)
 
 # See Agent Paradigms
-# 
+# https://github.com/santapong/CapStone-Project/blob/santapong/llms/imgs/Workflow_paradigm.png
 # Agentic That have RAG and Duckduckgo seacrh inside.
 class AgenticModel(RAGModel):
     def __init__(self):
