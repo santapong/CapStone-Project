@@ -164,6 +164,10 @@ class AgenticModel(RAGModel):
         respond = rag_chain.invoke({"context": document, "question":question})
         return {"message": [respond]}
         
+    # Refined Agent
+    def refined_agent(self, state: AgentState):
+        return {"answer":"answer"}
+    
     ## Edge
         
     # NOTE: need test
@@ -192,6 +196,7 @@ class Garph(AgenticModel):
             self.workflow.add_node("grade_document", self.grade_document)
             self.workflow.add_node("search_agent", self.search_agent)
             self.workflow.add_node("generate_agent", self.generate_agent)
+            self.workflow.add_node("refined_agent", self.refined_agent)
             
             # Build Graph using Edge to connect node to node.
             self.workflow.add_edge(start_key=START, end_key= "retrieval_agent")
@@ -204,14 +209,15 @@ class Garph(AgenticModel):
                     "no":"search_agent"
                 })
             self.workflow.add_edge(start_key="search_agent", end_key="generate_agent")                        
-            self.workflow.add_edge(start_key="generate_agent", end_key=END)
+            self.workflow.add_edge(start_key="generate_agent", end_key="refined_agent")
+            self.workflow.add_edge(start_key="refined_agent", end_key=END)
             
             return self.workflow.compile()
         
         @abstractmethod
         def display(self):
             try:
-                return display(Image(self.compile().get_graph(xray=True).draw_mermaid_png()))
+                return display(Image(self.compile().get_graph(yray=True).draw_mermaid_png()))
             except Exception:
                 pass
 
