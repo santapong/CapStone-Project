@@ -40,7 +40,14 @@ class AgenticModel(RAGModel):
             method_name for method_name in dir(self)
             if callable(getattr(self, method_name)) and hasattr(getattr(self, method_name), "_is_tool")
         ]
-        self.retriever =  self.get_vector_store().as_retriever()
+        self.retriever =  self.get_vector_store().as_retriever(
+            search_type="mmr",
+            search_kwargs={
+                "k":10,
+                "lambda_mult":0.1,
+                "fetch_k":20,
+            }
+        )
         self.llm = self.__init_model()
         
     # Intialize Model internal method
@@ -94,13 +101,16 @@ class AgenticModel(RAGModel):
             self, 
             state: AgentState
         ):
+        print("Grade")
+        
+        # Get question from AgentState
+        question = state["question"]
         
         # Set structure of output > yes or no.
         structured_llm_grader = self.llm.with_structured_output(GradeDocuments)
         
         # LLM Chain
         retrieval_grader = decision_prompt | structured_llm_grader
-        question = "What age of obama"
         
         # Retrieval Document.
         docs = self.retriever.invoke(question)
@@ -108,8 +118,9 @@ class AgenticModel(RAGModel):
         
         # Result expected {"binary_score": "yes"}
         response = retrieval_grader.invoke({"question": question, "context": doc_text})
+        print(response)
         
-        return {"response":response}
+        return {"web_search": response}
 
     # NOTE: Pass
     # Retrieval Agent.
@@ -117,6 +128,7 @@ class AgenticModel(RAGModel):
             self, 
             state: AgentState
         ):
+        print("retrieve")
         logging.info("----Retrieve Agent----")
         
         # Get question from Agentstate
@@ -132,17 +144,18 @@ class AgenticModel(RAGModel):
             self, 
             state: AgentState 
         ):
+        print("search")
         logging.info("---Using Duckduckgo search---")
         
         # Parsing from AgentState
         question = state["question"]
-        web_search = state["web_search"]
+        documents = state["documents"]
         
         # Get 
         document = self.search_tool().invoke({"query": question})
-        web_search.append(document)
+        documents.append(document)
         
-        return {"web_search": web_search, "question": question}
+        return {"web_result": document, "question": question}
         
     # NOTE: Pass
     # Generate Agent
@@ -155,17 +168,17 @@ class AgenticModel(RAGModel):
         # Parsing from Agent State.
         question = state["question"]
         document = state["documents"]
-        web_search = state["web_search"]
         
         # rag_chain
         rag_chain = rag_prompt() | self.llm | StrOutputParser()
         
         # invoke
-        respond = rag_chain.invoke({"context": document, "question":question})
-        return {"message": [respond]}
+        response = rag_chain.invoke({"context": document, "question":question})
+        return {"generation": response}
         
     # Refined Agent
     def refined_agent(self, state: AgentState):
+        
         return {"answer":"answer"}
     
     ## Edge
@@ -176,8 +189,12 @@ class AgenticModel(RAGModel):
                         state: AgentState
                         ):
         
+        web_search = state["web_search"]
         
-        return {"message"}
+        if web_search.binary_score == "yes":
+            return "yes"
+        elif web_search.binary_score == "no":
+            return "no"
         
     
 # Create Garph using inheritance to AgenticModel.
@@ -206,7 +223,7 @@ class Garph(AgenticModel):
                 path=self.decide_to_search,
                 path_map={
                     "yes":"generate_agent",
-                    "no":"search_agent"
+                    "no":"search_agent",
                 })
             self.workflow.add_edge(start_key="search_agent", end_key="generate_agent")                        
             self.workflow.add_edge(start_key="generate_agent", end_key="refined_agent")
@@ -225,4 +242,11 @@ def get_agent():
     yield Garph.complie()
         
 if __name__ == "__main__":
+    import time
     test = Garph()
+    start_time = time.time()    
+    answer = test.compile().invoke({"question":"หลักสูตรออโตเมชัน"})
+    time_usage = time.time() - start_time
+    print(f"time_usage = {time_usage}")
+    print(f"Question: {answer['question']}")
+    print(f"Answer: {answer['generation']}")

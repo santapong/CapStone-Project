@@ -15,10 +15,10 @@ class AgentState(TypedDict):
     documents: Retrieve documents from vector_database.
     
     """
-    
     question: str
     generation: str
-    web_search: List[str]
+    web_search: str
+    web_result: List[str]
     documents: List[str]
 
 # Data model for Routing.
@@ -37,7 +37,7 @@ decision_prompt = PromptTemplate(
     If the document contains keyword(s) or semantic meaning related to the user question, grade it as relevant. \n
     Give a binary_score 'yes' or 'no' score to indicate whether the document is relevant to the question.
     Answer only 'Yes' or 'No' in JSON format.
-    Result Example: "["binary_score":"yes"]"
+    Result Example: {{"binary_score":"yes"}}
     """,
     input_variables=["context", "question"],
 )
