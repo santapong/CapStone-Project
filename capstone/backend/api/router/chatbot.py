@@ -19,7 +19,7 @@ from capstone.backend.database.connection import (
     get_db,
 )
 from capstone.backend.database.models import LogsTable
-from capstone.backend.llms.prompt_template import rag_prompt
+from capstone.backend.llms.prompts.rag_prompt import rag_prompt
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)

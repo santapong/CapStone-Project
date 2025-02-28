@@ -19,9 +19,8 @@ from langchain_text_splitters import (
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_ollama import OllamaEmbeddings 
 
-from capstone.backend.llms.prompt_template import (
+from capstone.backend.llms.prompts.rag_prompt import (
     rag_prompt,
-    pre_retrieval
     )
 
 logging.getLogger(__name__)
@@ -36,6 +35,8 @@ API_KEY = os.getenv("TYPHOON_API_KEY")
 # Persist Directory
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
+
+# Need to change the name to Vector Database
 # RAG Class model.
 class RAGModel:
     def __init__(
@@ -53,16 +54,6 @@ class RAGModel:
 
     def get_vector_store(self):
         return self.__vector_store
-
-    # Pre Retrieval Process.
-    def __pre_retrieval(
-            self, 
-            question
-            ):
-        
-        # Rewritten Query Prompt
-        prompt = pre_retrieval(question=question)
-        return self.__llm.invoke(prompt)
 
     def __chroma_connect(self):
         return Chroma( 
