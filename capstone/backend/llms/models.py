@@ -1,5 +1,25 @@
+from typing import TypedDict, List
 from pydantic import BaseModel, Field
 from langchain_core.prompts import PromptTemplate
+
+# State of Agent between node to edge.
+class AgentState(TypedDict):
+    
+    """
+    Data store State in Agent.
+    
+    # Parameter Using in state
+    question: User question from inference.
+    generation: LLM answer.
+    web_search: Result from websearch.
+    documents: Retrieve documents from vector_database.
+    
+    """
+    
+    question: str
+    generation: str
+    web_search: List[str]
+    documents: List[str]
 
 # Data model for Routing.
 class GradeDocuments(BaseModel):

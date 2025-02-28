@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from typing import Annotated, Sequence, List, Literal
 from typing_extensions import TypedDict
 
+from langchain_core.documents import Document
 from langchain_core.tools.simple import Tool
 from langchain_core.messages import BaseMessage
 from langchain.chat_models import init_chat_model
@@ -19,10 +20,7 @@ from langgraph.graph import END, StateGraph, START
 from langgraph.prebuilt import ToolNode, tools_condition
 
 from capstone.backend.llms.core import RAGModel
-from capstone.backend.llms.tools.webseacrh import searchtool
-
-
-from capstone.backend.llms.models import GradeDocuments, decision_prompt
+from capstone.backend.llms.models import GradeDocuments, decision_prompt, AgentState
 from capstone.backend.llms.prompts.rag_prompt import rag_prompt
 from capstone.backend.llms.utils.register import register_tool
 
@@ -31,11 +29,6 @@ from IPython.display import Image, display
 # Parsing ENV parameter from .env
 load_dotenv()
 logging.getLogger(__name__)
-
-# State of Agent between node to edge.
-class AgentState(TypedDict):
-    messages: Annotated[Sequence[BaseMessage], add_messages]
-
 
 # See Agent Paradigms
 # Agentic That have RAG and Duckduckgo seacrh inside.
@@ -68,7 +61,6 @@ class AgenticModel(RAGModel):
     # RAG model tool.
     @register_tool
     def retriever_tool(self)-> Tool:
-        
         tool = create_retriever_tool(
             retriever=self.retriever,
             name="RAG tools",
@@ -79,7 +71,7 @@ class AgenticModel(RAGModel):
     
     # Search tool Using Duckduckgo search.
     @register_tool
-    def search_tool(self)->Tool:
+    def search_tool(self)->DuckDuckGoSearchRun:
         wrapper = DuckDuckGoSearchAPIWrapper(max_results=10)
         tool = DuckDuckGoSearchRun(
             name="Websearh tool from Duckduckgo",
@@ -95,58 +87,75 @@ class AgenticModel(RAGModel):
         """Collect tools from AgenticModel"""
         return [getattr(self, method_name)() for method_name in self.__tool_methods]
     
+    # NOTE: Pass
     # Using to grading the document that retrive.
-    def grade_document(self):
+    def grade_document(self, 
+                       state: AgentState
+                       ):
         
         # Set structure of output > yes or no.
         structured_llm_grader = self.llm.with_structured_output(GradeDocuments)
         
+        # LLM Chain
         retrieval_grader = decision_prompt | structured_llm_grader
-        
         question = "What age of obama"
         
+        # Retrieval Document.
         docs = self.retriever.invoke(question)
         doc_text = docs[0].page_content
         
         # Result expected {"binary_score": "yes"}
         response = retrieval_grader.invoke({"question": question, "context": doc_text})
-    
-        
-    def start_agent(self, state):
-        logging.info("Start Agent")
-        
-        message = state["messages"]
-        model_tools = self.llm.bind_tools(tools=self.get_tools())
-        
-        response = model_tools.invoke(message)
 
-        return {"messages":[response]}        
-    
-    def search(self, state):
-        logging.info("---Using Duckduckgo search")
+    # NOTE: Pass
+    # Retrieval Agent.
+    def retrieval_agent(self, 
+                        state: AgentState
+                        ):
+        logging.info("----Retrieve Agent----")
         
-        messages = state["messages"]
-        question = messages[0].content
-        last_message = messages[-1]
+        # Get question from Agentstate
+        question = state["question"]
+
+        # Retrieval
+        documents = self.retriever.invoke(question)
+        return {"documents": documents, "question": question}
+
+    # NOTE: Pass
+    # Search Agent using Duckduckgo search.
+    def search_agent(self, 
+                state: AgentState 
+               ):
+        logging.info("---Using Duckduckgo search---")
         
-    def gererate(self, state):
+        # Parsing from AgentState
+        question = state["question"]
+        web_search = state["web_search"]
+        
+        # Get 
+        document = self.search_tool().invoke({"query": question})
+        web_search.append(document)
+        
+        return {"web_search": web_search, "question": question}
+        
+    # NOTE: Pass
+    # Generate Agent
+    def generate_agent(self, 
+                 state: AgentState
+                 ):
         logging.info("---Using RAG Model---")
         
-        messages = state["messages"]
-        question = messages[0].content
-        last_message = messages[-1]
-        
-        docs = last_message.content
-        
-        prompt = rag_prompt()
+        # Parsing from Agent State.
+        question = state["question"]
+        document = state["documents"]
+        web_search = state["web_search"]
         
         # rag_chain
-        rag_chain = prompt | self.llm | StrOutputParser()
+        rag_chain = rag_prompt() | self.llm | StrOutputParser()
         
         # invoke
-        respond = rag_chain.invoke({"context": docs, "question":question})
+        respond = rag_chain.invoke({"context": document, "question":question})
         return {"message": [respond]}
-        
         
 # Create Garph using inheritance to AgenticModel.
 class Garph(AgenticModel):
@@ -172,6 +181,4 @@ def get_agent():
         
 if __name__ == "__main__":
     test = AgenticModel()
-    test.grade_document()
-    
-    
+    print(test.search_agent())
