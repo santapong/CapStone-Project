@@ -26,6 +26,7 @@ load_dotenv()
 logging.getLogger(__name__)
 
 # See Agent Paradigms
+# 
 # Agentic That have RAG and Duckduckgo seacrh inside.
 class AgenticModel(RAGModel):
     def __init__(self):
@@ -51,7 +52,7 @@ class AgenticModel(RAGModel):
                         temperature=temperature,
                         base_url=model_base_url,
                     )   
-        
+    # Not use
     # RAG model tool.
     @register_tool
     def retriever_tool(self)-> Tool:
@@ -71,7 +72,7 @@ class AgenticModel(RAGModel):
             name="Websearh tool from Duckduckgo",
             description="Use to search website via Duckduckgo.",
             api_wrapper=wrapper,
-            )
+        )
         
         return tool
     
