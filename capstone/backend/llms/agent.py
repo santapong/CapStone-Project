@@ -3,7 +3,7 @@ import logging
 
 from abc import abstractmethod
 from dotenv import load_dotenv
-from typing import Annotated, Sequence, List
+from typing import Annotated, Sequence, List, Literal
 from typing_extensions import TypedDict
 
 from langchain_core.tools.simple import Tool
@@ -21,44 +21,38 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from capstone.backend.llms.core import RAGModel
 from capstone.backend.llms.tools.webseacrh import searchtool
 
-from pydantic import BaseModel, Field
 
-from capstone.backend.llms.prompts.decision_prompt import decision_prompt
+from capstone.backend.llms.models import GradeDocuments, decision_prompt
 from capstone.backend.llms.prompts.rag_prompt import rag_prompt
 from capstone.backend.llms.utils.register import register_tool
 
 from IPython.display import Image, display
 
+# Parsing ENV parameter from .env
 load_dotenv()
+logging.getLogger(__name__)
 
 # State of Agent between node to edge.
 class AgentState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], add_messages]
 
 
-
-# Data model for decision.
-class Decision(BaseModel):
-    """ Confident Document That have """
-
-    score: int = Field(description="Decide the score that will using RAG or Search")
-
-
-
-
+# See Agent Paradigms
 # Agentic That have RAG and Duckduckgo seacrh inside.
 class AgenticModel(RAGModel):
     def __init__(self):
+        print("Agentic_Model")
+        
         super().__init__()
-        self.tool_methods = [
+        self.__tool_methods = [
             method_name for method_name in dir(self)
             if callable(getattr(self, method_name)) and hasattr(getattr(self, method_name), "_is_tool")
         ]
+        self.retriever =  self.get_vector_store().as_retriever()
+        self.llm = self.__init_model()
         
-        self.retriever = self.get_vector_store().as_retriever()
-        self.llm = self.init_model()
-        
-    def init_model(self,
+    # Intialize Model internal method
+    def __init_model(self,
                     llm_model:str = os.getenv("LLM_MODEL"),
                     model_provider:str = os.getenv("MODEL_PROVIDER"),
                     temperature: float = os.getenv("TEMPERATURE"),
@@ -71,22 +65,27 @@ class AgenticModel(RAGModel):
                         base_url=model_base_url,
                     )   
         
-    # FIXME: Need to use At vector_database model
+    # RAG model tool.
     @register_tool
     def retriever_tool(self)-> Tool:
+        
         tool = create_retriever_tool(
             retriever=self.retriever,
-            name="Automation Agent",
+            name="RAG tools",
             description="Use to retrived document about Automation Engineering in KMITL.",
         )
         
         return tool
     
-    # Search tool Using Duckduckgo seacrh
+    # Search tool Using Duckduckgo search.
     @register_tool
     def search_tool(self)->Tool:
         wrapper = DuckDuckGoSearchAPIWrapper(max_results=10)
-        tool = DuckDuckGoSearchRun(api_wrapper=wrapper)
+        tool = DuckDuckGoSearchRun(
+            name="Websearh tool from Duckduckgo",
+            description="Use to search website via Duckduckgo.",
+            api_wrapper=wrapper,
+            )
         
         return tool
     
@@ -94,37 +93,25 @@ class AgenticModel(RAGModel):
     @abstractmethod
     def get_tools(self) -> List:
         """Collect tools from AgenticModel"""
-        return [getattr(self, method_name)() for method_name in self.tool_methods]
+        return [getattr(self, method_name)() for method_name in self.__tool_methods]
     
+    # Using to grading the document that retrive.
+    def grade_document(self):
+        
+        # Set structure of output > yes or no.
+        structured_llm_grader = self.llm.with_structured_output(GradeDocuments)
+        
+        retrieval_grader = decision_prompt | structured_llm_grader
+        
+        question = "What age of obama"
+        
+        docs = self.retriever.invoke(question)
+        doc_text = docs[0].page_content
+        
+        # Result expected {"binary_score": "yes"}
+        response = retrieval_grader.invoke({"question": question, "context": doc_text})
     
-    # NOTE: is it need to using RAG Here
-    # Prompt template
-    def decision_document(self,state):
-        logging.info(" -- Using decision model -- ")
         
-        llm_with_tool = self.llm.with_structured_output(Decision)
-        
-        chain = decision_prompt | llm_with_tool
-        
-        message = state["messages"]
-        last_message = message[-1]
-        
-        question = message[0].content
-        docs = last_message.content
-        
-        scored_result = chain.invoke({"question": question, "context": docs})
-
-        score = scored_result.binary_score
-
-        if score >= 50:
-            print("---DECISION: DOCS RELEVANT---")
-            return "RAG"
-
-        elif score < 50:
-            print("---DECISION: DOCS NOT RELEVANT---")
-            print(score)
-            return "Search"
-            
     def start_agent(self, state):
         logging.info("Start Agent")
         
@@ -142,8 +129,6 @@ class AgenticModel(RAGModel):
         question = messages[0].content
         last_message = messages[-1]
         
-        
-    
     def gererate(self, state):
         logging.info("---Using RAG Model---")
         
@@ -169,13 +154,13 @@ class Garph(AgenticModel):
             super().__init__()
     
         # Compile workflow here.
+        @abstractmethod
         def compile(self):
             self.workflow = StateGraph(AgentState)
             
-            
             return self.workflow.compile()
         
-        
+        @abstractmethod
         def display(self):
             try:
                 display(Image(self.compile().get_graph(xray=True).draw_mermaid_png()))
@@ -186,5 +171,7 @@ def get_agent():
     yield Garph.complie()
         
 if __name__ == "__main__":
-    test = Garph()
-    print(test.compile())
+    test = AgenticModel()
+    test.grade_document()
+    
+    

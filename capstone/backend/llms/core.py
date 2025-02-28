@@ -55,16 +55,6 @@ class RAGModel:
     def get_vector_store(self):
         return self.__vector_store
 
-    # Pre Retrieval Process.
-    def __pre_retrieval(
-            self, 
-            question
-            ):
-        
-        # Rewritten Query Prompt
-        prompt = pre_retrieval(question=question)
-        return self.__llm.invoke(prompt)
-
     def __chroma_connect(self):
         return Chroma( 
             collection_name=COLLECTION_NAME,
