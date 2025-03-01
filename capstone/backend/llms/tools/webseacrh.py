@@ -1,9 +1,4 @@
-import os 
-
-from pprint import pprint
-from dotenv import load_dotenv
 from typing import (
-    List,
     Union, 
     Optional,
     ) 
@@ -15,6 +10,12 @@ from langchain_community.tools import DuckDuckGoSearchRun
 
 # See how to binding tool to LLM
 # https://python.langchain.com/docs/how_to/tool_results_pass_to_model/
+
+# ######################################### #
+# |                                       | #
+# |         NOT USE THIS FUNCTION         | #
+# |                                       | #
+# ######################################### #
 
 def searchtool(
     query: int, 
