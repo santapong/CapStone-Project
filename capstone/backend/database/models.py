@@ -1,16 +1,12 @@
-import uuid
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import (
     func,
-    UUID,
     JSON,
     Float,
     Column, 
     String, 
     Integer, 
     ) 
-from sqlalchemy.orm import (
-    declarative_base, 
-    )
 
 # Define DDL for database.
 DATABASE_MODEL = declarative_base()
