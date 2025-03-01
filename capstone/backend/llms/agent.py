@@ -51,18 +51,19 @@ class AgenticModel(RAGModel):
         self.llm = self.__init_model()
         
     # Intialize Model internal method
-    def __init_model(self,
-                    llm_model:str = os.getenv("LLM_MODEL"),
-                    model_provider:str = os.getenv("MODEL_PROVIDER"),
-                    temperature: float = os.getenv("TEMPERATURE"),
-                    model_base_url: str = os.getenv("MODEL_BASE_URL")
-                     ):
+    def __init_model(
+            self,
+            llm_model:str = os.getenv("LLM_MODEL"),
+            model_provider:str = os.getenv("MODEL_PROVIDER"),
+            temperature: float = os.getenv("TEMPERATURE"),
+            model_base_url: str = os.getenv("MODEL_BASE_URL")
+        ):
         return init_chat_model(
-                        model=llm_model, 
-                        model_provider=model_provider, 
-                        temperature=temperature,
-                        base_url=model_base_url,
-                    )   
+                model=llm_model, 
+                model_provider=model_provider, 
+                temperature=temperature,
+                base_url=model_base_url,
+            )   
     # Not use
     # RAG model tool.
     @register_tool
@@ -155,7 +156,7 @@ class AgenticModel(RAGModel):
         document = self.search_tool().invoke({"query": question})
         documents.append(document)
         
-        return {"web_result": document, "question": question}
+        return {"web_result": documents, "question": question}
         
     # NOTE: Pass
     # Generate Agent
@@ -167,13 +168,13 @@ class AgenticModel(RAGModel):
         
         # Parsing from Agent State.
         question = state["question"]
-        document = state["documents"]
+        documents = state["documents"]
         
         # rag_chain
         rag_chain = rag_prompt() | self.llm | StrOutputParser()
         
         # invoke
-        response = rag_chain.invoke({"context": document, "question":question})
+        response = rag_chain.invoke({"context": documents, "question":question})
         return {"generation": response}
         
     # Refined Agent
@@ -185,11 +186,12 @@ class AgenticModel(RAGModel):
         
     # NOTE: need test
     # Get decision from Grade_document. 
-    def decide_to_search(self,
-                        state: AgentState
-                        ):
+    def decide_to_search(
+            self,
+            state: AgentState
+        ):
         
-        web_search = state["web_search"]
+        web_search: GradeDocuments = state["web_search"]
         
         if web_search.binary_score == "yes":
             return "yes"
@@ -245,8 +247,9 @@ if __name__ == "__main__":
     import time
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"หลักสูตรออโตเมชัน"})
+    answer = test.compile().invoke({"question":"ISA"})
     time_usage = time.time() - start_time
     print(f"time_usage = {time_usage}")
     print(f"Question: {answer['question']}")
     print(f"Answer: {answer['generation']}")
+    print(f"Documents: {answer['documents']}")
