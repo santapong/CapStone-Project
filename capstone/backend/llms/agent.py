@@ -3,7 +3,7 @@ import logging
 
 from abc import abstractmethod
 from dotenv import load_dotenv
-from typing import List
+from typing import List, Dict
 
 from langchain_core.tools.simple import Tool
 from langchain.chat_models import init_chat_model
@@ -13,6 +13,7 @@ from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from langgraph.graph import END, StateGraph, START
+from langgraph.graph.state import CompiledStateGraph
 
 from capstone.backend.llms.core import RAGModel
 from capstone.backend.llms.prompts.rag_prompt import rag_prompt
@@ -101,7 +102,10 @@ class AgenticModel(RAGModel):
     def grade_document(
             self, 
             state: AgentState
-        ):
+        )-> Dict[str, any]:
+        """
+        
+        """
         print("Grade")
         
         # Get question from AgentState
@@ -110,8 +114,8 @@ class AgenticModel(RAGModel):
         # Set structure of output > yes or no.
         structured_llm_grader = self.llm.with_structured_output(GradeDocuments)
         
-        # LLM Chain
-        retrieval_grader = decision_prompt | structured_llm_grader
+        # Grader Chain
+        retrieval_grader = decision_prompt | structured_llm_grader # This format call LCEL (LangChain Expression Language)
         
         # Retrieval Document.
         docs = self.retriever.invoke(question)
@@ -124,11 +128,11 @@ class AgenticModel(RAGModel):
         return {"web_search": response}
 
     # NOTE: Pass
-    # Retrieval Agent.
+    # Retrieval Agent using ChromaDB.
     def retrieval_agent(
             self, 
             state: AgentState
-        ):
+        )-> Dict[str, any]:
         print("retrieve")
         logging.info("----Retrieve Agent----")
         
@@ -144,43 +148,55 @@ class AgenticModel(RAGModel):
     def search_agent(
             self, 
             state: AgentState 
-        ):
+        )-> Dict[str, any]:
         print("search")
         logging.info("---Using Duckduckgo search---")
         
-        # Parsing from AgentState
+        # Parsing key from AgentState
         question = state["question"]
         documents = state["documents"]
         
-        # Get 
+        # Get Result from Duckduckgo search.
         document = self.search_tool().invoke({"query": question})
         documents.append(document)
         
         return {"web_result": documents, "question": question}
         
     # NOTE: Pass
-    # Generate Agent
+    # Generate Agent.
     def generate_agent(
             self, 
             state: AgentState
-        ):
+        )-> Dict[str, any]:
         logging.info("---Using RAG Model---")
         
-        # Parsing from Agent State.
+        # Parsing key from AgentState.
         question = state["question"]
         documents = state["documents"]
         
-        # rag_chain
-        rag_chain = rag_prompt() | self.llm | StrOutputParser()
+        # Rag_chain
+        rag_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
         # invoke
         response = rag_chain.invoke({"context": documents, "question":question})
         return {"generation": response}
         
     # Refined Agent
-    def refined_agent(self, state: AgentState):
+    def refined_agent(
+            self, 
+            state: AgentState
+        )-> Dict[str, any]:
         
-        return {"answer":"answer"}
+        # Parsing key from AgentState.
+        generation = state["generation"]
+        
+        # LLM Chain
+        refined_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
+        
+        # Get Answer from LLM
+        response = refined_chain.invoke({"generation":generation})
+        
+        return {"refine": response}
     
     ## Edge
         
@@ -189,16 +205,26 @@ class AgenticModel(RAGModel):
     def decide_to_search(
             self,
             state: AgentState
-        ):
+        )-> str:
         
+        """
+        Using for decide to search or go generate
+        
+        return: 'yes' or 'no'
+        """
+        
+        # Parsing key from AgentState.
         web_search: GradeDocuments = state["web_search"]
         
+        # Decide to search or not
         if web_search.binary_score == "yes":
             return "yes"
         elif web_search.binary_score == "no":
             return "no"
         
     
+# Reference
+# https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_crag/
 # Create Garph using inheritance to AgenticModel.
 class Garph(AgenticModel):
         def __init__(self):
@@ -206,7 +232,8 @@ class Garph(AgenticModel):
             
         # Compile workflow here.
         @abstractmethod
-        def compile(self):
+        def compile(self)-> CompiledStateGraph:
+            # Set StateGraph
             self.workflow = StateGraph(AgentState)
             
             # Build Node

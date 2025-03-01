@@ -10,14 +10,11 @@ from typing import (
 
 from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI
+from langchain_ollama import OllamaEmbeddings 
 from langchain_core.documents import Document
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_text_splitters import (
-    RecursiveCharacterTextSplitter
-    )
-from langchain_experimental.text_splitter import SemanticChunker
-from langchain_ollama import OllamaEmbeddings 
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from capstone.backend.llms.prompts.rag_prompt import (
     rag_prompt,

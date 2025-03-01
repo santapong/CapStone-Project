@@ -15,11 +15,14 @@ class AgentState(TypedDict):
     documents: Retrieve documents from vector_database.
     
     """
+    refine: str
     question: str
     generation: str
     web_search: str
     web_result: List[str]
     documents: List[str]
+
+
 
 # Data model for Routing.
 class GradeDocuments(BaseModel):
@@ -29,7 +32,9 @@ class GradeDocuments(BaseModel):
         description="Documents are relevant to the question, 'yes' or 'no'"
     )
 
-# Prompt
+
+
+# Grader Prompt
 decision_prompt = PromptTemplate(
     template="""You are a grader assessing relevance of a retrieved document to a user question. \n 
     Here is the retrieved document: \n\n {context} \n\n
@@ -41,3 +46,8 @@ decision_prompt = PromptTemplate(
     """,
     input_variables=["context", "question"],
 )
+
+# Rag Prompt (Generation prompt)
+
+
+# Refined Prompt
