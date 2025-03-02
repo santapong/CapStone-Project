@@ -289,7 +289,7 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"วิธีการสอบเข้าสาขา ออโตเมชันควรใช้คะแนนเท่าไหร่"})
+    answer = test.compile().invoke({"question":"อยากไปเที่ยวญี่ปุ่นต้องวางแผนอะไรบ้าง ?"})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")
