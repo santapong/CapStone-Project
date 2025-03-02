@@ -1,0 +1,1 @@
+from capstone.backend.llms.utils.register import register_tool

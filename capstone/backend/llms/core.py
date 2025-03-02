@@ -16,7 +16,7 @@ from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from capstone.backend.llms.prompts.rag_prompt import (
+from capstone.backend.llms.prompts import (
     rag_prompt,
     )
 

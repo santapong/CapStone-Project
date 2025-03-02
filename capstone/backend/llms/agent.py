@@ -16,12 +16,16 @@ from langgraph.graph import END, StateGraph, START
 from langgraph.graph.state import CompiledStateGraph
 
 from capstone.backend.llms.core import RAGModel
-from capstone.backend.llms.prompts.rag_prompt import rag_prompt
-from capstone.backend.llms.utils.register import register_tool
+from capstone.backend.llms.utils import register_tool
+from capstone.backend.llms.prompts import (
+    rag_prompt, 
+    decision_prompt,
+    re_write_prompt,
+    refinement_prompt
+    )
 from capstone.backend.llms.models import (
     AgentState,
-    GradeDocuments, 
-    decision_prompt,
+    GradeDocuments,
     ) 
 
 from IPython.display import Image, display
@@ -106,7 +110,7 @@ class AgenticModel(RAGModel):
         """
         
         """
-        print("Grade")
+        logging.info("---- Grading ----")
         
         # Get question from AgentState
         question = state["question"]
@@ -133,7 +137,6 @@ class AgenticModel(RAGModel):
             self, 
             state: AgentState
         )-> Dict[str, any]:
-        print("retrieve")
         logging.info("----Retrieve Agent----")
         
         # Get question from Agentstate
@@ -142,6 +145,26 @@ class AgenticModel(RAGModel):
         # Retrieval
         documents = self.retriever.invoke(question)
         return {"documents": documents, "question": question}
+    
+    # NOTE: Test
+    # Using too rewrite the question to search the website.
+    def rewrite(
+            self,
+            state: AgentState,
+        )-> Dict[str, any]:
+        
+        logging.info("----- Rewrite -----")
+        
+        # Parsing the Question from AgentState
+        question = state["question"]
+        
+        # LLM Chains
+        rewriter =  re_write_prompt | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
+        
+        # rewrite question from LLM.
+        rewrite_question =  rewriter.invoke({"question":question})
+        
+        return {"question": rewrite_question}
 
     # NOTE: Pass
     # Search Agent using Duckduckgo search.
@@ -149,7 +172,6 @@ class AgenticModel(RAGModel):
             self, 
             state: AgentState 
         )-> Dict[str, any]:
-        print("search")
         logging.info("---Using Duckduckgo search---")
         
         # Parsing key from AgentState
@@ -168,7 +190,7 @@ class AgenticModel(RAGModel):
             self, 
             state: AgentState
         )-> Dict[str, any]:
-        logging.info("---Using RAG Model---")
+        logging.info("---Using Generate---")
         
         # Parsing key from AgentState.
         question = state["question"]
@@ -201,16 +223,18 @@ class AgenticModel(RAGModel):
             state: AgentState
         )-> Dict[str, any]:
         
+        logging.info("---- Refined ----")
+        
         # Parsing key from AgentState.
         generation = state["generation"]
         
         # LLM Chain
-        refined_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
+        refined_chain = refinement_prompt | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
         # Get Answer from LLM
-        # response = refined_chain.invoke({"generation":generation})
+        response = refined_chain.invoke({"generation":generation})
         
-        return {"refine": "answer"}
+        return {"refine": response}
     
     ## Edge
         
@@ -251,12 +275,13 @@ class Garph(AgenticModel):
             self.workflow = StateGraph(AgentState)
             
             # Build Node
-            # Need more node to refined answer.
             self.workflow.add_node("retrieval_agent", self.retrieval_agent)
             self.workflow.add_node("grade_document", self.grade_document)
+            self.workflow.add_node("rewriter_agent", self.rewrite)
             self.workflow.add_node("search_agent", self.search_agent)
             self.workflow.add_node("generate_agent", self.generate_agent)
             self.workflow.add_node("refined_agent", self.refined_agent)
+            
             
             # Build Graph using Edge to connect node to node.
             self.workflow.add_edge(start_key=START, end_key= "retrieval_agent")
@@ -266,8 +291,9 @@ class Garph(AgenticModel):
                 path=self.decide_to_search,
                 path_map={
                     "yes":"generate_agent",
-                    "no":"search_agent",
+                    "no":"rewriter_agent",
                 })
+            self.workflow.add_edge(start_key="rewriter_agent", end_key="search_agent")
             self.workflow.add_edge(start_key="search_agent", end_key="generate_agent")                        
             self.workflow.add_edge(start_key="generate_agent", end_key="refined_agent")
             self.workflow.add_edge(start_key="refined_agent", end_key=END)
@@ -282,17 +308,18 @@ class Garph(AgenticModel):
                 pass
 
 def get_agent():
-    yield Garph.complie()
+    yield Garph().compile()
 
 if __name__ == "__main__":
     import time
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"อยากไปเที่ยวญี่ปุ่นต้องวางแผนอะไรบ้าง ?"})
+    answer = test.compile().invoke({"question":"แมวชอบกินปลาใช่มั้ย"})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")
     pprint(f"Answer: {answer['generation']}")
+    pprint(f"Refined: {answer['refine']}")
     # pprint(f"Documents: {answer['documents']}")
     # pprint(f"Web_result: {answer['web_result']}")
