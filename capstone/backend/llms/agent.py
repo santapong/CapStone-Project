@@ -80,7 +80,7 @@ class AgenticModel(RAGModel):
     # Search tool Using Duckduckgo search.
     @register_tool
     def search_tool(self)->DuckDuckGoSearchRun:
-        wrapper = DuckDuckGoSearchAPIWrapper(max_results=10)
+        wrapper = DuckDuckGoSearchAPIWrapper(max_results=15)
         tool = DuckDuckGoSearchRun(
             name="Websearh tool from Duckduckgo",
             description="Use to search website via Duckduckgo.",
@@ -118,11 +118,11 @@ class AgenticModel(RAGModel):
         retrieval_grader = decision_prompt | structured_llm_grader # This format call LCEL (LangChain Expression Language)
         
         # Retrieval Document.
-        docs = self.retriever.invoke(question)
-        doc_text = docs[0].page_content
+        documents = self.retriever.invoke(question)
+        # doc_text = documents[0].page_content
         
         # Result expected {"binary_score": "yes"}
-        response = retrieval_grader.invoke({"question": question, "context": doc_text})
+        response = retrieval_grader.invoke({"question": question, "context": documents})
         print(response)
         
         return {"web_search": response}
@@ -154,13 +154,13 @@ class AgenticModel(RAGModel):
         
         # Parsing key from AgentState
         question = state["question"]
-        documents = state["documents"]
+        web_result = []
         
         # Get Result from Duckduckgo search.
         document = self.search_tool().invoke({"query": question})
-        documents.append(document)
+        web_result.append(document)
         
-        return {"web_result": documents, "question": question}
+        return {"web_result": web_result, "question": question}
         
     # NOTE: Pass
     # Generate Agent.
@@ -172,13 +172,27 @@ class AgenticModel(RAGModel):
         
         # Parsing key from AgentState.
         question = state["question"]
-        documents = state["documents"]
+        web_search: GradeDocuments = state["web_search"]
         
         # Rag_chain
         rag_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
-        # invoke
-        response = rag_chain.invoke({"context": documents, "question":question})
+        # Select Document to asking.
+        if web_search.binary_score == "yes":
+            # If using RAG only will get document.
+            print("----Using RAG.----")
+            documents = state["documents"]
+            filled_document = documents
+            
+        elif web_search.binary_score == "no":
+            # If using search will not using RAG document.
+            print("----Using Search.----")
+            web_result = state["web_result"]
+            filled_document = web_result
+        
+        # Query To LLM
+        response = rag_chain.invoke({"context": filled_document, "question":question})
+        
         return {"generation": response}
         
     # Refined Agent
@@ -194,9 +208,9 @@ class AgenticModel(RAGModel):
         refined_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
         # Get Answer from LLM
-        response = refined_chain.invoke({"generation":generation})
+        # response = refined_chain.invoke({"generation":generation})
         
-        return {"refine": response}
+        return {"refine": "answer"}
     
     ## Edge
         
@@ -269,14 +283,16 @@ class Garph(AgenticModel):
 
 def get_agent():
     yield Garph.complie()
-        
+
 if __name__ == "__main__":
     import time
+    from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"ISA"})
+    answer = test.compile().invoke({"question":"วิธีการสอบเข้าสาขา ออโตเมชันควรใช้คะแนนเท่าไหร่"})
     time_usage = time.time() - start_time
-    print(f"time_usage = {time_usage}")
-    print(f"Question: {answer['question']}")
-    print(f"Answer: {answer['generation']}")
-    print(f"Documents: {answer['documents']}")
+    pprint(f"time_usage = {time_usage}")
+    pprint(f"Question: {answer['question']}")
+    pprint(f"Answer: {answer['generation']}")
+    # pprint(f"Documents: {answer['documents']}")
+    # pprint(f"Web_result: {answer['web_result']}")
