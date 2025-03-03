@@ -195,7 +195,6 @@ class AgenticModel(RAGModel):
         # Parsing key from AgentState.
         question = state["question"]
         documents = state["documents"]
-        web_result = state["web_result"]
         web_search: GradeDocuments = state["web_search"]
         
         result_document = []
@@ -211,6 +210,7 @@ class AgenticModel(RAGModel):
         elif web_search.binary_score == "no":
             # If document not sufficient to Answer it will Add more search result to answer.
             logging.info("----Using Search.----")
+            web_result = state["web_result"]
             filled_document: List[str] = web_result
             result_document.extend([filled_document, documents])
 
@@ -317,7 +317,7 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"จงออกแบบวงจร '4-bit Binary Multiplier' (วงจรคูณเลขฐานสอง 4 บิต) พร้อมแสดงหลักการทำงาน สมการลอจิก และโครงสร้างการทำงานของวงจร พร้อมทั้งคำนวณผลลัพธ์ของ (1011)₂ × (1101)₂ 🎯 สิ่งที่ต้องมีในคำตอบ: หลักการทำงานของวงจร Binary Multiplier สมการลอจิก สำหรับการคูณเลขฐานสอง แผนภาพโครงสร้างวงจร (ถ้าทำได้) คำนวณตัวอย่าง (1011)₂ × (1101)₂"})
+    answer = test.compile().invoke({"question":""})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")

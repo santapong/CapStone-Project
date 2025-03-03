@@ -15,10 +15,10 @@ You are a grader assessing the relevance of a retrieved document to a user quest
 
   {question}  
 
-### Grading Criteria:  
-1. If the document **contains information that can be used to answer the question**, grade it as relevant.  
-2. Consider synonyms, paraphrased content, and implicit meanings, not just exact keyword matches.  
-3. If the document **lacks sufficient information** or is **completely unrelated**, grade it as not relevant.  
+Grading Criteria:
+1.The document is relevant if it contains information that can be used to answer the question, even if paraphrased, implicit, or using synonyms.
+2.Language Differences: If the document is in a different language than the question, assess its relevance based on translation rather than exact wording.
+3.The document is not relevant if it lacks sufficient information or is completely unrelated to the question.
 
 ### Output Format:  
 Respond only in JSON format with one of the following:  
