@@ -164,7 +164,7 @@ class AgenticModel(RAGModel):
         # rewrite question from LLM.
         rewrite_question =  rewriter.invoke({"question":question})
         
-        return {"question": rewrite_question}
+        return {"rewrite": rewrite_question}
 
     # NOTE: Pass
     # Search Agent using Duckduckgo search.
@@ -175,14 +175,14 @@ class AgenticModel(RAGModel):
         logging.info("---Using Duckduckgo search---")
         
         # Parsing key from AgentState
-        question = state["question"]
+        rewrite = state["rewrite"]
         web_result = []
         
         # Get Result from Duckduckgo search.
-        document = self.search_tool().invoke({"query": question})
+        document = self.search_tool().invoke({"query": rewrite})
         web_result.append(document)
         
-        return {"web_result": web_result, "question": question}
+        return {"web_result": web_result}
         
     # NOTE: Pass
     # Generate Agent.
@@ -202,13 +202,13 @@ class AgenticModel(RAGModel):
         # Select Document to asking.
         if web_search.binary_score == "yes":
             # If using RAG only will get document.
-            print("----Using RAG.----")
+            logging.info("----Using RAG.----")
             documents = state["documents"]
             filled_document = documents
             
         elif web_search.binary_score == "no":
             # If using search will not using RAG document.
-            print("----Using Search.----")
+            logging.info("----Using Search.----")
             web_result = state["web_result"]
             filled_document = web_result
         
@@ -315,10 +315,11 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"แมวชอบกินปลาใช่มั้ย"})
+    answer = test.compile().invoke({"question":"จงออกแบบวงจร '4-bit Binary Multiplier' (วงจรคูณเลขฐานสอง 4 บิต) พร้อมแสดงหลักการทำงาน สมการลอจิก และโครงสร้างการทำงานของวงจร พร้อมทั้งคำนวณผลลัพธ์ของ (1011)₂ × (1101)₂ 🎯 สิ่งที่ต้องมีในคำตอบ: หลักการทำงานของวงจร Binary Multiplier สมการลอจิก สำหรับการคูณเลขฐานสอง แผนภาพโครงสร้างวงจร (ถ้าทำได้) คำนวณตัวอย่าง (1011)₂ × (1101)₂"})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")
+    pprint(f"rewrite: {answer['rewrite']}")
     pprint(f"Answer: {answer['generation']}")
     pprint(f"Refined: {answer['refine']}")
     # pprint(f"Documents: {answer['documents']}")

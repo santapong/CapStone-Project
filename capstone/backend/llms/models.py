@@ -20,6 +20,7 @@ class AgentState(TypedDict):
     
     """
     refine: str
+    rewrite: str
     question: str
     generation: str
     web_search: str
