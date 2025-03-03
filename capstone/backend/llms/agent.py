@@ -284,7 +284,7 @@ class Garph(AgenticModel):
             # Build Node
             self.workflow.add_node("retrieval_agent", self.retrieval_agent)
             self.workflow.add_node("grade_document", self.grade_document)
-            self.workflow.add_node("rewriter_agent", self.rewrite)
+            # self.workflow.add_node("rewriter_agent", self.rewrite)
             self.workflow.add_node("search_agent", self.search_agent)
             self.workflow.add_node("generate_agent", self.generate_agent)
             self.workflow.add_node("refined_agent", self.refined_agent)
@@ -298,9 +298,9 @@ class Garph(AgenticModel):
                 path=self.decide_to_search,
                 path_map={
                     "yes":"generate_agent",
-                    "no":"rewriter_agent",
+                    "no":"search_agent",
                 })
-            self.workflow.add_edge(start_key="rewriter_agent", end_key="search_agent")
+            # self.workflow.add_edge(start_key="rewriter_agent", end_key="search_agent")
             self.workflow.add_edge(start_key="search_agent", end_key="generate_agent")                        
             self.workflow.add_edge(start_key="generate_agent", end_key="refined_agent")
             self.workflow.add_edge(start_key="refined_agent", end_key=END)
