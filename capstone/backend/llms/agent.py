@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 from typing import List, Dict
 
 from langchain_core.tools.simple import Tool
+from langchain_ollama import OllamaEmbeddings 
 from langchain.chat_models import init_chat_model
 from langchain.tools.retriever import create_retriever_tool
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.tools import DuckDuckGoSearchRun
-from langchain_core.runnables import Runnable, RunnablePassthrough
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from langgraph.graph import END, StateGraph, START
@@ -41,20 +41,23 @@ logging.getLogger(__name__)
 class AgenticModel(RAGModel):
     def __init__(self):
         
+        # Using inheritance.
         super().__init__()
+        
+        # Init Model.
+        self.llm = self.__init_model()
+        self.vector_store =  self.get_vector_store()
+        
+        # Setting Tool Parameter for Decorator.
         self.__tool_methods = [
             method_name for method_name in dir(self)
             if callable(getattr(self, method_name)) and hasattr(getattr(self, method_name), "_is_tool")
         ]
-        self.retriever =  self.get_vector_store().as_retriever(
-            search_type="mmr",
-            search_kwargs={
-                "k":20,
-                "lambda_mult":0.1,
-                "fetch_k":30,
-            }
+        
+        # Setting Embeddin model.
+        self.embedding = OllamaEmbeddings(
+            model=os.getenv("EMBEDDING_MODEL", default='bge-m3')
         )
-        self.llm = self.__init_model()
         
     # Intialize Model internal method
     def __init_model(
@@ -140,7 +143,10 @@ class AgenticModel(RAGModel):
         question = state["question"]
     
         # Retrieval
-        documents = self.retriever.invoke(input = question)
+        documents = self.vector_store.similarity_search_by_vector(
+            embedding=self.embedding.embed_query(question),
+            k=10,
+        )
         
         return {"documents": documents, "question": question}
     
