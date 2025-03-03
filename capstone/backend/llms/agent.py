@@ -115,6 +115,8 @@ class AgenticModel(RAGModel):
         
         """
         logging.info("---- Grading ----")
+        print("Grader")
+        
         
         # Get question from AgentState
         question = state["question"]
@@ -138,14 +140,14 @@ class AgenticModel(RAGModel):
             state: AgentState
         )-> Dict[str, any]:
         logging.info("----Retrieve Agent----")
-        
+        print("Retrieval")
         # Get question from Agentstate
         question = state["question"]
     
         # Retrieval
-        documents = self.vector_store.similarity_search_by_vector(
-            embedding=self.embedding.embed_query(question),
-            k=10,
+        documents = self.vector_store.similarity_search_with_score(
+            query=question,
+            k=13
         )
         
         return {"documents": documents, "question": question}
@@ -158,7 +160,7 @@ class AgenticModel(RAGModel):
         )-> Dict[str, any]:
         
         logging.info("----- Rewrite -----")
-        
+        print("Rewrite")
         # Parsing the Question from AgentState
         question = state["question"]
         
@@ -177,6 +179,7 @@ class AgenticModel(RAGModel):
             state: AgentState 
         )-> Dict[str, any]:
         logging.info("---Using Duckduckgo search---")
+        print("search")
         
         # Parsing key from AgentState
         rewrite = state["rewrite"]
@@ -198,10 +201,8 @@ class AgenticModel(RAGModel):
         
         # Parsing key from AgentState.
         question = state["question"]
-        documents = state["documents"]
         web_search: GradeDocuments = state["web_search"]
         
-        result_document = []
         # Rag_chain
         rag_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
@@ -209,17 +210,17 @@ class AgenticModel(RAGModel):
         if web_search.binary_score == "yes":
             # If using RAG only will get document.
             logging.info("----Using RAG.----")
-            result_document.append(documents)
+            documents = state["documents"]
+            filled_document: List[str] = documents
             
         elif web_search.binary_score == "no":
             # If document not sufficient to Answer it will Add more search result to answer.
             logging.info("----Using Search.----")
             web_result = state["web_result"]
             filled_document: List[str] = web_result
-            result_document.extend([filled_document, documents])
 
         # Query To LLM
-        response = rag_chain.invoke({"context": result_document, "question":question})
+        response = rag_chain.invoke({"context": filled_document, "question":question})
         
         return {"generation": response}
         
@@ -321,7 +322,7 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"ประวัติสจล."})
+    answer = test.compile().invoke({"question":"ประวัติสจล"})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")
