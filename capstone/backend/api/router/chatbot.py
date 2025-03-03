@@ -47,14 +47,14 @@ async def inference_Model(
             llm_model=os.getenv("LLM_MODEL"),
             prompt=rag_prompt.__name__, 
             question=request.question, 
-            answer=answer['generation'], 
+            answer=answer['refine'], 
             time_usage=time_usage
         )
 
         return JSONResponse(content={
             "time usage": time_usage,
             "question": request.question,
-            "answer": answer['generation']
+            "answer": answer['refine']
         })
     
     except Exception as e:
