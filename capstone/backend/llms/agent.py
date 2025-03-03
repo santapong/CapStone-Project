@@ -182,11 +182,11 @@ class AgenticModel(RAGModel):
         print("search")
         
         # Parsing key from AgentState
-        rewrite = state["rewrite"]
+        question = state["question"]
         web_result = []
         
         # Get Result from Duckduckgo search.
-        document = self.search_tool().invoke({"query": rewrite})
+        document = self.search_tool().invoke({"query": question})
         web_result.append(document)
         
         return {"web_result": web_result}
