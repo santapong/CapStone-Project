@@ -43,3 +43,39 @@ def searchtool(
     answer = llm_with_tools.invoke(messages).content
     
     return answer
+
+if __name__ == "__main__":
+    from langchain_core.tools import Tool
+    from langchain_google_community import GoogleSearchAPIWrapper, GoogleSearchRun, GoogleSearchResults
+
+    import os
+    from dotenv import load_dotenv
+    
+    load_dotenv()
+    
+    wrapper = GoogleSearchAPIWrapper(
+        k=10,
+        google_cse_id=os.getenv("GOOGLE_CSE_ID"),   
+        google_api_key=os.getenv("GOOGLE_API_KEY"),
+    )
+    tools = GoogleSearchRun(
+        api_wrapper=wrapper,
+        name="Google Search Enginer",
+        description="Goole Search Will Replace Duckduckgo"
+    )
+    
+    test = GoogleSearchResults(
+        api_wrapper=wrapper,
+        num_results=10
+    )
+    
+    tool = Tool(
+    name="google_search",
+    description="Search Google for recent results.",
+    func=wrapper.run,
+    )
+    
+    print(test.invoke("majorana 1"))
+    print(tools.invoke("majorana 1"))
+    print(tool.run("majorana 1"))
+    # print(tool.invoke("Majorana 1"))

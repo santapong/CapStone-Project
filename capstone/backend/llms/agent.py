@@ -12,6 +12,7 @@ from langchain.tools.retriever import create_retriever_tool
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
+from langchain_google_community import GoogleSearchAPIWrapper, GoogleSearchRun
 
 from langgraph.graph import END, StateGraph, START
 from langgraph.graph.state import CompiledStateGraph
@@ -87,7 +88,7 @@ class AgenticModel(RAGModel):
     
     # Search tool Using Duckduckgo search.
     @register_tool
-    def search_tool(self)->DuckDuckGoSearchRun:
+    def duckduckgo(self)->DuckDuckGoSearchRun:
         wrapper = DuckDuckGoSearchAPIWrapper(max_results=15)
         tool = DuckDuckGoSearchRun(
             name="Websearh tool from Duckduckgo",
@@ -97,6 +98,25 @@ class AgenticModel(RAGModel):
         
         return tool
     
+    @register_tool
+    def google_search(
+        self,
+        k:int = 10
+        )->GoogleSearchRun:
+        
+        wrapper = GoogleSearchAPIWrapper(
+         k=k,
+         google_cse_id=os.getenv("GOOGLE_CSE_ID"),   
+         google_api_key=os.getenv("GOOGLE_API_KEY"),
+        )
+        tool = GoogleSearchRun(
+            api_wrapper=wrapper,
+            name="Google Search Enginer",
+            description="Goole Search Will Replace Duckduckgo"
+        )
+        
+        return tool
+        
     # Abstract to collect tool inside AgenticModel class.
     @abstractmethod
     def get_tools(self) -> List:
@@ -186,7 +206,7 @@ class AgenticModel(RAGModel):
         web_result = []
         
         # Get Result from Duckduckgo search.
-        document = self.search_tool().invoke({"query": question})
+        document = self.google_search().invoke(question)
         web_result.append(document)
         
         return {"web_result": web_result}
@@ -284,7 +304,7 @@ class Garph(AgenticModel):
             # Build Node
             self.workflow.add_node("retrieval_agent", self.retrieval_agent)
             self.workflow.add_node("grade_document", self.grade_document)
-            # self.workflow.add_node("rewriter_agent", self.rewrite)
+            self.workflow.add_node("rewriter_agent", self.rewrite)
             self.workflow.add_node("search_agent", self.search_agent)
             self.workflow.add_node("generate_agent", self.generate_agent)
             self.workflow.add_node("refined_agent", self.refined_agent)
@@ -298,9 +318,9 @@ class Garph(AgenticModel):
                 path=self.decide_to_search,
                 path_map={
                     "yes":"generate_agent",
-                    "no":"search_agent",
+                    "no":"rewriter_agent",
                 })
-            # self.workflow.add_edge(start_key="rewriter_agent", end_key="search_agent")
+            self.workflow.add_edge(start_key="rewriter_agent", end_key="search_agent")
             self.workflow.add_edge(start_key="search_agent", end_key="generate_agent")                        
             self.workflow.add_edge(start_key="generate_agent", end_key="refined_agent")
             self.workflow.add_edge(start_key="refined_agent", end_key=END)
