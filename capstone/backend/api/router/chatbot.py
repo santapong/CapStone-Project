@@ -31,13 +31,13 @@ router_chatbot = APIRouter(prefix='/chatbot', tags=tags)
 @router_chatbot.post("/infer", response_model=ResponseModel)
 async def inference_Model(
     request: ChatModel, 
-    agent = Depends(get_agent),
+    RAG: RAGModel= Depends(get_RAG),
     db: DBConnection = Depends(get_db),
 ):
     start_time = time.time()
     
     try:
-        answer = await agent.ainvoke({"question": request.question})
+        answer = RAG.invoke({"question": request.question})
         time_usage = time.time() - start_time
         logger.info(f"Time usage: {time_usage}s")
 
@@ -47,14 +47,14 @@ async def inference_Model(
             llm_model=os.getenv("LLM_MODEL"),
             prompt=rag_prompt.__name__, 
             question=request.question, 
-            answer=answer['refine'], 
+            answer=answer['answer'], 
             time_usage=time_usage
         )
 
         return JSONResponse(content={
             "time usage": time_usage,
             "question": request.question,
-            "answer": answer['refine']
+            "answer": answer['answer']
         })
     
     except Exception as e:
