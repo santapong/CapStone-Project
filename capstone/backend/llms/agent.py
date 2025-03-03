@@ -10,6 +10,7 @@ from langchain.chat_models import init_chat_model
 from langchain.tools.retriever import create_retriever_tool
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_core.runnables import Runnable, RunnablePassthrough
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from langgraph.graph import END, StateGraph, START
@@ -48,9 +49,9 @@ class AgenticModel(RAGModel):
         self.retriever =  self.get_vector_store().as_retriever(
             search_type="mmr",
             search_kwargs={
-                "k":10,
+                "k":20,
                 "lambda_mult":0.1,
-                "fetch_k":20,
+                "fetch_k":30,
             }
         )
         self.llm = self.__init_model()
@@ -114,6 +115,7 @@ class AgenticModel(RAGModel):
         
         # Get question from AgentState
         question = state["question"]
+        documents = state["documents"]
         
         # Set structure of output > yes or no.
         structured_llm_grader = self.llm.with_structured_output(GradeDocuments)
@@ -121,13 +123,8 @@ class AgenticModel(RAGModel):
         # Grader Chain
         retrieval_grader = decision_prompt | structured_llm_grader # This format call LCEL (LangChain Expression Language)
         
-        # Retrieval Document.
-        documents = self.retriever.invoke(question)
-        # doc_text = documents[0].page_content
-        
         # Result expected {"binary_score": "yes"}
         response = retrieval_grader.invoke({"question": question, "context": documents})
-        print(response)
         
         return {"web_search": response}
 
@@ -141,9 +138,10 @@ class AgenticModel(RAGModel):
         
         # Get question from Agentstate
         question = state["question"]
-
+    
         # Retrieval
-        documents = self.retriever.invoke(question)
+        documents = self.retriever.invoke(input = question)
+        
         return {"documents": documents, "question": question}
     
     # NOTE: Test
@@ -317,11 +315,11 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":""})
+    answer = test.compile().invoke({"question":"ประวัติสจล."})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")
-    pprint(f"rewrite: {answer['rewrite']}")
+    # pprint(f"rewrite: {answer['rewrite']}")
     pprint(f"Answer: {answer['generation']}")
     pprint(f"Refined: {answer['refine']}")
     # pprint(f"Documents: {answer['documents']}")
