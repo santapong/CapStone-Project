@@ -60,8 +60,8 @@ def rag_prompt(
     Handle uncertainty properly: If the answer is not in the context, say:
     "The provided information does not cover this. Please check official sources or ask a faculty member at KMITL."
     
-    Context: {context}
     question: {question}
+    Context: {context}
     Answer: 
     """
 

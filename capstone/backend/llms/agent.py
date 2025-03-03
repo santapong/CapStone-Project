@@ -194,8 +194,11 @@ class AgenticModel(RAGModel):
         
         # Parsing key from AgentState.
         question = state["question"]
+        documents = state["documents"]
+        web_result = state["web_result"]
         web_search: GradeDocuments = state["web_search"]
         
+        result_document = []
         # Rag_chain
         rag_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
@@ -203,17 +206,16 @@ class AgenticModel(RAGModel):
         if web_search.binary_score == "yes":
             # If using RAG only will get document.
             logging.info("----Using RAG.----")
-            documents = state["documents"]
-            filled_document = documents
+            result_document.append(documents)
             
         elif web_search.binary_score == "no":
-            # If using search will not using RAG document.
+            # If document not sufficient to Answer it will Add more search result to answer.
             logging.info("----Using Search.----")
-            web_result = state["web_result"]
-            filled_document = web_result
-        
+            filled_document: List[str] = web_result
+            result_document.extend([filled_document, documents])
+
         # Query To LLM
-        response = rag_chain.invoke({"context": filled_document, "question":question})
+        response = rag_chain.invoke({"context": result_document, "question":question})
         
         return {"generation": response}
         
