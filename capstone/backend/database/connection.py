@@ -9,6 +9,7 @@ from sqlalchemy.orm import (
     Session,
     sessionmaker,
     )
+
 from capstone.backend.database.models import DATABASE_MODEL, DocumentTable
 
 load_dotenv()
