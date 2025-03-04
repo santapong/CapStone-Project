@@ -12,7 +12,7 @@ Your task is:
 1. Reformulate the user's question into a clearer, more concise query that is suitable for search engines.
 2. Identify and extract the most relevant keywords from the question that will improve search accuracy.
 
-Ensure that the rewritten question retains the original meaning while improving clarity."""
+Ensure that the rewritten question retains the original meaning while improving clarity. Output only the reformulated question without any additional labels or formatting."""
 
 re_write_prompt = ChatPromptTemplate.from_messages(
     [

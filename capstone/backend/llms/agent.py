@@ -6,13 +6,16 @@ from dotenv import load_dotenv
 from typing import List, Dict
 
 from langchain_core.tools.simple import Tool
-from langchain_ollama import OllamaEmbeddings 
+from langchain_core.output_parsers import StrOutputParser
+
 from langchain.chat_models import init_chat_model
 from langchain.tools.retriever import create_retriever_tool
-from langchain_core.output_parsers import StrOutputParser
+
+from langchain_ollama import OllamaEmbeddings 
+from langchain_google_community import GoogleSearchAPIWrapper
 from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
-from langchain_google_community import GoogleSearchAPIWrapper, GoogleSearchRun
 
 from langgraph.graph import END, StateGraph, START
 from langgraph.graph.state import CompiledStateGraph
@@ -98,24 +101,30 @@ class AgenticModel(RAGModel):
         
         return tool
     
-    @register_tool
+    # Google search method.
     def google_search(
         self,
-        k:int = 10
-        )->GoogleSearchRun:
+        query,
+        top_k,
+        ):
         
+        # Get API Wrapper from Google
         wrapper = GoogleSearchAPIWrapper(
-         k=k,
-         google_cse_id=os.getenv("GOOGLE_CSE_ID"),   
-         google_api_key=os.getenv("GOOGLE_API_KEY"),
-        )
-        tool = GoogleSearchRun(
-            api_wrapper=wrapper,
-            name="Google Search Enginer",
-            description="Goole Search Will Replace Duckduckgo"
+            google_cse_id=os.getenv("GOOGLE_CSE_ID"), # Custom Search Engine ID
+            google_api_key=os.getenv("GOOGLE_API_KEY"), # Google API KEY
         )
         
-        return tool
+        # lambda function to create list of document
+        result = lambda query, top_k: list(wrapper.results(query=query, num_results=top_k))
+        
+        links = [
+            result["link"] for result in result(query=query, top_k=top_k) 
+        ]
+        
+        documents = WebBaseLoader(web_paths=links).load()
+        
+        return documents
+        
         
     # Abstract to collect tool inside AgenticModel class.
     @abstractmethod
@@ -205,9 +214,8 @@ class AgenticModel(RAGModel):
         question = state["question"]
         web_result = []
         
-        # Get Result from Duckduckgo search.
-        document = self.google_search().invoke(question)
-        web_result.append(document)
+        documents = self.google_search(query=question, top_k=3)
+        web_result.append(documents)
         
         return {"web_result": web_result}
         
@@ -342,7 +350,7 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"ประวัติสจล"})
+    answer = test.compile().invoke({"question":"หลักสูตรออโตเมชันที่น่าสนใจ"})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")
