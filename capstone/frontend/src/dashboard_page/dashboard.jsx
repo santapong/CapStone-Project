@@ -57,8 +57,8 @@ const Dashboard = () => {
           <h2 className="text-xl font-bold text-purple-700">{dashboardData.total_user[0].total_chat}</h2>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 text-center">
-          <p className="text-gray-500">จำนวนผู้ใช้ที่สนทนา</p>
-          <h2 className="text-xl font-bold text-purple-700">{dashboardData.uniqueUsers}</h2>
+          <p className="text-gray-500">เวลาเฉลี่ยในการอัพโหลดเอกสาร 1 หน้า</p>
+          <h2 className="text-xl font-bold text-purple-700">{dashboardData.upload_time[0].time_usage_per_page}</h2>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 text-center">
           <p className="text-gray-500">ความล่าช้าในการตอบ (วินาที)</p>
@@ -66,7 +66,7 @@ const Dashboard = () => {
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 text-center">
           <p className="text-gray-500">ความผิดพลาดของ AI (%)</p>
-          <h2 className="text-xl font-bold text-green-700">{dashboardData.aiAccuracy}%</h2>
+          <h2 className="text-xl font-bold text-green-700">{dashboardData.error_percentage[0].diff}%</h2>
         </div>
       </div>
       
