@@ -13,6 +13,10 @@ class FileLength(BaseModel):
     start_page: int = 0
     final_page: int = 0
 
+class DocumentModel(BaseModel):
+    document_name: str
+    id: int
+
 class SQLModel(BaseModel):
     sql: str
 

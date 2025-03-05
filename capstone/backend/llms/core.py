@@ -10,18 +10,14 @@ from typing import (
 
 from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI
+from langchain_ollama import OllamaEmbeddings 
 from langchain_core.documents import Document
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_text_splitters import (
-    RecursiveCharacterTextSplitter
-    )
-from langchain_experimental.text_splitter import SemanticChunker
-from langchain_ollama import OllamaEmbeddings 
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from capstone.backend.llms.prompt_template import (
+from capstone.backend.llms.prompts import (
     rag_prompt,
-    pre_retrieval
     )
 
 logging.getLogger(__name__)
@@ -36,7 +32,8 @@ API_KEY = os.getenv("TYPHOON_API_KEY")
 # Persist Directory
 PERSIST_DIR = os.getenv("PERSIST_DIR",default="database/vector_history")
 
-# TODO: Learn About Websearch
+
+# Need to change the name to Vector Database
 # RAG Class model.
 class RAGModel:
     def __init__(
@@ -55,17 +52,6 @@ class RAGModel:
     def get_vector_store(self):
         return self.__vector_store
 
-    # Pre Retrieval Process.
-    def __pre_retrieval(
-            self, 
-            question
-            ):
-        
-        # TODO: Fix this shit
-        # Rewritten Query Prompt
-        prompt = pre_retrieval(question=question)
-        return self.__llm.invoke(prompt)
-
     def __chroma_connect(self):
         return Chroma( 
             collection_name=COLLECTION_NAME,
@@ -78,7 +64,7 @@ class RAGModel:
     def __split_text(self,
                     metadatas,
                     contents:str,
-                    chunk_size:int = 1024,
+                    chunk_size:int = 4096,
                     separaters: str ='/n',
                     ):
         
@@ -133,7 +119,11 @@ class RAGModel:
         # Call Retriever
         self.retriever = self.__vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={'k': 15}
+            search_kwargs={
+                'k': 15,
+                "lambda_mult":0.1,
+                "fetch_k":30,
+                }
             )
 
         # Create Chains

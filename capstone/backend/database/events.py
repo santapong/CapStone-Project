@@ -1,6 +1,5 @@
 import joblib
 import logging
-from sqlalchemy.sql import text
 from sqlalchemy.event import listens_for
 from capstone.backend.database.models import (
     LogsTable, 

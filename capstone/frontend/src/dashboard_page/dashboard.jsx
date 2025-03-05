@@ -1,183 +1,147 @@
 import React, { useEffect, useState } from "react";
-import Label from "./components/stats/Label";
-import { Navbar, Footer } from "./components/main_pages";
-import { Linechart, Piechart, Barchart, Radarchart } from "./components/charts";
-import { Chatbot } from "./components/button";
-import "./styles/global.css";
+import { Barchart, Linechart, Piechart } from "./components/charts";
 
 const Dashboard = () => {
-  const [dashboardData, setDashboardData] = useState(null);
+  const [dashboardData, setDashboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/dashboard/data")
-      .then((response) => response.json())
-      .then((data) => setDashboardData(data))
-      .catch((error) => console.error("Error fetching data: ", error));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/dashboard/query");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = await response.json();
+  
+        // Extract actual data
+        const data = result.data;
+        console.log("Fetched Data:", result);
 
-  // สมมติว่า dashboardData มีข้อมูลดังนี้:
-  // {
-  //   totalChats: number,
-  //   uniqueUsers: number,
-  //   averageSessionDuration: number, // นาที
-  //   botResponseSuccessRate: number, // %
-  //   peakUsageTime: string,
-  //   aiAccuracy: number, // %
-  //   unansweredQueries: number,
-  //   topQuestions: array of strings,
-  //   responseTime: string,
-  //   apiErrors: number,
-  //   userSatisfactionScore: number, // %
-  //   userFeedback: array of strings
-  // }
+        // Check if data is empty or missing
+        if (!data || Object.keys(data).length === 0) {
+          throw new Error("No data available");
+        }
+  
+        setDashboardData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  console.log(dashboardData)
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-      <div className="flex">
-        <main className="flex-1 p-6">
-          {/* Overview & Summary */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">ภาพรวมและสรุปผล</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">จำนวนแชททั้งหมด</p>
-                <h2 className="text-xl font-bold text-purple-700">
-                  {dashboardData?.totalChats || 0}
-                </h2>
-              </div>
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">ค่าเฉลี่ยเวลาการสนทนา (นาที)</p>
-                <h2 className="text-xl font-bold text-purple-700">
-                  {dashboardData?.averageSessionDuration || 0}
-                </h2>
-              </div>
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">อัตราการตอบกลับสำเร็จของบอท (%)</p>
-                <h2 className="text-xl font-bold text-purple-700">
-                  {dashboardData?.botResponseSuccessRate || 0}%
-                </h2>
-              </div>
-            </div>
-          </section>
+    <div className="min-h-screen bg-gray-1 00 p-6">
+      <h2 className="text-3xl font-bold mb-6">Dashboard</h2>
 
-          {/* User Engagement */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">การมีส่วนร่วมของผู้ใช้</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">เวลาที่มีผู้ใช้เยอะที่สุด</p>
-                <h2 className="text-xl font-bold text-purple-700">
-                  {dashboardData?.peakUsageTime || "N/A"}
-                </h2>
-              </div>
-              
-            </div>
-          </section>
-
-          {/* Chatbot Performance */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">ประสิทธิภาพของแชทบอท</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">อัตราความแม่นยำของ AI</p>
-                <h2 className="text-xl font-bold text-green-600">
-                  {dashboardData?.aiAccuracy || 0}%
-                </h2>
-              </div>
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">
-                  จำนวนข้อความที่ Chatbot ตอบไม่ได้
-                </p>
-                <h2 className="text-xl font-bold text-red-600">
-                  {dashboardData?.unansweredQueries || 0}
-                </h2>
-              </div>
-             
-            </div>
-          </section>
-
-          {/* Technical Metrics */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">
-              ตัวชี้วัดทางเทคนิค
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">อัตราความล่าช้าในการตอบกลับ</p>
-                <h2 className="text-xl font-bold text-orange-600">
-                  {dashboardData?.responseTime || "N/A"}
-                </h2>
-              </div>
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">
-                  ข้อผิดพลาดของ API/ระบบเชื่อมต่อ
-                </p>
-                <h2 className="text-xl font-bold text-red-600">
-                  {dashboardData?.apiErrors || 0}
-                </h2>
-              </div>
-            </div>
-          </section>
-
-          {/* Sentiment Analysis */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">
-              การวิเคราะห์อารมณ์ของผู้ใช้
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white shadow-md rounded-xl p-4 text-center">
-                <p className="text-gray-500">อัตราความพึงพอใจของผู้ใช้</p>
-                <h2 className="text-xl font-bold text-green-600">
-                  {dashboardData?.userSatisfactionScore || 0}%
-                </h2>
-              </div>
-              <div className="bg-white shadow-md rounded-xl p-4">
-                <p className="text-gray-500">
-                  คำติชมและฟีดแบ็กจากผู้ใช้
-                </p>
-                <ul className="list-disc list-inside mt-2">
-                  {dashboardData?.userFeedback?.length > 0 ? (
-                    dashboardData.userFeedback.map((feedback, idx) => (
-                      <li key={idx}>{feedback}</li>
-                    ))
-                  ) : (
-                    <li>N/A</li>
-                  )}
-                </ul>
-              </div>
-              <div className="bg-white shadow-md rounded-xl p-4">
-                <p className="text-gray-500">คำถามที่พบบ่อย</p>
-                <ul className="list-disc list-inside mt-2">
-                  {dashboardData?.topQuestions?.length > 0 ? (
-                    dashboardData.topQuestions.map((q, idx) => (
-                      <li key={idx}>{q}</li>
-                    ))
-                  ) : (
-                    <li>N/A</li>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* Charts Summary */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">กราฟแสดงผล</h2>
-            <div className="grid grid-cols-4 grid-rows-2 gap-3">
-              <div className="bg-white rounded-2xl shadow-lg p-4 h-[450px]">
-                <Barchart />
-              </div>
-              <div className="bg-white rounded-2xl shadow-lg p-4 h-[300px]">
-                <Piechart />
-              </div>
-
-            </div>
-          </section>
-        </main>
+      {/* Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white shadow-md rounded-lg p-4 text-center">
+          <p className="text-gray-500">จำนวนแชททั้งหมด</p>
+          <h2 className="text-xl font-bold text-purple-700">{dashboardData.total_user[0].total_chat}</h2>
+        </div>
+        <div className="bg-white shadow-md rounded-lg p-4 text-center">
+          <p className="text-gray-500">เวลาเฉลี่ยในการอัพโหลดเอกสาร 1 หน้า</p>
+          <h2 className="text-xl font-bold text-purple-700">{dashboardData.upload_time[0].time_usage_per_page}</h2>
+        </div>
+        <div className="bg-white shadow-md rounded-lg p-4 text-center">
+          <p className="text-gray-500">ความล่าช้าในการตอบ (วินาที)</p>
+          <h2 className="text-xl font-bold text-purple-700">{dashboardData.avg_time_usage[0].average_time_usage.toFixed(2)}</h2>
+        </div>
+        <div className="bg-white shadow-md rounded-lg p-4 text-center">
+          <p className="text-gray-500">ความผิดพลาดของ AI (%)</p>
+          <h2 className="text-xl font-bold text-green-700">{dashboardData.error_percentage[0].diff}%</h2>
+        </div>
       </div>
-      <Chatbot />
-      <Footer />
+      
+      {/* Barchart: จำนวนผู้ใช้งานในแต่ละวัน */}
+      <div className="bg-white rounded-lg p-4 shadow-md mb-6">
+        <h3 className="text-lg text-center font-bold mb-2">Daily User</h3>
+            <Barchart data={dashboardData.user_time} />
+      </div>
+
+      {/* Piechart: Category Distribution */}
+      <div className="bg-white rounded-lg p-4 shadow-md mb-6">
+        <h3 className="text-lg font-bold mb-2">Category</h3>
+        <Piechart data={dashboardData.top_category} />
+      </div>
+      
+      {/* Chathistory Table */}
+      <div className="bg-white rounded-lg p-4 shadow-md mb-6">
+        <h3 className="text-lg font-bold mb-2">Chathistory</h3>
+        <div className="max-h-96 overflow-y-auto overflow-x-auto">
+          <table className="table table-xs table-pin-rows">
+            <thead className="bg-gray-200 sticky">
+              <tr className="border border-gray-300">
+                <th className="p-2 border border-gray-300">Model</th>
+                <th className="p-2 border border-gray-300">Prompt</th>
+                <th className="p-2 border border-gray-300">Question</th>
+                <th className="p-2 border border-gray-300">Answer</th>
+                <th className="p-2 border border-gray-300">Time Usage</th>
+                <th className="p-2 border border-gray-300">Ask At</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {dashboardData.history_table.map((chat, idx) => (
+                <tr key={idx} className="border border-gray-300">
+                  <td className="p-2 border border-gray-300">{chat.llm_model}</td>
+                  <td className="p-2 border border-gray-300">{chat.prompt}</td>
+                  <td className="p-2 border border-gray-300">{chat.question}</td>
+                  <td className="p-2 border border-gray-300">{chat.answer}</td>
+                  <td className="p-2 border border-gray-300">{chat.time_usage.toFixed(2)}</td>
+                  <td className="p-2 border border-gray-300">{chat.datetime}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          </div>
+      </div>
+
+      
+      {/* Documents Table */}
+      <div className="bg-white rounded-lg p-4 shadow-md">
+        <h3 className="text-lg font-bold mb-2">Documents</h3>
+        <div className="max-h-96 overflow-y-auto">
+          <table className="table table-xs table-pin-rows">
+            <thead className="bg-gray-100 sticky top-0">
+              <tr className="border border-gray-300">
+                <th className="p-2 border border-gray-300">Document Name</th>
+                <th className="p-2 border border-gray-300">Pages</th>
+                <th className="p-2 border border-gray-300">Time Usage</th>
+                <th className="p-2 border border-gray-300">Datetime</th>
+                <th className="p-2 border border-gray-300">Embedding Model</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {dashboardData.document_table.map((doc, idx) => (
+                <tr key={idx} className="border border-gray-300">
+                  <td className="p-2 border border-gray-300">{doc.document_name}</td>
+                  <td className="p-2 border border-gray-300">{doc.pages}</td>
+                  <td className="p-2 border border-gray-300">{doc.time_usage.toFixed(2)}</td>
+                  <td className="p-2 border border-gray-300">{doc.datetime}</td>
+                  <td className="p-2 border border-gray-300">{doc.embedding_model}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

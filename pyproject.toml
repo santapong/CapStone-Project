@@ -31,6 +31,8 @@ dependencies = [
     "pythainlp>=5.0.5",
     "langchain-openai>=0.3.6",
     "diagrams>=0.24.1",
+    "duckduckgo-search>=7.5.0",
+    "langchain-google-community>=2.0.7",
 ]
 
 [tool.uv]

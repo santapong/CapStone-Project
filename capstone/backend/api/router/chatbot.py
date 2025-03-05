@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
-from capstone.backend.llms import get_RAG, RAGModel
+from capstone.backend.llms import get_RAG, RAGModel, get_agent, Garph
 from capstone.backend.api.models import (
     ChatModel,
     ResponseModel,
@@ -19,7 +19,7 @@ from capstone.backend.database.connection import (
     get_db,
 )
 from capstone.backend.database.models import LogsTable
-from capstone.backend.llms.prompt_template import rag_prompt
+from capstone.backend.llms.prompts import rag_prompt
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -31,13 +31,13 @@ router_chatbot = APIRouter(prefix='/chatbot', tags=tags)
 @router_chatbot.post("/infer", response_model=ResponseModel)
 async def inference_Model(
     request: ChatModel, 
+    agent = Depends(get_agent),
     db: DBConnection = Depends(get_db),
-    RAG: RAGModel = Depends(get_RAG)
 ):
     start_time = time.time()
     
     try:
-        answer = RAG.invoke(question=request.question)
+        answer = await agent.ainvoke({"question": request.question})
         time_usage = time.time() - start_time
         logger.info(f"Time usage: {time_usage}s")
 
@@ -47,14 +47,14 @@ async def inference_Model(
             llm_model=os.getenv("LLM_MODEL"),
             prompt=rag_prompt.__name__, 
             question=request.question, 
-            answer=answer['answer'], 
+            answer=answer['refine'], 
             time_usage=time_usage
         )
 
         return JSONResponse(content={
             "time usage": time_usage,
             "question": request.question,
-            "answer": answer['answer']
+            "answer": answer['refine']
         })
     
     except Exception as e:

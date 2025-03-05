@@ -1,18 +1,12 @@
 import React from "react";
 import { PieChart, Pie, Tooltip, Cell, Legend, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "FA", value: 400 },
-  { name: "PA", value: 300 },
-  { name: "MA", value: 300 },
-  { name: "IOT", value: 200 },
-];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28DFF"]; // เพิ่มสีให้ครบ 5 หมวดหมู่
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-const Piechart = ({Radius_size}) => {
+const Piechart = ({ data, Radius_size = 90 }) => {
+  console.log(data)
   return (
-    <ResponsiveContainer width="100%" height="90%">
+    <ResponsiveContainer width="100%" height={300}>
       <PieChart>
         <Pie
           data={data}
@@ -20,7 +14,8 @@ const Piechart = ({Radius_size}) => {
           cy="50%"
           outerRadius={Radius_size}
           fill="#8884d8"
-          dataKey="value"
+          dataKey="count_category"  // <-- Fixed from "value" to "count_category"
+          nameKey="category" // <-- Correct label key
           label
         >
           {data.map((entry, index) => (

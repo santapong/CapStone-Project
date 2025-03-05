@@ -10,16 +10,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Barchart = ({ chartName, data }) => {
-  // ใช้ข้อมูลที่ส่งเข้ามา หากไม่มีให้ใช้ array ว่าง
-  const chartData = data || [
+const Barchart = ({ chartName, data = [], barColor = "#006600" }) => {
+  // ตรวจสอบว่า `data` มีค่าหรือไม่
+  const chartData = data.length ? data : [
     { day: "2025-02-10", user: 120 },
     { day: "2025-02-11", user: 150 },
     { day: "2025-02-12", user: 90 },
-    // ...
   ];
 
-  // จัดอันดับวันที่มีการใช้งานสูงสุดโดยเรียงจากมากไปน้อย
+  // จัดอันดับวันที่มีการใช้งานสูงสุด
   const sortedData = [...chartData].sort((a, b) => b.user - a.user);
   const top3 = sortedData.slice(0, 3);
 
@@ -31,24 +30,24 @@ const Barchart = ({ chartName, data }) => {
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
+          <XAxis dataKey="datetime" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="user" fill="#8884d8" />
+          <Bar dataKey="usage" fill={barColor} />
         </BarChart>
       </ResponsiveContainer>
       <div className="mt-4">
-        <h3 className="text-lg font-bold text-center">
+        {/* <h3 className="text-lg font-bold text-center">
           Top 3 วันที่มีผู้ใช้เยอะที่สุด
-        </h3>
-        <ol className="list-decimal list-inside text-center">
+        </h3> */}
+        {/* <ol className="list-decimal list-inside text-center">
           {top3.map((item, index) => (
             <li key={index}>
-              {item.day}: {item.user} ครั้ง
+              {item.datetime}: {item.us} ครั้ง
             </li>
           ))}
-        </ol>
+        </ol> */}
       </div>
     </div>
   );
