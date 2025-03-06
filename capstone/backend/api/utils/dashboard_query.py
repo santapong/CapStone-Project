@@ -72,3 +72,43 @@ SELECT * FROM documents
 HISTORY_TABLE="""
 SELECT * FROM logs
 """
+
+ERROR_PERCENTAGE="""
+WITH count_error as(
+Select 
+	count(answer) as answer 
+	-- Count Error
+	,count(
+	CASE 
+	WHEN LOWER(answer) like "er%" THEN 1
+	END
+	) as error
+from 
+	logs
+), final as(
+Select 
+	ROUND((answer - error) / CAST(answer as FLOAT), 4)*100 as diff
+	,error
+	,answer
+from 
+	count_error
+)
+
+select * from final
+"""
+
+UPLOAD_PAGE="""
+WITH SUM_TABLE as(
+SELECT 
+	SUM(pages) as pages
+	,ROUND(SUM(time_usage), 2) as times
+FROM DOCUMENTs
+), FINAL as(
+SELECT 
+	ROUND((times/pages), 2) as time_usage_per_page
+FROM
+	SUM_TABLE
+)
+
+SELECT * FROM FINAL
+"""

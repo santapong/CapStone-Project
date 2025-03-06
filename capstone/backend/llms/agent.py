@@ -6,11 +6,15 @@ from dotenv import load_dotenv
 from typing import List, Dict
 
 from langchain_core.tools.simple import Tool
+from langchain_core.output_parsers import StrOutputParser
+
 from langchain.chat_models import init_chat_model
 from langchain.tools.retriever import create_retriever_tool
-from langchain_core.output_parsers import StrOutputParser
+
+from langchain_ollama import OllamaEmbeddings 
+from langchain_google_community import GoogleSearchAPIWrapper
 from langchain_community.tools import DuckDuckGoSearchRun
-from langchain_core.runnables import Runnable, RunnablePassthrough
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 
 from langgraph.graph import END, StateGraph, START
@@ -41,20 +45,23 @@ logging.getLogger(__name__)
 class AgenticModel(RAGModel):
     def __init__(self):
         
+        # Using inheritance.
         super().__init__()
+        
+        # Init Model.
+        self.llm = self.__init_model()
+        self.vector_store =  self.get_vector_store()
+        
+        # Setting Tool Parameter for Decorator.
         self.__tool_methods = [
             method_name for method_name in dir(self)
             if callable(getattr(self, method_name)) and hasattr(getattr(self, method_name), "_is_tool")
         ]
-        self.retriever =  self.get_vector_store().as_retriever(
-            search_type="mmr",
-            search_kwargs={
-                "k":20,
-                "lambda_mult":0.1,
-                "fetch_k":30,
-            }
+        
+        # Setting Embeddin model.
+        self.embedding = OllamaEmbeddings(
+            model=os.getenv("EMBEDDING_MODEL", default='bge-m3')
         )
-        self.llm = self.__init_model()
         
     # Intialize Model internal method
     def __init_model(
@@ -84,7 +91,7 @@ class AgenticModel(RAGModel):
     
     # Search tool Using Duckduckgo search.
     @register_tool
-    def search_tool(self)->DuckDuckGoSearchRun:
+    def duckduckgo(self)->DuckDuckGoSearchRun:
         wrapper = DuckDuckGoSearchAPIWrapper(max_results=15)
         tool = DuckDuckGoSearchRun(
             name="Websearh tool from Duckduckgo",
@@ -94,6 +101,31 @@ class AgenticModel(RAGModel):
         
         return tool
     
+    # Google search method.
+    def google_search(
+        self,
+        query,
+        top_k,
+        ):
+        
+        # Get API Wrapper from Google
+        wrapper = GoogleSearchAPIWrapper(
+            google_cse_id=os.getenv("GOOGLE_CSE_ID"), # Custom Search Engine ID
+            google_api_key=os.getenv("GOOGLE_API_KEY"), # Google API KEY
+        )
+        
+        # lambda function to create list of document
+        result = lambda query, top_k: list(wrapper.results(query=query, num_results=top_k))
+        
+        links = [
+            result["link"] for result in result(query=query, top_k=top_k) 
+        ]
+        
+        documents = WebBaseLoader(web_paths=links).load()
+        
+        return documents
+        
+        
     # Abstract to collect tool inside AgenticModel class.
     @abstractmethod
     def get_tools(self) -> List:
@@ -112,6 +144,8 @@ class AgenticModel(RAGModel):
         
         """
         logging.info("---- Grading ----")
+        print("Grader")
+        
         
         # Get question from AgentState
         question = state["question"]
@@ -135,12 +169,15 @@ class AgenticModel(RAGModel):
             state: AgentState
         )-> Dict[str, any]:
         logging.info("----Retrieve Agent----")
-        
+        print("Retrieval")
         # Get question from Agentstate
         question = state["question"]
     
         # Retrieval
-        documents = self.retriever.invoke(input = question)
+        documents = self.vector_store.similarity_search_with_score(
+            query=question,
+            k=13
+        )
         
         return {"documents": documents, "question": question}
     
@@ -152,7 +189,7 @@ class AgenticModel(RAGModel):
         )-> Dict[str, any]:
         
         logging.info("----- Rewrite -----")
-        
+        print("Rewrite")
         # Parsing the Question from AgentState
         question = state["question"]
         
@@ -171,14 +208,14 @@ class AgenticModel(RAGModel):
             state: AgentState 
         )-> Dict[str, any]:
         logging.info("---Using Duckduckgo search---")
+        print("search")
         
         # Parsing key from AgentState
-        rewrite = state["rewrite"]
+        question = state["question"]
         web_result = []
         
-        # Get Result from Duckduckgo search.
-        document = self.search_tool().invoke({"query": rewrite})
-        web_result.append(document)
+        documents = self.google_search(query=question, top_k=3)
+        web_result.append(documents)
         
         return {"web_result": web_result}
         
@@ -192,10 +229,8 @@ class AgenticModel(RAGModel):
         
         # Parsing key from AgentState.
         question = state["question"]
-        documents = state["documents"]
         web_search: GradeDocuments = state["web_search"]
         
-        result_document = []
         # Rag_chain
         rag_chain = rag_prompt() | self.llm | StrOutputParser() # This format call LCEL (LangChain Expression Language)
         
@@ -203,17 +238,17 @@ class AgenticModel(RAGModel):
         if web_search.binary_score == "yes":
             # If using RAG only will get document.
             logging.info("----Using RAG.----")
-            result_document.append(documents)
+            documents = state["documents"]
+            filled_document: List[str] = documents
             
         elif web_search.binary_score == "no":
             # If document not sufficient to Answer it will Add more search result to answer.
             logging.info("----Using Search.----")
             web_result = state["web_result"]
             filled_document: List[str] = web_result
-            result_document.extend([filled_document, documents])
 
         # Query To LLM
-        response = rag_chain.invoke({"context": result_document, "question":question})
+        response = rag_chain.invoke({"context": filled_document, "question":question})
         
         return {"generation": response}
         
@@ -315,7 +350,7 @@ if __name__ == "__main__":
     from pprint import pprint
     test = Garph()
     start_time = time.time()    
-    answer = test.compile().invoke({"question":"ประวัติสจล."})
+    answer = test.compile().invoke({"question":"หลักสูตรออโตเมชันที่น่าสนใจ"})
     time_usage = time.time() - start_time
     pprint(f"time_usage = {time_usage}")
     pprint(f"Question: {answer['question']}")

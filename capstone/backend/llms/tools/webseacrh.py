@@ -1,45 +1,36 @@
-from typing import (
-    Union, 
-    Optional,
-    ) 
+import os
+import json
 
-from langchain_core.messages import HumanMessage
-from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
-from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_community.tools import DuckDuckGoSearchRun
+from pprint import pprint
+from typing import List
+from dotenv import load_dotenv
 
-# See how to binding tool to LLM
-# https://python.langchain.com/docs/how_to/tool_results_pass_to_model/
+from langchain_core.tools import Tool
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_google_community import GoogleSearchAPIWrapper
 
-# ######################################### #
-# |                                       | #
-# |         NOT USE THIS FUNCTION         | #
-# |                                       | #
-# ######################################### #
+from dotenv import load_dotenv
+from langchain_google_community import GoogleSearchAPIWrapper
+from langchain_core.tools import Tool
 
-def searchtool(
-    query: int, 
-    model: BaseChatModel,
-    max_results: int = 5,
-    )-> Union[Optional[str], list[str]]:
+load_dotenv()
+
+def google_search(
+    query, 
+    top_k: int=10
+    ):
+    wrapper = GoogleSearchAPIWrapper(
+        google_cse_id=os.getenv("GOOGLE_CSE_ID"),
+        google_api_key=os.getenv("GOOGLE_API_KEY"),
+    )
     
-    # Bind tool to LLM.
-    wrapper = DuckDuckGoSearchAPIWrapper(region="wt-wt", time="d", max_results=max_results) # Set Wrapper for Duckduckgo run
-    tools = [DuckDuckGoSearchRun(api_wrapper=wrapper)] # Set the tool to binding to LLM
-    llm_with_tools = model.bind_tools(tools)
+    result = lambda query, top_k: list(wrapper.results(query=query, num_results=top_k))
 
-    # Create HumanMassage Query.
-    messages = [HumanMessage(query)]
-    tools_message = llm_with_tools.invoke(messages)
+    links = [
+        result["link"] for result in result(query=query, top_k=top_k) 
+    ]
     
-    # Add ToolMessage to Message.
-    messages.append(tools_message)
-    for tool_call in tools_message.tool_calls:
-        selected_tool = {"duckduckgo_search": DuckDuckGoSearchRun(api_wrapper=wrapper)}[tool_call["name"].lower()]
-        tool_msg = selected_tool.invoke(tool_call)
-        messages.append(tool_msg)
+    documents = WebBaseLoader(web_paths=links).load()
+    pprint(documents)    
     
-    # Query AI with DuckDuckgo Search.    
-    answer = llm_with_tools.invoke(messages).content
-    
-    return answer
+data = google_search(query="Test")
