@@ -41,7 +41,7 @@ logging.getLogger(__name__)
 
 # See Agent Paradigms
 # https://github.com/santapong/CapStone-Project/blob/santapong/llms/imgs/Workflow_paradigm.png
-# Agentic That have RAG and Duckduckgo seacrh inside.
+# Agentic That have RAG and Google seacrh inside.
 class AgenticModel(RAGModel):
     def __init__(self):
         
@@ -58,7 +58,7 @@ class AgenticModel(RAGModel):
             if callable(getattr(self, method_name)) and hasattr(getattr(self, method_name), "_is_tool")
         ]
         
-        # Setting Embeddin model.
+        # Setting Embedding model.
         self.embedding = OllamaEmbeddings(
             model=os.getenv("EMBEDDING_MODEL", default='bge-m3')
         )
@@ -77,6 +77,7 @@ class AgenticModel(RAGModel):
                 temperature=temperature,
                 base_url=model_base_url,
             )   
+        
     # Not use
     # RAG model tool.
     @register_tool
@@ -116,11 +117,11 @@ class AgenticModel(RAGModel):
         
         # lambda function to create list of document
         result = lambda query, top_k: list(wrapper.results(query=query, num_results=top_k))
-        
         links = [
             result["link"] for result in result(query=query, top_k=top_k) 
         ]
         
+        # Load Document from links.
         documents = WebBaseLoader(web_paths=links).load()
         
         return documents
@@ -144,8 +145,6 @@ class AgenticModel(RAGModel):
         
         """
         logging.info("---- Grading ----")
-        print("Grader")
-        
         
         # Get question from AgentState
         question = state["question"]
@@ -181,7 +180,7 @@ class AgenticModel(RAGModel):
         
         return {"documents": documents, "question": question}
     
-    # NOTE: Test
+    # NOTE: pass
     # Using too rewrite the question to search the website.
     def rewrite(
             self,
@@ -202,18 +201,19 @@ class AgenticModel(RAGModel):
         return {"rewrite": rewrite_question}
 
     # NOTE: Pass
-    # Search Agent using Duckduckgo search.
+    # Search Agent using Google search.
     def search_agent(
             self, 
             state: AgentState 
         )-> Dict[str, any]:
-        logging.info("---Using Duckduckgo search---")
+        logging.info("---Using Google search---")
         print("search")
         
         # Parsing key from AgentState
         question = state["question"]
         web_result = []
         
+        # Using Google Search.
         documents = self.google_search(query=question, top_k=3)
         web_result.append(documents)
         
@@ -273,7 +273,7 @@ class AgenticModel(RAGModel):
     
     ## Edge
         
-    # NOTE: need test
+    # NOTE: pass
     # Get decision from Grade_document. 
     def decide_to_search(
             self,

@@ -14,6 +14,8 @@ from capstone.backend.database.models import DATABASE_MODEL, DocumentTable
 
 load_dotenv()
 
+# Postgresql not finish hahahaha.
+
 """
 ################### Take Note ####################
  #   We use SQLalchemy in this project.         #

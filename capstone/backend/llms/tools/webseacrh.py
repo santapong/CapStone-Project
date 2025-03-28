@@ -15,6 +15,8 @@ from langchain_core.tools import Tool
 
 load_dotenv()
 
+# NOT USE
+
 def google_search(
     query, 
     top_k: int=10

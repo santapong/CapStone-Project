@@ -25,13 +25,13 @@ function Footer() {
   </aside>
   <nav>
     <h6 className="footer-title">Id</h6>
-    <a className="link link-hover">64010886</a>
-    <a className="link link-hover">64011159</a>
-    <a className="link link-hover">64011285</a>
+    <a>64010886</a>
+    <a>64011159</a>
+    <a>64011285</a>
   </nav>
   <nav>
     <h6 className="footer-title">Advisor</h6>
-    <a className="link link-hover">Sawai Pongswats</a>
+    <a>Sawai Pongswats</a>
   </nav>
   <nav>
     <h6 className="footer-title">Thank</h6>

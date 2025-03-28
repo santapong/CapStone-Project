@@ -13,9 +13,12 @@ class AgentState(TypedDict):
     Data store State in Agent.
     
     # Parameter Using in state
+    refine: Refined LLM answer.
+    rewrite: Rewrite User Query.
     question: User question from inference.
     generation: LLM answer.
     web_search: Result from websearch.
+    web_result: Result from website.
     documents: Retrieve documents from vector_database.
     
     """

@@ -8,7 +8,7 @@
 This project is a part of Capstone project in Automation Engineering. That has a Goal that to create Automation Gen AI for answer question about subject and knowledge of Automation in KMITL.
 ## Diagram
 
-![image](/imgs/Workflow_paradigm.png)
+![image](/imgs/Workflow.png)
 
 ## Backend using Python
 
