@@ -1,8 +1,4 @@
 # CapStone-Project
-### Note
-1. Can answer with Image, Vedio and link to learn more.
-2. Have genre to search.
-3. Have summery Dashboard. ( Only Deverloper )
 
 ## Abstract
 This project is a part of Capstone project in Automation Engineering. That has a Goal that to create Automation Gen AI for answer question about subject and knowledge of Automation in KMITL.
@@ -10,32 +6,32 @@ This project is a part of Capstone project in Automation Engineering. That has a
 
 ![image](/imgs/Workflow.png)
 
-## Backend using Python
-
-## Frontend using Javascript React + Vite
-
 ## Setup Project
 ### Download Project repository
-1. Install git bash [Click me](https://git-scm.com/downloads)
+1. Install git bash [Click me](https://git-scm.com/downloads) !!
 2. Git clone repository
 ```
 git clone https://github.com/santapong/CapStone-Project.git
 ```
 
 ### Install Python
-1. Install Python [Click me](https://www.python.org/downloads/)
-2. Add Python.exe to Environment path. (only Windows) 
+1. Install Python [Click me](https://www.python.org/downloads/) !!
+
+### Install Nodejs
+1. Install From [download here](https://nodejs.org/en) !!
+
+## For backend.
 
 ### Install uv
 
 1. Installing uv
 
-#### For Window
+##### For Window
 ```
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-#### For Linux/MacOs
+##### For Linux/MacOs
 via curl
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -45,13 +41,7 @@ via wget
 wget -qO- https://astral.sh/uv/install.sh | sh
 ```
 
-#### Install on python
-
-```
-pip install uv 
-```
-
-2. debug uv asdf
+2. debug uv 
 
 ```
 uv --version
@@ -64,24 +54,41 @@ uv --version
 cd path/to/this/project
 uv sync --no-group dev
 ```
-PS. uv's document [Click me](https://docs.astral.sh/uv/getting-started/installation/)
+PS. uv's document [click me](https://docs.astral.sh/uv/getting-started/installation/)
+
+## For frontend.
+1. go to frontend path
+```
+cd ../capstone/frontend
+```
+
+2. install package
+```
+npm install # If Error occur just run it again
+```
+
+3. run frontend server
+```
+npm run dev
+```
 
 ## OLLAMA download
-1. Download and install ollama Click [Here](https://ollama.com/download/windows) !!
+1. Download and install ollama [click Here](https://ollama.com/download/windows) !!
 
-2. Open Terminal or Command prompt and type ``` ollama run llama3.2 ``` ( We use llama3.2 in this Project )
+2. Open Terminal or Command prompt and type 
+``` 
+ollama pull bge-m3
+``` 
 
-## Oauth2-proxy setup ( Docker )
-Document [Read more !!](https://oauth2-proxy.github.io/oauth2-proxy/)
+## Error
+1. Execution policy. ( Window )
 
-## Datasets
-Coming Soon
+```
+# (Powershell) 
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser 
+```
 
-## Docker
-
-## Kubernetes
-
-## Other
-
-## Reference
+## Thank you
+[Typhoon ai](https://opentyphoon.ai/)
 [Prompt Engineer Guide](https://www.promptingguide.ai/introduction/settings)
+[Langchain](https://python.langchain.com/docs/introduction/)
