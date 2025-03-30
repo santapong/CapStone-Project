@@ -20,6 +20,32 @@ git clone https://github.com/santapong/CapStone-Project.git
 ### Install Nodejs
 1. Install From [download here](https://nodejs.org/en) !!
 
+### OLLAMA download
+1. Download and install ollama [click Here](https://ollama.com/download/windows) !!
+
+2. Open Terminal or Command prompt and type 
+``` 
+ollama pull bge-m3
+``` 
+
+### Config .env file
+1. see [.envExample](https://github.com/santapong/CapStone-Project/blob/main/.envExample)
+2. Require Parameter.
+```
+PYTHONPATH = "Your project directory"
+
+LANGSMITH_API_KEY = "Your Langsmith API key"
+TYPHOON_API_KEY = "Your Typhoon API key"
+GOOGLE_CSE_ID = "GOOGLE Custom Search"
+GOOGLE_API_KEY = "Google API Key"
+
+```
+
+LANGSMITH_API_KEY >> [Get Key](https://docs.smith.langchain.com/administration/how_to_guides/organization_management/create_account_api_key)
+TYPHOON_API_KEY >> [Get Key](https://playground.opentyphoon.ai/api-key) 
+GOOGLE_CSE_ID >> [Get Key](https://developers.google.com/custom-search/v1/introduction)
+GOOGLE_API_KEY >> [Get Key](https://developers.google.com/maps/documentation/javascript/get-api-key#create-api-keys)
+
 ## For backend.
 
 ### Install uv
@@ -71,14 +97,6 @@ npm install # If Error occur just run it again
 ```
 npm run dev
 ```
-
-## OLLAMA download
-1. Download and install ollama [click Here](https://ollama.com/download/windows) !!
-
-2. Open Terminal or Command prompt and type 
-``` 
-ollama pull bge-m3
-``` 
 
 ## Error
 1. Execution policy. ( Window )
